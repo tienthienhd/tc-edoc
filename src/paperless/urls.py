@@ -14,7 +14,11 @@ from django.views.static import serve
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 
+<<<<<<< HEAD
 from documents.views import AcknowledgeTasksView, ApprovalUpdateMutipleView, ApprovalViewSet
+=======
+from documents.views import AcknowledgeTasksView, ApprovalViewSet
+>>>>>>> ee40d78ab (feature: build workflow)
 from documents.views import BulkDownloadView
 from documents.views import BulkEditObjectsView
 from documents.views import BulkEditView

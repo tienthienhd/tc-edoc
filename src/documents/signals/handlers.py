@@ -908,12 +908,11 @@ def run_workflow_approval(
             trigger_type,
         ):
             model_name = approval.ctype.name
+            print('model_class',apps.get_model(approval.ctype.app_label, model_name))
             model_class = apps.get_model(approval.ctype.app_label, model_name)
             all_permissions = Permission.objects.filter(content_type=approval.ctype)
             # obj assign
             obj = model_class.objects.filter(pk = approval.object_pk).first()
-            logger.debug('GIA TRI',(approval.submitted_by_group.values_list('id',)))
-            groups = approval.submitted_by_group.all()
             action: WorkflowAction
             for action in workflow.actions.all():
                 logger.info(
@@ -928,28 +927,27 @@ def run_workflow_approval(
                             case "OWNER":
                                 obj.owner = approval.submitted_by
                             case "EDIT":
-                                permissions["change"] = {
-                                    "users": [getattr(approval.submitted_by, 'id')] if getattr(approval.submitted_by, 'id', None) is not None else [],
-                                    "groups": approval.submitted_by_group.values_list('id',)
-                                    or [],
-                                    
+                                permissions["view"] = {
+                                    "change": {
+                                        "users": all_permissions.exclude(codename__startswith='view_').values_list("id",)
+                                        or [],
+                                        "groups": approval.submitted_by_group.id
+                                        or [],
+                                        }
                                 }
                             case "VIEW":
                                 permissions["view"] = {
-                                    "users": [getattr(approval.submitted_by, 'id')] if getattr(approval.submitted_by, 'id', None) is not None else [],
+                                    "users": [approval.submitted_by.id]
+                                    or [],
                                     "groups": approval.submitted_by_group.values_list('id',)
                                     or [],
                                 }
-                                
-                            case _:
-                                pass
                                 
                         set_permissions_for_object(
                             permissions=permissions,
                             object=obj,
                             merge=True,
                         )
-                       
                 elif action.type == WorkflowAction.WorkflowActionType.REMOVAL_WITH_APPROVAL:
                     
                     if (action.assign_content_type is not None 
@@ -976,24 +974,15 @@ def run_workflow_approval(
                                 case "OWNER":
                                     obj.owner = None
                                 case "EDIT":
-                                    if getattr(approval,"submitted_by",None) is not None:
-                                        remove_perm(f"view_{model_name}", approval.submitted_by, obj)
-                                        remove_perm(f"change_{model_name}", approval.submitted_by, obj)
-                                        remove_perm(f"add_{model_name}", approval.submitted_by, obj)
-                                        remove_perm(f"delete_{model_name}", approval.submitted_by, obj)
-                                    
-                                    if approval.submitted_by_group.values_list(flat=True):
-                                        for g in groups:
-                                            remove_perm(f"view_{model_name}", g, obj)
-                                            remove_perm(f"change_{model_name}", g, obj)
-                                            remove_perm(f"add_{model_name}", g, obj)
-                                            remove_perm(f"delete_{model_name}", g, obj)
+                                    remove_perm(f"change_{model_name}", approval.submitted_by, obj)
+                                    remove_perm(f"add_{model_name}", approval.submitted_by, obj)
+                                    remove_perm(f"delete_{model_name}", approval.submitted_by, obj)
+                                    remove_perm(f"change_{model_name}", approval.submitted_by_group, obj)
+                                    remove_perm(f"add_{model_name}", approval.submitted_by_group, obj)
+                                    remove_perm(f"delete_{model_name}", approval.submitted_by_group, obj)
                                 case "VIEW":
-                                    if getattr(approval,"submitted_by",None) is not None:
-                                        remove_perm(f"view_{model_name}", approval.submitted_by, obj)
-                                    if approval.submitted_by_group.values_list(flat=True):
-                                        for g in groups:
-                                            remove_perm(f"view_{model_name}", g, obj)
+                                    remove_perm(f"view_{model_name}", approval.submitted_by, obj)
+                                    remove_perm(f"view_{model_name}", approval.submitted_by_group, obj)
             obj.save()
                         
 

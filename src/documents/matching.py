@@ -9,7 +9,7 @@ from documents.data_models import DocumentSource
 from documents.models import Correspondent
 from documents.models import Warehouse
 from documents.models import Folder
-from documents.models import Approval
+from documents.models import Approval, Correspondent
 from documents.models import Document
 from documents.models import DocumentType
 from documents.models import MatchingModel
@@ -569,5 +569,13 @@ def existing_approval_matches_workflow(
         )
         trigger_matched = False
 
+    if(
+        trigger.filter_has_access_type is not None
+        and approval.access_type != trigger.filter_has_access_type
+    ):
+        reason = (
+            f"Approval status {approval.access_type} does not match {trigger.filter_has_access_type}",
+        )
+        trigger_matched = False
 
     return (trigger_matched, reason)

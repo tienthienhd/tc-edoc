@@ -134,7 +134,7 @@ from documents.permissions import PaperlessObjectPermissions
 from documents.permissions import get_objects_for_user_owner_aware
 from documents.permissions import has_perms_owner_aware
 from documents.permissions import set_permissions_for_object
-from documents.serialisers import AcknowledgeTasksViewSerializer, ApprovalSerializer, ApprovalViewSerializer
+from documents.serialisers import AcknowledgeTasksViewSerializer, ApprovalSerializer
 from documents.serialisers import BulkDownloadSerializer
 from documents.serialisers import BulkEditObjectsSerializer
 from documents.serialisers import BulkEditSerializer
@@ -1567,7 +1567,62 @@ class TasksViewSet(ReadOnlyModelViewSet):
         return queryset
 
 class ApprovalViewSet(ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = ()
+
+    serializer_class = ApprovalSerializer
+    pagination_class = StandardPagination
+
+    def get_queryset(self):
+        queryset = (
+            Approval.objects.filter(
+            )
+            .order_by("created")
+            .reverse()
+        )
+        # task_id = self.request.query_params.get("")
+        # if task_id is not None:
+        #     queryset = PaperlessTask.objects.filter(task_id=task_id)
+        return queryset
+
+    model = Approval
+
+    queryset = Approval.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = ApprovalSerializer(data=request.data)
+        existing_approval = False
+        if serializer.is_valid(raise_exception=True):
+          
+            existing_approval = Approval.objects.filter(
+                object_pk=serializer.validated_data.get("object_pk"),
+                access_type=serializer.validated_data.get("access_type"),
+                ctype=serializer.validated_data.get("ctype"),
+                submitted_by=serializer.validated_data.get("submitted_by")
+            )
+
+            submitted_by_groups = serializer.validated_data.get("submitted_by_group", None)
+            if submitted_by_groups:
+                existing_approval = existing_approval.filter(
+                    Q(submitted_by_group__in=submitted_by_groups)
+                ).exists()
+
+        if existing_approval:
+            return Response({'status':400,
+                            'message':'Objects exist'},status=status.HTTP_400_BAD_REQUEST)
+
+        response = super().create(request, *args, **kwargs)
+        
+        return response
+       
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        
+        approval_updated.send(
+            sender=self.__class__,
+            approval=self.get_object(),
+        )
+
+        return response
 
     serializer_class = ApprovalSerializer
     # pagination_class = StandardPagination
