@@ -21,7 +21,7 @@ export interface PaperlessApproval extends ObjectWithId {
 
   status: PaperlessApprovalStatus
 
-  submitted_by: number
+  submitted_by: string
 
   object_pk: string
 
@@ -33,7 +33,5 @@ export interface PaperlessApproval extends ObjectWithId {
 
   ctype?: string
 
-  submitted_by_group?: number[]
-
-  name?: string
+  submitted_by_group?: number
 }
