@@ -6,6 +6,7 @@ import { Observable } from 'rxjs'
 export enum BulkEditObjectOperation {
   SetPermissions = 'set_permissions',
   Delete = 'delete',
+  Update = 'update',
   Share = "Share",
 }
 
@@ -93,6 +94,7 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
 
   bulk_edit_objects(
     objects: Array<number>,
+    parent_folder: number,
     operation: BulkEditObjectOperation,
     permissions: { owner: number; set_permissions: PermissionsObject } = null,
     merge: boolean = null
@@ -101,6 +103,7 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
       objects,
       object_type: this.resourceName,
       operation,
+      parent_folder,
     }
     if (operation === BulkEditObjectOperation.SetPermissions) {
       params['owner'] = permissions?.owner

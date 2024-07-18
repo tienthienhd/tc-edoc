@@ -58,6 +58,7 @@ export const commonAbstractNameFilterPaperlessServiceTests = (
       subscription = service
         .bulk_edit_objects(
           [1, 2],
+          3,
           BulkEditObjectOperation.SetPermissions,
           {
             owner,
@@ -83,7 +84,7 @@ export const commonAbstractNameFilterPaperlessServiceTests = (
 
     test('should call appropriate api endpoint for bulk delete objects', () => {
       subscription = service
-        .bulk_edit_objects([1, 2], BulkEditObjectOperation.Delete)
+        .bulk_edit_objects([1, 2],3, BulkEditObjectOperation.Delete)
         .subscribe()
       const req = httpTestingController.expectOne(
         `${environment.apiBaseUrl}bulk_edit_objects/`

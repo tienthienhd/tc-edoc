@@ -298,6 +298,7 @@ export abstract class WarehouseComponent<T extends ObjectWithId>
         this.service
           .bulk_edit_objects(
             Array.from(this.selectedObjects),
+            null,
             BulkEditObjectOperation.SetPermissions,
             permissions,
             merge
@@ -336,6 +337,7 @@ export abstract class WarehouseComponent<T extends ObjectWithId>
       this.service
         .bulk_edit_objects(
           Array.from(this.selectedObjects),
+          null,
           BulkEditObjectOperation.Delete
         )
         .subscribe({
