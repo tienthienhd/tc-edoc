@@ -345,7 +345,7 @@ import { CustomFieldEditDialogComponent } from './components/common/edit-dialog/
 import { CustomShelfComponent } from './components/manage/custom-shelf/custom-shelf.component'
 import { CustomFieldsComponent } from './components/manage/custom-fields/custom-fields.component'
 import { CustomShelfEditDialogComponent } from './components/common/edit-dialog/custom-shelf-edit-dialog/custom-shelf-edit-dialog.component'
-import { FolderComponent } from './components/folder/folder.component'
+
 
 
 registerLocaleData(localeAf)
@@ -396,7 +396,6 @@ function initializeApp(settings: SettingsService) {
     BoxEditDialogComponent,
     AppComponent,
     DocumentListComponent,
-    FolderComponent,
     DocumentDetailComponent,
     DashboardComponent,
     TagListComponent,
