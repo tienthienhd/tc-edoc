@@ -10,6 +10,7 @@ import { Results } from 'src/app/data/results';
   providedIn: 'root',
 })
 export class WarehouseService extends AbstractNameFilterService<Warehouse> {
+  [x: string]: any;
   constructor(http: HttpClient) {
     super(http, 'warehouses')
   }

@@ -26,7 +26,9 @@ export class CustomService {
     getDocuments(id: any, page?: number,
         pageSize?: number,
         sortField?: string,
-        sortReverse?: boolean): Observable<any> {
+        sortReverse?: boolean,
+        nameFilter?: string,
+        fullPerms?: boolean): Observable<any> {
         let httpParams = new HttpParams()
         if (page) {
             httpParams = httpParams.set('page', page.toString())

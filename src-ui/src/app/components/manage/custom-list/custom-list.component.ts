@@ -98,6 +98,7 @@ export abstract class CustomListComponent<T extends ObjectWithId>
 
   ngOnInit(): void {
     ///this.reloadData()
+    this.getDocuments(this.id)
 
     this.nameFilterDebounce = new Subject<string>()
 
@@ -111,6 +112,7 @@ export abstract class CustomListComponent<T extends ObjectWithId>
         this._nameFilter = title
         this.page = 1
         //this.reloadData()
+        this.getDocuments(this.id)
 
       })
     //
@@ -123,11 +125,14 @@ export abstract class CustomListComponent<T extends ObjectWithId>
 
 
   getDocuments(id: any) {
+    this.isLoading = true
     this.customService.getDocuments(id,
       this.page,
       null,
       this.sortField,
       this.sortReverse,
+      this._nameFilter,
+      true
     ).subscribe(
       data => {
         if (data.results && data.results.length > 0) {
@@ -170,6 +175,7 @@ export abstract class CustomListComponent<T extends ObjectWithId>
   onSort(event: SortEvent) {
     this.sortField = event.column
     this.sortReverse = event.reverse
+    this.getDocuments(this.id)
   }
 
   reloadData() {

@@ -34,6 +34,12 @@ import { BoxFieldsComponent } from './components/manage/box-fields/box-fields.co
 //import { CustomFieldsComponent } from './components/manage/custom-fields/custom-fields.component'
 import { CustomShelfComponent } from './components/manage/custom-shelf/custom-shelf.component'
 import { CustomFieldsComponent } from './components/manage/custom-fields/custom-fields.component'
+import { FolderComponent } from './components/folder/folder.component'
+
+
+
+
+
 
 
 
@@ -61,6 +67,18 @@ export const routes: Routes = [
           requiredPermission: {
             action: PermissionAction.View,
             type: PermissionType.Document,
+          },
+        },
+      },
+      {
+        path: 'folders',
+        component: FolderComponent,
+        canDeactivate: [DirtySavedViewGuard],
+        canActivate: [PermissionsGuard],
+        data: {
+          requiredPermission: {
+            action: PermissionAction.View,
+            type: PermissionType.Folder,
           },
         },
       },

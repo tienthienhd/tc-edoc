@@ -3779,6 +3779,14 @@
         </context-group>
       <target state="translated">Sửa kho</target>
       </trans-unit>
+      <trans-unit id="3220071889683121351" datatype="html">
+        <source>parent_warehouse</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/edit-dialog/custom-field-edit-dialog/custom-field-edit-dialog.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      <target state="translated">Kho cha</target>
+      </trans-unit>
       <trans-unit id="6324378446258388918" datatype="html">
         <source>customFields</source>
         <context-group purpose="location">

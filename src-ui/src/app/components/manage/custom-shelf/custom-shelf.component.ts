@@ -8,7 +8,7 @@ import { DocumentListViewService } from 'src/app/services/document-list-view.ser
 import { PermissionType, PermissionsService } from 'src/app/services/permissions.service';
 import { ActivatedRoute } from '@angular/router';
 import { CustomFieldEditDialogComponent } from '../../common/edit-dialog/custom-field-edit-dialog/custom-field-edit-dialog.component';
-import { FILTER_HAS_CUSTOM_SHELF_ANY } from 'src/app/data/filter-rule-type';
+import { FILTER_HAS_CUSTOM_SHELF_ANY, FILTER_HAS_WAREHOUSE_ANY } from 'src/app/data/filter-rule-type';
 import { CustomShelfEditDialogComponent } from '../../common/edit-dialog/custom-shelf-edit-dialog/custom-shelf-edit-dialog.component';
 import { CustomService } from 'src/app/services/common-service/service-shelf';
 
@@ -35,7 +35,7 @@ export class CustomShelfComponent extends CustomListComponent<Shelf> {
       toastService,
       documentListViewService,
       permissionsService,
-      FILTER_HAS_CUSTOM_SHELF_ANY,
+      FILTER_HAS_WAREHOUSE_ANY,
       $localize`shelf`,
       $localize`shelf`,
       PermissionType.Shelf,

@@ -44,8 +44,7 @@ import { SaveViewConfigDialogComponent } from './save-view-config-dialog/save-vi
 })
 export class DocumentListComponent
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   constructor(
     public list: DocumentListViewService,
     public savedViewService: SavedViewService,
@@ -292,9 +291,11 @@ export class DocumentListComponent
   }
 
   clickWarehouse(warehouseID: number) {
-    this.list.selectNone()
-    this.filterEditor.toggleWarehouse(warehouseID)
+    console.log('Warehouse ID:', warehouseID); // Kiểm tra giá trị warehouseID
+    this.list.selectNone();
+    this.filterEditor.toggleWarehouse(warehouseID);
   }
+
 
   clickMoreLike(documentID: number) {
     this.list.quickFilter([

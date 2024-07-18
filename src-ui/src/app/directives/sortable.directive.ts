@@ -16,7 +16,7 @@ export interface SortEvent {
   selector: 'th[pngxSortable]',
 })
 export class SortableDirective {
-  constructor() {}
+  constructor() { }
 
   @Input()
   pngxSortable: string = ''

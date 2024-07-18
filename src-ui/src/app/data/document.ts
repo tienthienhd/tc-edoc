@@ -34,6 +34,10 @@ export interface Document extends ObjectWithPermissions {
 
   warehouse?: number
 
+  parent_warehouse?: number
+
+  shelf?: number
+
   title?: string
 
   content?: string

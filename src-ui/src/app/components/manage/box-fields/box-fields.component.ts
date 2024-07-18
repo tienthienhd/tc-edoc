@@ -7,7 +7,7 @@ import { PermissionType, PermissionsService } from 'src/app/services/permissions
 import { Box } from 'src/app/data/box';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BoxEditDialogComponent } from '../../common/edit-dialog/box-edit-dialog/box-edit-dialog.component';
-import { FILTER_HAS_BOX_ANY } from 'src/app/data/filter-rule-type';
+import { FILTER_HAS_BOX_ANY, FILTER_HAS_WAREHOUSE_ANY } from 'src/app/data/filter-rule-type';
 import { BoxsServices } from 'src/app/services/common-service/service-box';
 import { ActivatedRoute } from '@angular/router';
 
@@ -33,7 +33,7 @@ export class BoxFieldsComponent extends BoxListComponent<Box> {
       toastService,
       documentListViewService,
       permissionsService,
-      FILTER_HAS_BOX_ANY,
+      FILTER_HAS_WAREHOUSE_ANY,
       $localize`boxcase`,
       $localize`boxcases`,
       PermissionType.Box,

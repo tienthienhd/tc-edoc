@@ -111,12 +111,23 @@
               (createNew)="createDocumentType($event)" [suggestions]="suggestions?.document_types" *pngxIfPermissions="{ action: PermissionAction.View, type: PermissionType.DocumentType }"></pngx-input-select>
               <pngx-input-select [items]="storagePaths" i18n-title title="Storage path" formControlName="storage_path" [allowNull]="true" [showFilter]="true" [horizontal]="true" (filterDocuments)="filterDocuments($event)"
               (createNew)="createStoragePath($event)" [suggestions]="suggestions?.storage_paths" i18n-placeholder placeholder="Default" *pngxIfPermissions="{ action: PermissionAction.View, type: PermissionType.StoragePath }"></pngx-input-select>
-              <pngx-input-select [items]="warehouses" i18n-title title="Warehouse" formControlName="warehouse" [allowNull]="true" [showFilter]="true" [horizontal]="true" (filterDocuments)="filterDocuments($event)"
+              
+              <pngx-input-select [items]="warehouses" (ngModelChange)="onWarehouseChange($event)"  [ngModel]="documentForm.get('warehouse')?.value" i18n-title title="Warehouse" formControlName="warehouse" [allowNull]="true" [showFilter]="true" [horizontal]="true" (filterDocuments)="filterDocuments($event)"
               (createNew)="createWarehouse($event)" [suggestions]="suggestions?.warehouses" i18n-placeholder placeholder="Default" *pngxIfPermissions="{ action: PermissionAction.View, type: PermissionType.Warehouse }"></pngx-input-select>
+              
+                                               
+              <pngx-input-select [items]="shelfs" (ngModelChange)="onShelfChange($event)"  [ngModel]="documentForm.get('parent_warehouse')?.value" i18n-title title="Shelf" formControlName="parent_warehouse" [allowNull]="true" [showFilter]="true" [horizontal]="true" (filterDocuments)="filterDocuments($event)"
+              (createNew)="createShelf($event)" [suggestions]="suggestions?.shelfs" i18n-placeholder placeholder="Default" *pngxIfPermissions="{ action: PermissionAction.View, type: PermissionType.Shelf}"></pngx-input-select>
+              
+              
+              <pngx-input-select [items]="boxs" (ngModelChange)="onBoxChange($event)"  [ngModel]="documentForm.get('parent_boxs')?.value"  i18n-title title="Box" formControlName="parent_boxs" [allowNull]="true" [showFilter]="true" [horizontal]="true" (filterDocuments)="filterDocuments($event)"
+              (createNew)="createBox($event)" [suggestions]="suggestions?.boxs" i18n-placeholder placeholder="Default" *pngxIfPermissions="{ action: PermissionAction.View, type: PermissionType.Box}"></pngx-input-select>
+
               <pngx-input-tags formControlName="tags" [suggestions]="suggestions?.tags" [showFilter]="true" [horizontal]="true" (filterDocuments)="filterDocuments($event)" *pngxIfPermissions="{ action: PermissionAction.View, type: PermissionType.Tag }"></pngx-input-tags>
               @for (fieldInstance of document?.custom_fields; track fieldInstance; let i = $index) {
                 <div [formGroup]="customFieldFormFields.controls[i]">
                   @switch (getCustomFieldFromInstance(fieldInstance)?.data_type) {
+                    
                     @case (CustomFieldDataType.String) {
                       <pngx-input-text formControlName="value"
                       [title]="getCustomFieldFromInstance(fieldInstance)?.name"

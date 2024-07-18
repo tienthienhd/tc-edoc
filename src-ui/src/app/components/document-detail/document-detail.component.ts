@@ -37,9 +37,11 @@ import {
 } from 'rxjs/operators'
 import { DocumentSuggestions } from 'src/app/data/document-suggestions'
 import {
+  FILTER_BOX,
   FILTER_CORRESPONDENT,
   FILTER_CREATED_AFTER,
   FILTER_CREATED_BEFORE,
+  FILTER_CUSTOM_SHELF,
   FILTER_DOCUMENT_TYPE,
   FILTER_FULLTEXT_MORELIKE,
   FILTER_HAS_TAGS_ALL,
@@ -73,6 +75,13 @@ import { PDFDocumentProxy } from '../common/pdf-viewer/typings'
 import { SplitConfirmDialogComponent } from '../common/confirm-dialog/split-confirm-dialog/split-confirm-dialog.component'
 import { RotateConfirmDialogComponent } from '../common/confirm-dialog/rotate-confirm-dialog/rotate-confirm-dialog.component'
 import { WarehouseService } from 'src/app/services/rest/warehouse.service'
+import { CustomService } from 'src/app/services/common-service/service-shelf'
+import { Shelf } from 'src/app/data/custom-shelf'
+import { EditCustomShelfdMode } from '../common/edit-dialog/edit-customshelf/edit-customshelf.component'
+import { CustomShelfEditDialogComponent } from '../common/edit-dialog/custom-shelf-edit-dialog/custom-shelf-edit-dialog.component'
+import { EditCustomBoxdMode } from '../common/edit-dialog/edit-custombox/edit-custombox.component'
+import { BoxEditDialogComponent } from '../common/edit-dialog/box-edit-dialog/box-edit-dialog.component'
+import { Box } from 'src/app/data/box'
 
 
 enum DocumentDetailNavIDs {
@@ -112,6 +121,9 @@ enum ZoomSetting {
 export class DocumentDetailComponent
   extends ComponentWithPermissions
   implements OnInit, OnDestroy, DirtyComponent {
+  selectedWarehouse: any;
+  selectedWarehouseBins: string[];
+  [x: string]: any
   @ViewChild('inputTitle')
   titleInput: TextComponent
 
@@ -149,10 +161,13 @@ export class DocumentDetailComponent
     document_type: new FormControl(),
     storage_path: new FormControl(),
     warehouse: new FormControl(),
+    shelf: new FormControl(),
+    parent_warehouse: new FormControl(),
     archive_serial_number: new FormControl(),
     tags: new FormControl([]),
     permissions_form: new FormControl(null),
     custom_fields: new FormArray([]),
+    parent_boxs: new FormControl(),
   })
 
   previewCurrentPage: number = 1
@@ -174,6 +189,7 @@ export class DocumentDetailComponent
   public readonly CustomFieldDataType = CustomFieldDataType
 
   public readonly ContentRenderType = ContentRenderType
+
 
   @ViewChild('nav') nav: NgbNav
   @ViewChild('pdfPreview') set pdfPreview(element) {
@@ -208,6 +224,7 @@ export class DocumentDetailComponent
     private permissionsService: PermissionsService,
     private userService: UserService,
     private customFieldsService: CustomFieldsService,
+    private customService: CustomService,
     private http: HttpClient
   ) {
     super()
@@ -278,7 +295,8 @@ export class DocumentDetailComponent
       )
     ) {
       this.warehouseService
-        .listAll()
+        .listFiltered()
+        //.listAll()
         .pipe(first(), takeUntil(this.unsubscribeNotifier))
         .subscribe((result) => (this.warehouses = result.results))
     }
@@ -427,6 +445,8 @@ export class DocumentDetailComponent
             document_type: doc.document_type,
             storage_path: doc.storage_path,
             warehouse: doc.warehouse,
+            parent_warehouse: doc.parent_warehouse,
+            parent_boxs: doc.parent_boxs,
             archive_serial_number: doc.archive_serial_number,
             tags: [...doc.tags],
             permissions_form: {
@@ -474,6 +494,52 @@ export class DocumentDetailComponent
       }
     })
   }
+
+  //shelf
+  loadShelvesByWarehouseId(warehouseId: any): void {
+    this.customService.getShelfId(warehouseId).subscribe(
+      data => {
+        console.log("Shelves data:", data);
+        this.shelfs = data.results.filter(shelf => shelf.type === 'Shelf');
+        if (this.shelfs.length > 0) {
+          this.documentForm.get('parent_warehouse')?.setValue(this.shelfs[0].id);
+        }
+      },
+      error => {
+        console.error('Error loading shelves:', error);
+        this.shelfs = [];
+      }
+    );
+  }
+
+  //Box
+  loadBoxesByShelfId(shelfId: any): void {
+    this.customService.getShelfId(shelfId).subscribe(
+      data => {
+        console.log("Boxes data:", data);
+        this.boxs = data.results.filter(box => box.parent_warehouse === shelfId && box.type === 'Boxcase');
+        if (this.boxs.length > 0) {
+          this.documentForm.get('parent_boxs')?.setValue(this.boxs[0].id);
+        }
+      },
+      error => {
+        console.error('Error loading boxes:', error);
+        this.boxs = [];
+      }
+    );
+  }
+
+  onWarehouseChange(warehouseId: number): void {
+    console.log("Selected warehouse ID:", warehouseId);
+    this.loadShelvesByWarehouseId(warehouseId);
+  }
+
+  onShelfChange(shelfId: number): void {
+    console.log("Selected shelf ID:", shelfId);
+    this.loadBoxesByShelfId(shelfId);
+  }
+
+
 
   ngOnDestroy(): void {
     this.unsubscribeNotifier.next(this)
@@ -641,6 +707,52 @@ export class DocumentDetailComponent
         this.documentForm.get('warehouse').setValue(newWarehouse.id)
       })
   }
+  createShelf(newName: string) {
+    const modal = this.modalService.open(CustomShelfEditDialogComponent, {
+      backdrop: 'static',
+    });
+    modal.componentInstance.object = { parent_warehouse: this.documentForm.get('warehouse').value };
+    modal.componentInstance.dialogMode = EditCustomShelfdMode.CREATE;
+    if (newName) {
+      modal.componentInstance.object.name = newName;
+    }
+    modal.componentInstance.succeeded
+      .pipe(
+        switchMap((newShelf) => {
+          return this.customService.getShelvesByWarehouseId(this.documentForm.get('warehouse').value)
+            .pipe(map((shelves) => ({ newShelf, shelves })));
+        })
+      )
+      .pipe(takeUntil(this.unsubscribeNotifier))
+      .subscribe(({ newShelf, shelves }) => {
+        this.shelfs = shelves.results.filter(shelf => shelf.type === 'Shelf');
+        this.documentForm.get('parent_warehouse').setValue(newShelf.id);
+      });
+  }
+
+  createBox(newName: string) {
+    var modal = this.modalService.open(BoxEditDialogComponent, {
+      backdrop: 'static',
+    })
+    modal.componentInstance.object = { parent_warehouse: this.documentForm.get('parent_warehouse').value }
+    modal.componentInstance.dialogMode = EditCustomBoxdMode.CREATE
+    if (newName) modal.componentInstance.object.name = newName
+    modal.componentInstance.succeeded
+      .pipe(
+        switchMap((newBox) => {
+          return this.boxService
+            .listAll()
+            .pipe(map((boxes) => ({ newBox, boxes })))
+        })
+      )
+      .pipe(takeUntil(this.unsubscribeNotifier))
+      .subscribe(({ newBox, boxes }) => {
+        this.boxs = boxes.results
+        this.documentForm.get('parent_boxes').setValue(newBox.id)
+      })
+  }
+
+
 
   discard() {
     this.documentsService
@@ -977,6 +1089,12 @@ export class DocumentDetailComponent
     )
   }
 
+  // filterWarehouse(object: ObjectWithId) {
+  //   this.documentListViewService.quickFilter([
+  //     { rule_type: this.filterRuleType, value: object.id.toString() },
+  //   ])
+  // }
+
   filterDocuments(items: ObjectWithId[] | NgbDateStruct[]) {
     const filterRules: FilterRule[] = items.flatMap((i) => {
       if (i.hasOwnProperty('year')) {
@@ -1008,13 +1126,28 @@ export class DocumentDetailComponent
           rule_type: FILTER_STORAGE_PATH,
           value: (i as StoragePath).id.toString(),
         }
-      } else if (i.hasOwnProperty('path')) {
+      } else if (i.hasOwnProperty('warehouse')) {
         // Warehouse
         return {
           rule_type: FILTER_WAREHOUSE,
           value: (i as Warehouse).id.toString(),
         }
-      } else if (i.hasOwnProperty('is_inbox_tag')) {
+      }
+      else if (i.hasOwnProperty('shelf')) {
+        // Shelf
+        return {
+          rule_type: FILTER_CUSTOM_SHELF,
+          value: (i as Shelf).id.toString(),
+        }
+      }
+      else if (i.hasOwnProperty('box')) {
+        // box
+        return {
+          rule_type: FILTER_BOX,
+          value: (i as Box).id.toString(),
+        }
+      }
+      else if (i.hasOwnProperty('is_inbox_tag')) {
         // Tag
         return {
           rule_type: FILTER_HAS_TAGS_ALL,
