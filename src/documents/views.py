@@ -2329,7 +2329,7 @@ class FolderViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
     model = Folder
 
     queryset = Folder.objects.select_related("owner").order_by(
-        Lower("name"),
+        "-type",Lower("name"),
     )
 
     serializer_class = FolderSerializer
