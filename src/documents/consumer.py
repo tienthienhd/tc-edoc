@@ -515,7 +515,6 @@ class Consumer(LoggingMixin):
         """
         Return the document object if it was successfully created.
         """
-        print(f'{override_filename}in try_consume_file file exsit: {os.path.isfile(path)}')
         self.original_path = Path(path).resolve()
         self.filename = override_filename or self.original_path.name
         self.override_title = override_title
@@ -698,9 +697,8 @@ class Consumer(LoggingMixin):
                                     document=document,
                                 )
                 dict_data = {}
-                
                 if data_ocr_fields is not None:
-                    if len(data_ocr_fields)>=1:    
+                    if isinstance(data_ocr_fields,list):
                         for r in data_ocr_fields[0].get("fields"):
                             dict_data[r.get("name")] = r.get("values")[0].get("value") if r.get("values") else None
                         map_fields = {
@@ -717,7 +715,7 @@ class Consumer(LoggingMixin):
                  # create file from document
                 # self.log.info('gia tri documentt', document.folder)
                 
-                new_file = Folder.objects.create(name=document.title, parent_folder = document.folder,type = Folder.FILE)
+                new_file = Folder.objects.create(name=document.title, parent_folder = document.folder,type = Folder.FILE, owner = document.owner, created = document.created, updated = document.modified, checksum = document.checksum)
                 if document.folder :
                     new_file.path = f"{document.folder.path}/{new_file.id}"
                 else:
