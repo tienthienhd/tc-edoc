@@ -702,12 +702,15 @@ class Consumer(LoggingMixin):
                         for r in data_ocr_fields[0].get("fields"):
                             dict_data[r.get("name")] = r.get("values")[0].get("value") if r.get("values") else None
                         map_fields = {
-                            "Tiêu đề": dict_data.get("title"),
-                            "Số văn bản": dict_data.get("Số hiệu"),
+                            "Tiêu đề": dict_data.get("Tiêu đề"),
+                            "Số văn bản": dict_data.get("Số hiệu văn bản"),
                             "Kính gửi": dict_data.get("Kính gửi"),
-                            # "Ngày phát hành": dict_data.get("Thời gian tạo"),
                             "Người ký văn bản": dict_data.get("Chữ ký"),
-                            "Ngày phát hành": dict_data.get("datetime")
+                            "Ngày phát hành": dict_data.get("Ngày phát hành"),
+                            "Đơn vị phát hành": dict_data.get("Đơn vị phát hành"),
+                            "Chức danh": dict_data.get("Chức danh"),
+                            "Nơi gửi": dict_data.get("Nơi gửi"),
+                            "Thời gian tạo": dict_data.get("Thời gian tạo"),
                         }
                         for f in fields:
                             f.value_text = map_fields.get(f.field.name,None)
