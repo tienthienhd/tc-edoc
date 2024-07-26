@@ -13,7 +13,8 @@ from typing import Optional
 
 from django.conf import settings
 import requests
-from PyPDF2 import PdfReader, PdfWriter
+from PyPDF2 import PdfReader
+from PyPDF2.errors import  PdfReadError
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from PIL import Image
@@ -185,7 +186,7 @@ class RasterisedDocumentParser(DocumentParser):
             with open(path_file, 'rb') as file:
                 pdf_reader = PdfReader(file)
                 page_count = len(pdf_reader.pages)
-        except (OSError, IOError, ValueError):
+        except (OSError, IOError, ValueError, PdfReadError):
             pass
         k = ApplicationConfiguration.objects.filter().first()
         access_token = k.ocr_key
