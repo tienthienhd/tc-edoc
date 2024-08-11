@@ -1083,6 +1083,18 @@ class BulkEditSerializer(
         else:
             raise serializers.ValidationError("folder not specified")
     
+    def _validate_parameters_dossier(self, parameters):
+        if "dossier" in parameters:
+            dossier_id = parameters["dossier"]
+            if dossier_id is None:
+                return
+            try:
+                Dossier.objects.get(id=dossier_id)
+            except Dossier.DoesNotExist:
+                raise serializers.ValidationError("Dossier does not exist")
+        else:
+            raise serializers.ValidationError("dossier not specified")
+    
     def _validate_storage_path(self, parameters):
         if "storage_path" in parameters:
             storage_path_id = parameters["storage_path"]
@@ -1174,6 +1186,8 @@ class BulkEditSerializer(
             self._validate_parameters_warehouse(parameters)
         elif method == bulk_edit.set_folder:
             self._validate_parameters_folder(parameters)
+        elif method == bulk_edit.set_dossier:
+            self._validate_parameters_dossier(parameters)
         elif method == bulk_edit.set_permissions:
             self._validate_parameters_set_permissions(parameters)
         elif method == bulk_edit.rotate:
@@ -2176,6 +2190,7 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
     def validate(self, data):
         return data
 
+        return documents.count()
     class Meta:
         model = Dossier
         fields = [
