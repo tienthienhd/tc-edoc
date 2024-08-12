@@ -2147,6 +2147,9 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
         allow_null=True,
         required=False,
     )
+
+    document_count = serializers.SerializerMethodField()
+
     document_matching = serializers.SerializerMethodField()
     def get_document_matching(self, obj):
         if obj.type == 'FILE':
@@ -2160,6 +2163,18 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
         if obj.dossier_form is None:
             return None
         return obj.dossier_form.name
+    
+    def get_document_count(self, obj):
+        print("count", obj.path)
+        if obj.path is None:
+            return 0
+        dossiers = Dossier.objects.filter(path__startswith=obj.path)
+        documents = Document.objects.filter(dossier__in=dossiers)
+
+        return documents.count()
+    
+    def validate(self, data):
+        return data
 
     class Meta:
         model = Dossier

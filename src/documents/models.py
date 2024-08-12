@@ -326,6 +326,7 @@ class Dossier(MatchingModel):
     class Meta(MatchingModel.Meta):
         verbose_name = _("dossier")
         verbose_name_plural = _("dossiers")
+        constraints = []
     def __str__(self): 
         return self.name
 
