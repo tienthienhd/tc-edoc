@@ -156,7 +156,7 @@ export class DossierCustomFieldSelectComponent
   }
   
   writeValue(newInheritedCustomFields): void {
-    console.log("call",newInheritedCustomFields,)
+    // console.log("call",newInheritedCustomFields,)
     this.dictCustomFields = {};
     this.customFields.clear();
     newInheritedCustomFields.forEach((obj, index, array) => {
@@ -282,7 +282,7 @@ export class DossierCustomFieldSelectComponent
   modelChangeDossier(event,i) {
     if (event!=null){
       const d = this.dossier.find(obj => obj.id === event);
-      console.log(this.dossier)
+      // console.log(this.dossier)
       this.dossierReference[i]=d?.custom_fields
     }
   }

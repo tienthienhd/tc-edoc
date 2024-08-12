@@ -805,7 +805,8 @@ class Consumer(LoggingMixin):
                 new_dossier_document = Dossier.objects.create(name=document.title,
                                                                 parent_dossier=document.dossier,
                                                                 type="FILE",
-                                                                dossier_form=dossier_form)
+                                                                dossier_form=dossier_form,
+                                                                owner = document.owner)
                 if document.dossier :
                     new_dossier_document.path = f"{document.dossier.path}/{new_file.id}"
                 else:

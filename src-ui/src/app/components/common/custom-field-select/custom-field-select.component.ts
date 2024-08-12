@@ -115,7 +115,7 @@ export class CustomFieldSelectComponent
     this.dataDossier()
 
     this.customFields.valueChanges.subscribe(data => {
-      console.log('gia tri refe',this.inputDossier)
+      // console.log('gia tri refe',this.inputDossier)
       const filteredData = data.filter(item => this.dictCustomFieldsEnable[item.field]);
       
         this.dataChange.emit(filteredData);

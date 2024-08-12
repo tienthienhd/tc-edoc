@@ -110,7 +110,7 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
 
   ngOnInit(): void {
     if (localStorage.getItem('dossier-list:displayMode') != null) {
-      console.log( localStorage.getItem('dossier-list:displayMode'))
+      // console.log( localStorage.getItem('dossier-list:displayMode'))
       this.displayMode = localStorage.getItem('dossier-list:displayMode')
     }
     this.reloadData()

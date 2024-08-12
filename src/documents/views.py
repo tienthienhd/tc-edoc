@@ -2593,6 +2593,8 @@ class FolderViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
         folder = Folder.objects.get(id=pk)
         folders = Folder.objects.filter(path__startswith=folder.path)
         documents = Document.objects.filter(folder__in=folders)
+        dossiers = Dossier.objects.filter(id__in=documents.select_related('dossier').all().values_list("dossier", flat=True))
+        dossiers.delete()
         documents.delete()
         folders.delete()
         

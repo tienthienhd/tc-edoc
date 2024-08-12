@@ -92,7 +92,7 @@ export class DossierFormCustomFieldSelectComponent
       const filteredData = data.filter(item => this.dictCustomFieldsEnable[item.field]);
         this.dataChange.emit(filteredData);
     });
-    console.log("gia trii inputDossierForm",this.inputDossierForm);
+    // console.log("gia trii inputDossierForm",this.inputDossierForm);
     
   }
   
