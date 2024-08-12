@@ -542,7 +542,6 @@ class CustomFieldInstanceSerializer(serializers.ModelSerializer):
         return obj.match_value
     def get_dossier_document(self,obj: CustomFieldInstance):
         if obj.reference is not None:
-            print("dossier",obj.reference.dossier_form)
             if obj.reference.dossier_form is not None:
                 return obj.reference.dossier_form.id
             return None
@@ -2275,8 +2274,6 @@ class DossierFormSerializer(MatchingModelSerializer, OwnedObjectSerializer):
             'match',
             'matching_algorithm',
             'is_insensitive',
-            'username',
-            'password',
             'created',
             'owner',
             'type',
