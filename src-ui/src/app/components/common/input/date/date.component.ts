@@ -70,7 +70,7 @@ export class DateComponent
   ngOnInit(): void {
     super.ngOnInit()
     this.placeholder = this.settings.getLocalizedDateInputFormat()
-    console.log(this.placeholder)
+    // console.log(this.placeholder)
   }
 
   placeholder: string

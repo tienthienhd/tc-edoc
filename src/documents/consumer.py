@@ -814,6 +814,8 @@ class Consumer(LoggingMixin):
                 new_dossier_document.save()
                 self.fill_custom_field(document, data_ocr_fields, new_dossier_document)
                 document.dossier=new_dossier_document
+
+                document.created=document.added
                 # After everything is in the database, copy the files into
                 # place. If this fails, we'll also rollback the transaction.
                 with FileLock(settings.MEDIA_LOCK):
