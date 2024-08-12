@@ -677,6 +677,11 @@ class DocumentSerializer(
     
     created_date = serializers.DateField(required=False)
 
+    def to_representation(self, instance):
+        value = instance.created
+        return value.astimezone(timezone.get_default_timezone()).isoformat()
+
+
     custom_fields = CustomFieldInstanceSerializer(
         many=True,
         allow_null=False,
