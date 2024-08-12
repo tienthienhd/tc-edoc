@@ -2179,10 +2179,16 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
         return obj.dossier_form.name
     
     def get_document_count(self, obj):
+        if obj.path is None:
+            return 0
         dossiers = Dossier.objects.filter(path__startswith=obj.path)
         documents = Document.objects.filter(dossier__in=dossiers)
 
         return documents.count()
+    
+    def validate(self, data):
+        return data
+
     class Meta:
         model = Dossier
         fields = [
