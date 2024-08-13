@@ -562,8 +562,8 @@ class CustomFieldInstanceSerializer(serializers.ModelSerializer):
                         regex=r"^[A-Z]{3}-?\d+(\.\d{2,2})$",
                         message="Must be a two-decimal number with optional currency code e.g. GBP123.45",
                     )(data["value"])
-            elif field.data_type == CustomField.FieldDataType.STRING:
-                MaxLengthValidator(limit_value=128)(data["value"])
+            # elif field.data_type == CustomField.FieldDataType.STRING:
+            #     MaxLengthValidator(limit_value=128)(data["value"])
 
         return data
 
