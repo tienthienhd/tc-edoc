@@ -722,6 +722,7 @@ class Consumer(LoggingMixin):
                     new_file.path = f"{new_file.id}"
                 new_file.save()
                 document.folder=new_file
+                document.created=document.added
                 # After everything is in the database, copy the files into
                 # place. If this fails, we'll also rollback the transaction.
                 with FileLock(settings.MEDIA_LOCK):

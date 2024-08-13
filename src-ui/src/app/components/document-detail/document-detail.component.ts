@@ -289,11 +289,11 @@ export class DocumentDetailComponent
       //   .listAll()
       //   .pipe(first(), takeUntil(this.unsubscribeNotifier))
       //   .subscribe((result) => (this.warehouses = result.results))
-      console.log("gia tri form", this.documentForm.value)
+      
       this.warehouseService
         .listAll(null, null, { type__iexact: 'Warehouse' })
         .pipe(first(), takeUntil(this.unsubscribeNotifier))
-        .subscribe((result) => {this.warehouses = result.results;
+        .subscribe((result) => {this.warehouses = result.results;console.log("gia tri form", this.warehouses)
         })
       // this.warehouseService
       //   .listGia(1,

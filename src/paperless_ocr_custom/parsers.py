@@ -227,7 +227,7 @@ class RasterisedDocumentParser(DocumentParser):
         ]
         })
         headers = {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzYzNjUxLCJpYXQiOjE3MTg3NzE2NTEsImp0aSI6ImI3OGZmMDNjYmRhZTQ0YzdhNWUyNTIxYmU2MzEzMjk0IiwidXNlcl9pZCI6MSwicm9sZSI6IkFkbWluIGhcdTFlYzcgdGhcdTFlZDFuZyJ9.oOGdwaK7p-bOoBobhxHua3JRLcJIZmDLAka5bbM1WIA',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI0NDkyMTEwLCJpYXQiOjE3MjE5MDAxMTAsImp0aSI6IjYyYWE3NDdkODIxYzQ1NDI5NTNlZGZiMTY5YWE2MGMwIiwidXNlcl9pZCI6NDQ1LCJyb2xlIjoiQWRtaW4gaFx1MWVjNyB0aFx1MWVkMW5nIn0.R17k4CoRTiDU2MXj1JZ7SZPGFMhrEXHI1GYGX2G93yE',
         'Content-Type': 'application/json'
         }
         
