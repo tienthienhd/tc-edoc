@@ -686,6 +686,8 @@ class DocumentSerializer(
     def get_warehouse_s(self,obj):
         if obj.warehouse is None:
             return None
+        if obj.warehouse.parent_warehouse is None:
+            return None
         return obj.warehouse.parent_warehouse.id
     def to_representation(self, instance):
         value = instance.created
