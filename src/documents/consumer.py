@@ -53,6 +53,7 @@ from documents.signals import document_consumption_started
 from documents.utils import copy_basic_file_stats
 from documents.utils import copy_file_with_basic_stats
 from documents.utils import run_subprocess
+from paperless.models import ApplicationConfiguration
 
 
 class WorkflowTriggerPlugin(
@@ -610,6 +611,7 @@ class Consumer(LoggingMixin):
         thumbnail = None
         archive_path = None
         data_ocr_fields = None
+        form_code=''
         try:
             self._send_progress(
                 20,
@@ -618,7 +620,7 @@ class Consumer(LoggingMixin):
                 ConsumerStatusShortMessage.PARSING_DOCUMENT,
             )
             self.log.debug(f"Parsing {self.filename}...")
-            data_ocr_fields = document_parser.parse(self.working_copy, mime_type, self.filename)
+            data_ocr_fields,form_code = document_parser.parse(self.working_copy, mime_type, self.filename)
 
             self.log.debug(f"Generating thumbnail for {self.filename}...")
             self._send_progress(
@@ -697,26 +699,29 @@ class Consumer(LoggingMixin):
                                     document=document,
                                 )
                 dict_data = {}
-                if data_ocr_fields is not None:
-                    if isinstance(data_ocr_fields,list):
-                        for r in data_ocr_fields[0].get("fields"):
-                            dict_data[r.get("name")] = r.get("values")[0].get("value") if r.get("values") else None
-                        map_fields = {
-                            "Tiêu đề": dict_data.get("Tiêu đề"),
-                            "Số văn bản": dict_data.get("Số hiệu văn bản"),
-                            "Kính gửi": dict_data.get("Kính gửi"),
-                            "Người ký văn bản": dict_data.get("Chữ ký"),
-                            "Ngày phát hành": dict_data.get("Ngày phát hành"),
-                            "Đơn vị phát hành": dict_data.get("Đơn vị phát hành"),
-                            "Chức danh": dict_data.get("Chức danh"),
-                            "Nơi gửi": dict_data.get("Nơi gửi"),
-                            "Thời gian tạo": dict_data.get("Thời gian tạo"),
-                        }
-                        for f in fields:
-                            f.value_text = map_fields.get(f.field.name,None)
-                        CustomFieldInstance.objects.bulk_update(fields, ['value_text'])
-                 # create file from document
+                try:
+                    if data_ocr_fields is not None:
+                        if isinstance(data_ocr_fields,list):
+                            for r in data_ocr_fields[0].get("fields"):
+                                dict_data[r.get("name")] = r.get("values")[0].get("value") if r.get("values") else None
+                            user_args=ApplicationConfiguration.objects.filter().first().user_args
+                            mapping_field_user_args = []
+                            object_select = None
+                            for f in user_args.get("form_code",[]):
+                                if f.get("name") == form_code:
+                                    mapping_field_user_args = f.get("mapping",[])
+                            map_fields = {}
+                  
+                            for key,value in mapping_field_user_args[0].items():
+                                map_fields[key]=dict_data.get(value)
+                            for f in fields:
+                                f.value_text = map_fields.get(f.field.name,None)
+                            CustomFieldInstance.objects.bulk_update(fields, ['value_text'])
+                except Exception as e:
+                    self.log.error("error ocr field",e)
+                # create file from document
                 # self.log.info('gia tri documentt', document.folder)
+            
                 
                 new_file = Folder.objects.create(name=document.title, parent_folder = document.folder,type = Folder.FILE, owner = document.owner, created = document.created, updated = document.modified, checksum = document.checksum)
                 if document.folder :
