@@ -619,9 +619,10 @@ class Consumer(LoggingMixin):
                 ConsumerFilePhase.WORKING,
                 ConsumerStatusShortMessage.PARSING_DOCUMENT,
             )
-            self.log.debug(f"Parsing {self.filename}...")
-            data_ocr_fields,form_code = document_parser.parse(self.working_copy, mime_type, self.filename)
-
+            enable_ocr = ApplicationConfiguration.objects.filter().first().enable_ocr
+            if enable_ocr:
+                self.log.debug(f"Parsing {self.filename}...")            
+                data_ocr_fields = document_parser.parse(self.working_copy, mime_type, self.filename)
             self.log.debug(f"Generating thumbnail for {self.filename}...")
             self._send_progress(
                 70,
@@ -637,6 +638,8 @@ class Consumer(LoggingMixin):
 
             text = document_parser.get_text()
             date = document_parser.get_date()
+            if enable_ocr!=True:
+                text=''
             if date is None:
                 self._send_progress(
                     90,
@@ -701,14 +704,14 @@ class Consumer(LoggingMixin):
                 dict_data = {}
                 try:
                     if data_ocr_fields is not None:
-                        if isinstance(data_ocr_fields,list):
-                            for r in data_ocr_fields[0].get("fields"):
+                        if isinstance(data_ocr_fields[0],list):
+
+                            for r in data_ocr_fields[0][0].get("fields"):
                                 dict_data[r.get("name")] = r.get("values")[0].get("value") if r.get("values") else None
                             user_args=ApplicationConfiguration.objects.filter().first().user_args
                             mapping_field_user_args = []
-                            object_select = None
                             for f in user_args.get("form_code",[]):
-                                if f.get("name") == form_code:
+                                if f.get("name") == data_ocr_fields[1]:
                                     mapping_field_user_args = f.get("mapping",[])
                             map_fields = {}
                   

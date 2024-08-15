@@ -192,7 +192,7 @@ class RasterisedDocumentParser(DocumentParser):
                                                                     payload=payload, 
                                                                     max_retries=2, 
                                                                     delay=5,
-                                                                    timeout=100,status_code_fail=[401])
+                                                                    timeout=20,status_code_fail=[401])
         if token == False:
             token = self.login_ocr_field(**args)
             if token is not None:
@@ -206,7 +206,7 @@ class RasterisedDocumentParser(DocumentParser):
                                                                         payload=payload, 
                                                                         max_retries=2, 
                                                                         delay=5,
-                                                                        timeout=100)
+                                                                        timeout=20)
             
         return token
     
@@ -225,7 +225,7 @@ class RasterisedDocumentParser(DocumentParser):
                                                                     payload=payload, 
                                                                     max_retries=2, 
                                                                     delay=5,
-                                                                    timeout=10)
+                                                                    timeout=20)
        
     def login_ocr(self,**args):
         # check token
@@ -296,7 +296,6 @@ class RasterisedDocumentParser(DocumentParser):
                         application_configuration.save()
                 url_ocr_pdf_custom_field_by_fileid = args.get("api_ocr_field")
                 for i in application_configuration.user_args.get("form_code", []):
-                    self.log.info("gia tri cua i",i)
                     payload = json.dumps({
                     "request_id": f"{get_file_id}",
                     "list_form_code": [
@@ -330,7 +329,6 @@ class RasterisedDocumentParser(DocumentParser):
                                 'Authorization': f"Bearer {args.get('access_token_ocr_field')}",
                                 'Content-Type': 'application/json'
                             }
-                            self.log.info("ocr field-------------", headers)
                             data_ocr_fields = self.call_ocr_api_with_retries("POST",url_ocr_pdf_custom_field_by_fileid, headers, params, payload, 5, 5, 100,status_code_fail=[401])
                     if isinstance(data_ocr_fields,list)==False:
                         continue
