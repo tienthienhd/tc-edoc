@@ -976,6 +976,7 @@ class BulkEditSerializer(
             "modify_tags",
             "delete",
             "redo_ocr",
+            "redo_ocr_field",
             "set_permissions",
             "rotate",
             "merge",
@@ -1019,6 +1020,8 @@ class BulkEditSerializer(
             return bulk_edit.delete
         elif method == "redo_ocr":
             return bulk_edit.redo_ocr
+        elif method == "redo_ocr_field":
+            return bulk_edit.redo_peeling_field
         elif method == "set_permissions":
             return bulk_edit.set_permissions
         elif method == "rotate":
