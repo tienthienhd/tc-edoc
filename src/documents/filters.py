@@ -122,15 +122,10 @@ class WarehouseFilter(Filter):
                     list_warehouses = Warehouse.objects.filter(path__startswith = warehouse_paths).values_list("id")
                     new_list = [x[0] for x in list_warehouses]
                     qs = qs.exclude(**{f"{self.field_name}__id__in": new_list})
-                    print("di vao exclude", qs)
-
                 elif self.isnull:
-                    print("isnull",self.isnull)
                     qs = qs.filter(**{f"{self.field_name}__isnull": self.isnull})
                 else:
-                    print('di vao else')
                     qs = qs.filter(**{f"{self.field_name}__id": obj_id})
-                print('kest qua cuoi',qs)
         return qs
 
 class FolderFilter(Filter):

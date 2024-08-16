@@ -430,9 +430,9 @@ class RasterisedDocumentParser(DocumentParser):
                 # If this fails, we have a serious issue at hand.
                 raise ParseError(f"{e.__class__.__name__}: {e!s}") from e
 
-        # except Exception as e:
-        #     # Anything else is probably serious.
-        #     raise ParseError(f"{e.__class__.__name__}: {e!s}") from e
+        except Exception as e:
+            # Anything else is probably serious.
+            raise ParseError(f"{e.__class__.__name__}: {e!s}") from e
 
         # As a last resort, if we still don't have any text for any reason,
         # try to extract the text from the original document.
