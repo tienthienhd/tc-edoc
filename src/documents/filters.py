@@ -94,11 +94,12 @@ class ObjectFilter(Filter):
         return qs
 
 class WarehouseFilter(Filter):
-    def __init__(self, exclude=False, in_list=False, field_name=""):
+    def __init__(self, exclude=False, in_list=False, field_name="",isnull=False):
         super().__init__()
         self.exclude = exclude
         self.in_list = in_list
         self.field_name = field_name
+        self.isnull = isnull
 
     def filter(self, qs, value):
         if not value:
@@ -117,10 +118,19 @@ class WarehouseFilter(Filter):
         else:
             for obj_id in object_ids:
                 if self.exclude:
-                    qs = qs.exclude(**{f"{self.field_name}__id": obj_id})
-                else:
-                    qs = qs.filter(**{f"{self.field_name}__id": obj_id})
+                    warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list("path")
+                    list_warehouses = Warehouse.objects.filter(path__startswith = warehouse_paths).values_list("id")
+                    new_list = [x[0] for x in list_warehouses]
+                    qs = qs.exclude(**{f"{self.field_name}__id__in": new_list})
+                    print("di vao exclude", qs)
 
+                elif self.isnull:
+                    print("isnull",self.isnull)
+                    qs = qs.filter(**{f"{self.field_name}__isnull": self.isnull})
+                else:
+                    print('di vao else')
+                    qs = qs.filter(**{f"{self.field_name}__id": obj_id})
+                print('kest qua cuoi',qs)
         return qs
 
 class FolderFilter(Filter):
@@ -257,6 +267,18 @@ class DocumentFilterSet(FilterSet):
     warehouse__id__none = WarehouseFilter(field_name="warehouse", exclude=True)
     
     warehouse__id__in = WarehouseFilter(field_name="warehouse", in_list=True)
+    
+    warehouse_s__isnull = WarehouseFilter(field_name="warehouse", isnull=True)
+
+    warehouse_s__id__none = WarehouseFilter(field_name="warehouse", exclude=True)
+    
+    warehouse_s__id__in = WarehouseFilter(field_name="warehouse", in_list=True)
+    
+    warehouse_w__isnull = WarehouseFilter(field_name="warehouse", isnull=True)
+
+    warehouse_w__id__none = WarehouseFilter(field_name="warehouse", exclude=True)
+    
+    warehouse_w__id__in = WarehouseFilter(field_name="warehouse", in_list=True)
     
     folder__id__none = FolderFilter(field_name="folder", exclude=True)
     
