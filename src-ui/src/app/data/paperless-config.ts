@@ -71,6 +71,13 @@ function mapToItems(enumObj: Object): Array<{ id: string; name: string }> {
 
 export const PaperlessConfigOptions: ConfigOption[] = [
   {
+    key: 'enable_ocr',
+    title: $localize`Enable/Disable Ocr`,
+    type: ConfigOptionType.Boolean,
+    config_key: 'PAPERLESS_ENABLED_OCR',
+    category: ConfigCategory.OCR,
+  },
+  {
     key: 'output_type',
     title: $localize`Output Type`,
     type: ConfigOptionType.Select,
@@ -167,13 +174,6 @@ export const PaperlessConfigOptions: ConfigOption[] = [
     category: ConfigCategory.OCR,
   },
   {
-    key: 'ocr_key',
-    title: $localize`OCR Key`,
-    type: ConfigOptionType.String,
-    config_key: 'PAPERLESS_APP_TITLE',
-    category: ConfigCategory.OCR,
-  },
-  {
     key: 'app_logo',
     title: $localize`Application Logo`,
     type: ConfigOptionType.File,
@@ -190,6 +190,7 @@ export const PaperlessConfigOptions: ConfigOption[] = [
 ]
 
 export interface PaperlessConfig extends ObjectWithId {
+  enable_ocr: boolean
   output_type: OutputTypeConfig
   pages: number
   language: string

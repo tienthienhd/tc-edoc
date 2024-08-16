@@ -970,6 +970,8 @@ OCR_CLEAN = os.getenv("PAPERLESS_OCR_CLEAN", "clean")
 
 OCR_DESKEW: Final[bool] = __get_boolean("PAPERLESS_OCR_DESKEW", "true")
 
+ENABLED_OCR: Final[bool] = __get_boolean("PAPERLESS_ENABLED_OCR", "true")
+
 OCR_ROTATE_PAGES: Final[bool] = __get_boolean("PAPERLESS_OCR_ROTATE_PAGES", "true")
 
 OCR_ROTATE_PAGES_THRESHOLD: Final[float] = __get_float(
