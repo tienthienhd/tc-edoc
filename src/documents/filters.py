@@ -1,3 +1,5 @@
+from functools import reduce
+from operator import or_
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import CharField
 from django.db.models import Count
@@ -111,16 +113,22 @@ class WarehouseFilter(Filter):
             return qs
 
         if self.in_list:
-            warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list("path")
-            list_warehouses = Warehouse.objects.filter(path__startswith = warehouse_paths).values_list("id")
-            new_list = [x[0] for x in list_warehouses]
+            new_list = []
+            warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list("path", flat=True)
+            if warehouse_paths:
+                path_conditions = reduce(or_, (Q(path__startswith=item) for item in warehouse_paths))
+                list_warehouses = Warehouse.objects.filter(path_conditions).values_list("id")
+                new_list = [x[0] for x in list_warehouses]
             qs = qs.filter(**{f"{self.field_name}__id__in": new_list}).distinct()
         else:
             for obj_id in object_ids:
                 if self.exclude:
-                    warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list("path")
-                    list_warehouses = Warehouse.objects.filter(path__startswith = warehouse_paths).values_list("id")
-                    new_list = [x[0] for x in list_warehouses]
+                    new_list = []
+                    warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list("path", flat=True)
+                    if warehouse_paths:
+                        path_conditions = reduce(or_, (Q(path__startswith=item) for item in warehouse_paths))
+                        list_warehouses = Warehouse.objects.filter(path_conditions).values_list("id")
+                        new_list = [x[0] for x in list_warehouses]
                     qs = qs.exclude(**{f"{self.field_name}__id__in": new_list})
                 elif self.isnull:
                     qs = qs.filter(**{f"{self.field_name}__isnull": self.isnull})
