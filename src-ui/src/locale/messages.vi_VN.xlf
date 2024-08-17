@@ -7993,7 +7993,7 @@
                <context context-type="linenumber">436</context>
             </context-group>
             <target state="translated">
-               Thao tác này sẽ xóa người liên hệ khỏi
+               Thao tác này sẽ xóa người biên tập từ
                <x id="PH" equiv-text="this.list.selected.size" />
                tài liệu được chọn.
             </target>
@@ -8037,7 +8037,7 @@
                <context context-type="linenumber">474</context>
             </context-group>
             <target state="translated">
-               Thao tác này sẽ xóa loại tài liệu khỏi
+               Thao tác này sẽ xóa loại tài liệu từ 
                <x id="PH" equiv-text="this.list.selected.size" />
                tài liệu được chọn.
             </target>
@@ -8062,8 +8062,13 @@
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
                <context context-type="linenumber">510</context>
             </context-group>
-            <target state="translated">This operation will assign the storage path "</target>
-         </trans-unit>
+            <target state="translated">
+               Thao tác này sẽ gán đường dẫn lưu trữ "
+               <x id="PH" equiv-text="storagePath.name" />
+               " cho
+               <x id="PH_1" equiv-text="this.list.selected.size" />
+               tài liệu được chọn.
+            </target>         </trans-unit>
          <trans-unit id="60728365335056946" datatype="html">
             <source>
                This operation will remove the storage path from
@@ -8074,7 +8079,11 @@
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
                <context context-type="linenumber">512</context>
             </context-group>
-            <target state="translated">This operation will remove the storage path from</target>
+            <target state="translated">
+               Thao tác này sẽ xóa đường dẫn lưu trữ từ
+               <x id="PH" equiv-text="this.list.selected.size" />
+               tài liệu được chọn.
+            </target>
          </trans-unit>
          <trans-unit id="5188212851227720565" datatype="html">
             <source>Confirm warehouse assignment</source>
@@ -8096,6 +8105,13 @@
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
                <context context-type="linenumber">548</context>
             </context-group>
+             <target state="translated">
+               Thao tác này sẽ gán hộp/cặp "
+               <x id="PH" equiv-text="warehouse.name" />
+               " cho
+               <x id="PH_1" equiv-text="this.list.selected.size" />
+               tài liệu được chọn.
+            </target>
          </trans-unit>
          <trans-unit id="286865115431074854" datatype="html">
             <source>
@@ -8107,7 +8123,12 @@
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
                <context context-type="linenumber">550</context>
             </context-group>
-            <target state="translated">Thao tác này sẽ gỡ kho khỏi</target>
+             <target state="translated">
+               Thao tác này sẽ xóa hộp/cặp từ "
+               <x id="PH_1" equiv-text="this.list.selected.size" />
+               tài liệu được chọn.
+            </target>
+               
          </trans-unit>
          <trans-unit id="749430623564850405" datatype="html">
             <source>Delete confirm</source>
@@ -8127,7 +8148,11 @@
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
                <context context-type="linenumber">682</context>
             </context-group>
-            <target state="translated">Thao tác này sẽ xóa vĩnh viễn</target>
+            <target state="translated">
+               Thao tác này sẽ xóa vĩnh viễn
+               <x id="PH" equiv-text="this.list.selected.size" />
+               tài liệu được chọn.
+            </target>
          </trans-unit>
          <trans-unit id="6734339521247847366" datatype="html">
             <source>Delete document(s)</source>
@@ -8160,7 +8185,7 @@
                <context context-type="linenumber">766</context>
             </context-group>
             <target state="translated">
-               Thao tác này sẽ xoay vĩnh viễn phiên bản gốc của
+               Thao tác này sẽ xoay phiên bản gốc của
                <x id="PH" equiv-text="this.list.selected.size" />
                tài liệu.
             </target>
