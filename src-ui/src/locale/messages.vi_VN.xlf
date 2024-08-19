@@ -361,7 +361,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">96</context>
+               <context context-type="linenumber">100</context>
             </context-group>
             <target state="translated">Tiếp</target>
          </trans-unit>
@@ -625,7 +625,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">353</context>
+               <context context-type="linenumber">357</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/document-list.component.html</context>
@@ -897,7 +897,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
-               <context context-type="linenumber">86</context>
+               <context context-type="linenumber">103</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/services/rest/document.service.ts</context>
@@ -1013,7 +1013,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">104</context>
+               <context context-type="linenumber">119</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/manage/box-list/box-list.component.html</context>
@@ -1518,7 +1518,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">344</context>
+               <context context-type="linenumber">348</context>
             </context-group>
             <target state="translated">Bỏ</target>
          </trans-unit>
@@ -1598,7 +1598,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">336</context>
+               <context context-type="linenumber">340</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/save-view-config-dialog/save-view-config-dialog.component.html</context>
@@ -2016,15 +2016,15 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">312</context>
+               <context context-type="linenumber">316</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">98</context>
+               <context context-type="linenumber">113</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
-               <context context-type="linenumber">100</context>
+               <context context-type="linenumber">117</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/manage/box-list/box-list.component.html</context>
@@ -2385,7 +2385,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">161</context>
+               <context context-type="linenumber">176</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/manage/box-list/box-list.component.html</context>
@@ -3131,15 +3131,19 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">845</context>
+               <context context-type="linenumber">857</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
+               <context context-type="linenumber">892</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">683</context>
+               <context context-type="linenumber">756</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">734</context>
+               <context context-type="linenumber">807</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/manage/box-list/box-list.component.ts</context>
@@ -3191,27 +3195,31 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">847</context>
+               <context context-type="linenumber">859</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1151</context>
+               <context context-type="linenumber">894</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1189</context>
+               <context context-type="linenumber">1198</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
+               <context context-type="linenumber">1236</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">736</context>
+               <context context-type="linenumber">809</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">769</context>
+               <context context-type="linenumber">842</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">788</context>
+               <context context-type="linenumber">861</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/manage/box-list/box-list.component.ts</context>
@@ -3585,7 +3593,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">119</context>
+               <context context-type="linenumber">123</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
@@ -3741,11 +3749,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">399</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">439</context>
+               <context context-type="linenumber">437</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
@@ -3758,6 +3762,10 @@
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
                <context context-type="linenumber">553</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
+               <context context-type="linenumber">591</context>
             </context-group>
             <target state="translated">Xác nhận</target>
          </trans-unit>
@@ -4159,7 +4167,15 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">121</context>
+               <context context-type="linenumber">125</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
+               <context context-type="linenumber">87</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+               <context context-type="linenumber">82</context>
             </context-group>
             <target state="translated">Giá/kệ</target>
          </trans-unit>
@@ -6653,7 +6669,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">109</context>
+               <context context-type="linenumber">113</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/document-list.component.html</context>
@@ -6661,7 +6677,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">120</context>
+               <context context-type="linenumber">126</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/services/rest/document.service.ts</context>
@@ -6677,7 +6693,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">113</context>
+               <context context-type="linenumber">117</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
@@ -6717,7 +6733,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">133</context>
+               <context context-type="linenumber">148</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/document-card-large/document-card-large.component.html</context>
@@ -6886,7 +6902,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">345</context>
+               <context context-type="linenumber">383</context>
             </context-group>
             <note priority="1" from="description">this string is used to separate processing, failed and added on the file upload widget</note>
             <target state="translated">,</target>
@@ -7009,15 +7025,23 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">108</context>
+               <context context-type="linenumber">123</context>
             </context-group>
             <target state="translated">OCR lại</target>
+         </trans-unit>
+         <trans-unit id="8747462506077835271" datatype="html">
+            <source>Auto OCR Field</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
+               <context context-type="linenumber">53</context>
+            </context-group>
+            <target state="needs-translation">Auto OCR Field</target>
          </trans-unit>
          <trans-unit id="1418444397960583910" datatype="html">
             <source>More like this</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">53</context>
+               <context context-type="linenumber">57</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/document-card-large/document-card-large.component.html</context>
@@ -7029,7 +7053,7 @@
             <source>Split</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">57</context>
+               <context context-type="linenumber">61</context>
             </context-group>
             <target state="translated">Tách</target>
          </trans-unit>
@@ -7037,11 +7061,11 @@
             <source>Rotate</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">61</context>
+               <context context-type="linenumber">65</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">111</context>
+               <context context-type="linenumber">126</context>
             </context-group>
             <target state="translated">Xoay</target>
          </trans-unit>
@@ -7049,7 +7073,7 @@
             <source>Export to excel</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">67</context>
+               <context context-type="linenumber">71</context>
             </context-group>
             <target state="translated">Xuất sang Excel</target>
          </trans-unit>
@@ -7057,11 +7081,11 @@
             <source>Close</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">90</context>
+               <context context-type="linenumber">94</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1207</context>
+               <context context-type="linenumber">1254</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/guards/dirty-saved-view.guard.ts</context>
@@ -7073,7 +7097,7 @@
             <source>Previous</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">93</context>
+               <context context-type="linenumber">97</context>
             </context-group>
             <target state="translated">Previous</target>
          </trans-unit>
@@ -7081,7 +7105,7 @@
             <source>Details</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">106</context>
+               <context context-type="linenumber">110</context>
             </context-group>
             <target state="translated">Chi tiết</target>
          </trans-unit>
@@ -7089,7 +7113,7 @@
             <source>Date created</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">111</context>
+               <context context-type="linenumber">115</context>
             </context-group>
             <target state="translated">Ngày tạo</target>
          </trans-unit>
@@ -7097,7 +7121,7 @@
             <source>Document type</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">115</context>
+               <context context-type="linenumber">119</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
@@ -7121,7 +7145,7 @@
             <source>Storage path</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">117</context>
+               <context context-type="linenumber">121</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
@@ -7141,19 +7165,7 @@
             <source>Default</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">118</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">120</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
                <context context-type="linenumber">122</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">124</context>
             </context-group>
             <target state="translated">Mặc định</target>
          </trans-unit>
@@ -7161,15 +7173,23 @@
             <source>Boxcase</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">123</context>
+               <context context-type="linenumber">127</context>
             </context-group>
-            <target state="needs-translation">Hộp/cặp</target>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
+               <context context-type="linenumber">96</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+               <context context-type="linenumber">91</context>
+            </context-group>
+            <target state="translated">Hộp/cặp</target>
          </trans-unit>
          <trans-unit id="6205355627445317276" datatype="html">
             <source>Content</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">208</context>
+               <context context-type="linenumber">212</context>
             </context-group>
             <target state="translated">Nội dung</target>
          </trans-unit>
@@ -7177,7 +7197,7 @@
             <source>Metadata</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">217</context>
+               <context context-type="linenumber">221</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/metadata-collapse/metadata-collapse.component.ts</context>
@@ -7189,7 +7209,7 @@
             <source>Date modified</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">224</context>
+               <context context-type="linenumber">228</context>
             </context-group>
             <target state="translated">Ngày chỉnh</target>
          </trans-unit>
@@ -7197,7 +7217,7 @@
             <source>Date added</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">228</context>
+               <context context-type="linenumber">232</context>
             </context-group>
             <target state="translated">Ngày thêm</target>
          </trans-unit>
@@ -7205,7 +7225,7 @@
             <source>Media filename</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">232</context>
+               <context context-type="linenumber">236</context>
             </context-group>
             <target state="translated">Tên tệp</target>
          </trans-unit>
@@ -7213,7 +7233,7 @@
             <source>Original filename</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">236</context>
+               <context context-type="linenumber">240</context>
             </context-group>
             <target state="translated">Tên tệp gốc</target>
          </trans-unit>
@@ -7221,7 +7241,7 @@
             <source>Original MD5 checksum</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">240</context>
+               <context context-type="linenumber">244</context>
             </context-group>
             <target state="translated">Mã MD5</target>
          </trans-unit>
@@ -7229,7 +7249,7 @@
             <source>Original file size</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">244</context>
+               <context context-type="linenumber">248</context>
             </context-group>
             <target state="translated">Kích thước tệp</target>
          </trans-unit>
@@ -7237,7 +7257,7 @@
             <source>Original mime type</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">248</context>
+               <context context-type="linenumber">252</context>
             </context-group>
             <target state="translated">Định dạng</target>
          </trans-unit>
@@ -7245,7 +7265,7 @@
             <source>Archive MD5 checksum</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">253</context>
+               <context context-type="linenumber">257</context>
             </context-group>
             <target state="translated">Mã MD5 lưu trữ</target>
          </trans-unit>
@@ -7253,7 +7273,7 @@
             <source>Archive file size</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">259</context>
+               <context context-type="linenumber">263</context>
             </context-group>
             <target state="translated">Kích thước tệp lưu trữ</target>
          </trans-unit>
@@ -7261,7 +7281,7 @@
             <source>Original document metadata</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">268</context>
+               <context context-type="linenumber">272</context>
             </context-group>
             <target state="translated">Thông tin dữ liệu tài liệu gốc</target>
          </trans-unit>
@@ -7269,7 +7289,7 @@
             <source>Archived document metadata</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">271</context>
+               <context context-type="linenumber">275</context>
             </context-group>
             <target state="translated">Thông tin tài liệu được lưu trữ</target>
          </trans-unit>
@@ -7277,7 +7297,7 @@
             <source>Preview</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">278</context>
+               <context context-type="linenumber">282</context>
             </context-group>
             <target state="translated">Preview</target>
          </trans-unit>
@@ -7292,7 +7312,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">290,293</context>
+               <context context-type="linenumber">294,297</context>
             </context-group>
             <target state="translated">
                Ghi chú
@@ -7314,7 +7334,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">301,304</context>
+               <context context-type="linenumber">305,308</context>
             </context-group>
             <target state="translated">
                Đã xét duyệt
@@ -7329,7 +7349,7 @@
             <source>Save &amp; next</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">338</context>
+               <context context-type="linenumber">342</context>
             </context-group>
             <target state="translated">Lưu và tiếp tục</target>
          </trans-unit>
@@ -7337,7 +7357,7 @@
             <source>Save &amp; close</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">341</context>
+               <context context-type="linenumber">345</context>
             </context-group>
             <target state="translated">Lưu và đóng</target>
          </trans-unit>
@@ -7345,7 +7365,7 @@
             <source>Enter Password</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
-               <context context-type="linenumber">392</context>
+               <context context-type="linenumber">396</context>
             </context-group>
             <target state="translated">Enter Password</target>
          </trans-unit>
@@ -7356,7 +7376,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">380,381</context>
+               <context context-type="linenumber">392,393</context>
             </context-group>
             <target state="translated">
                Đã xảy ra lỗi khi tải nội dung:
@@ -7367,7 +7387,7 @@
             <source>Document changes detected</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">405</context>
+               <context context-type="linenumber">417</context>
             </context-group>
             <target state="translated">Đã phát hiện thấy các thay đổi trong tài liệu</target>
          </trans-unit>
@@ -7375,7 +7395,7 @@
             <source>The version of this document in your browser session appears older than the existing version.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">406</context>
+               <context context-type="linenumber">418</context>
             </context-group>
             <target state="translated">Phiên bản của tài liệu này trong phiên trình duyệt của bạn có vẻ cũ hơn phiên bản hiện tại</target>
          </trans-unit>
@@ -7383,7 +7403,7 @@
             <source>Saving the document here may overwrite other changes that were made. To restore the existing version, discard your changes or close the document.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">407</context>
+               <context context-type="linenumber">419</context>
             </context-group>
             <target state="translated">Việc lưu tài liệu ở đây có thể ghi đè lên những thay đổi khác đã được thực hiện. Để khôi phục phiên bản hiện có, hãy hủy các thay đổi của bạn hoặc đóng tài liệu</target>
          </trans-unit>
@@ -7391,7 +7411,7 @@
             <source>Ok</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">409</context>
+               <context context-type="linenumber">421</context>
             </context-group>
             <target state="translated">Ok</target>
          </trans-unit>
@@ -7399,7 +7419,7 @@
             <source>Error retrieving metadata</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">550</context>
+               <context context-type="linenumber">562</context>
             </context-group>
             <target state="translated">Error retrieving metadata</target>
          </trans-unit>
@@ -7407,7 +7427,7 @@
             <source>Error retrieving suggestions.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">575</context>
+               <context context-type="linenumber">587</context>
             </context-group>
             <target state="translated">Error retrieving suggestions.</target>
          </trans-unit>
@@ -7415,11 +7435,11 @@
             <source>Document saved successfully.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">717</context>
+               <context context-type="linenumber">729</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">728</context>
+               <context context-type="linenumber">740</context>
             </context-group>
             <target state="translated">Tài liệu đã được lưu thành công</target>
          </trans-unit>
@@ -7427,11 +7447,11 @@
             <source>Error saving document</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">732</context>
+               <context context-type="linenumber">744</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">773</context>
+               <context context-type="linenumber">785</context>
             </context-group>
             <target state="translated">Lỗi lưu tài liệu</target>
          </trans-unit>
@@ -7439,7 +7459,7 @@
             <source>Confirm delete</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">800</context>
+               <context context-type="linenumber">812</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/manage/box-list/box-list.component.ts</context>
@@ -7491,7 +7511,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">801</context>
+               <context context-type="linenumber">813</context>
             </context-group>
             <target state="translated">
                Bạn có thực sự muốn xóa tài liệu
@@ -7503,7 +7523,7 @@
             <source>The files for this document will be deleted permanently. This operation cannot be undone.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">802</context>
+               <context context-type="linenumber">814</context>
             </context-group>
             <target state="translated">Các tập tin cho tài liệu này sẽ bị xóa vĩnh viễn. Không thể hoàn tác thao tác này</target>
          </trans-unit>
@@ -7511,7 +7531,7 @@
             <source>Delete document</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">804</context>
+               <context context-type="linenumber">816</context>
             </context-group>
             <target state="translated">Xóa tài liệu</target>
          </trans-unit>
@@ -7519,19 +7539,55 @@
             <source>Error deleting document</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">823</context>
+               <context context-type="linenumber">835</context>
             </context-group>
             <target state="translated">Error deleting document</target>
+         </trans-unit>
+         <trans-unit id="8575807054036244251" datatype="html">
+            <source>Auto OCR Field confirm</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
+               <context context-type="linenumber">855</context>
+            </context-group>
+            <target state="needs-translation">Auto OCR Field confirm</target>
+         </trans-unit>
+         <trans-unit id="8990765262268253327" datatype="html">
+            <source>This operation will permanently auto OCR Field for this document.</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
+               <context context-type="linenumber">856</context>
+            </context-group>
+            <target state="needs-translation">This operation will permanently auto OCR Field for this document.</target>
+         </trans-unit>
+         <trans-unit id="6237847546081194336" datatype="html">
+            <source>Auto OCR Field operation will begin in the background. Close and re-open or reload this document after the operation has completed to see new content.</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
+               <context context-type="linenumber">867</context>
+            </context-group>
+            <target state="needs-translation">Auto OCR Field operation will begin in the background. Close and re-open or reload this document after the operation has completed to see new content.</target>
+         </trans-unit>
+         <trans-unit id="4409560272830824468" datatype="html">
+            <source>Error executing operation</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
+               <context context-type="linenumber">878</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
+               <context context-type="linenumber">913</context>
+            </context-group>
+            <target state="translated">Lỗi thực hiện thao tác</target>
          </trans-unit>
          <trans-unit id="7362691899087997122" datatype="html">
             <source>Redo OCR confirm</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">843</context>
+               <context context-type="linenumber">890</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">732</context>
+               <context context-type="linenumber">805</context>
             </context-group>
             <target state="translated">Xác nhận lại OCR</target>
          </trans-unit>
@@ -7539,7 +7595,7 @@
             <source>This operation will permanently redo OCR for this document.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">844</context>
+               <context context-type="linenumber">891</context>
             </context-group>
             <target state="translated">Xác nhận này sẽ làm lại vĩnh viễn OCR cho tài liệu này.</target>
          </trans-unit>
@@ -7547,23 +7603,15 @@
             <source>Redo OCR operation will begin in the background. Close and re-open or reload this document after the operation has completed to see new content.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">855</context>
+               <context context-type="linenumber">902</context>
             </context-group>
             <target state="translated">Thao tác Redo OCR sẽ bắt đầu ở chế độ nền. Đóng và mở lại hoặc tải lại tài liệu này sau khi thao tác hoàn tất để xem nội dung mới.</target>
-         </trans-unit>
-         <trans-unit id="4409560272830824468" datatype="html">
-            <source>Error executing operation</source>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">866</context>
-            </context-group>
-            <target state="translated">Lỗi thực hiện thao tác</target>
          </trans-unit>
          <trans-unit id="4458954481601077369" datatype="html">
             <source>Page Fit</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">935</context>
+               <context context-type="linenumber">982</context>
             </context-group>
             <target state="translated">Phù hợp trang</target>
          </trans-unit>
@@ -7571,7 +7619,7 @@
             <source>Split confirm</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1149</context>
+               <context context-type="linenumber">1196</context>
             </context-group>
             <target state="translated">Split confirm</target>
          </trans-unit>
@@ -7579,7 +7627,7 @@
             <source>This operation will split the selected document(s) into new documents.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1150</context>
+               <context context-type="linenumber">1197</context>
             </context-group>
             <target state="translated">This operation will split the selected document(s) into new documents.</target>
          </trans-unit>
@@ -7587,7 +7635,7 @@
             <source>Split operation will begin in the background.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1165</context>
+               <context context-type="linenumber">1212</context>
             </context-group>
             <target state="translated">Split operation will begin in the background.</target>
          </trans-unit>
@@ -7595,7 +7643,7 @@
             <source>Error executing split operation</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1174</context>
+               <context context-type="linenumber">1221</context>
             </context-group>
             <target state="translated">Error executing split operation</target>
          </trans-unit>
@@ -7603,11 +7651,11 @@
             <source>Rotate confirm</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1186</context>
+               <context context-type="linenumber">1233</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">765</context>
+               <context context-type="linenumber">838</context>
             </context-group>
             <target state="translated">Xác nhận xoay</target>
          </trans-unit>
@@ -7615,7 +7663,7 @@
             <source>This operation will permanently rotate the original version of the current document.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1187</context>
+               <context context-type="linenumber">1234</context>
             </context-group>
             <target state="translated">Thao tác này sẽ xoay vĩnh viễn phiên bản gốc của tài liệu hiện tại</target>
          </trans-unit>
@@ -7623,11 +7671,11 @@
             <source>This will alter the original copy.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1188</context>
+               <context context-type="linenumber">1235</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">767</context>
+               <context context-type="linenumber">840</context>
             </context-group>
             <target state="translated">This will alter the original copy.</target>
          </trans-unit>
@@ -7635,7 +7683,7 @@
             <source>Rotation will begin in the background. Close and re-open the document after the operation has completed to see the changes.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1204</context>
+               <context context-type="linenumber">1251</context>
             </context-group>
             <target state="translated">Quá trình quay sẽ bắt đầu ở chế độ nền. Đóng và mở lại tài liệu sau khi thao tác hoàn tất để xem thay đổi.</target>
          </trans-unit>
@@ -7643,7 +7691,7 @@
             <source>Error executing rotate operation</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
-               <context context-type="linenumber">1216</context>
+               <context context-type="linenumber">1263</context>
             </context-group>
             <target state="translated">Error executing rotate operation</target>
          </trans-unit>
@@ -7723,11 +7771,27 @@
             </context-group>
             <target state="translated">Lọc kho</target>
          </trans-unit>
+         <trans-unit id="3365753405875680401" datatype="html">
+            <source>Filter shelfs</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
+               <context context-type="linenumber">88</context>
+            </context-group>
+            <target state="needs-translation">Filter shelfs</target>
+         </trans-unit>
+         <trans-unit id="5335631966479680327" datatype="html">
+            <source>Filter boxcases</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
+               <context context-type="linenumber">97</context>
+            </context-group>
+            <target state="needs-translation">Filter boxcases</target>
+         </trans-unit>
          <trans-unit id="3206542606001340679" datatype="html">
             <source>Merge</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">114</context>
+               <context context-type="linenumber">129</context>
             </context-group>
             <target state="translated">Hợp nhất</target>
          </trans-unit>
@@ -7735,7 +7799,7 @@
             <source>Export to Excel</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">117</context>
+               <context context-type="linenumber">132</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/manage/custom-folder-list/custom-folder-list.component.html</context>
@@ -7751,7 +7815,7 @@
             <source>Include:</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">139</context>
+               <context context-type="linenumber">154</context>
             </context-group>
             <target state="translated">Bao gồm:</target>
          </trans-unit>
@@ -7759,7 +7823,7 @@
             <source>Archived files</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">143</context>
+               <context context-type="linenumber">158</context>
             </context-group>
             <target state="translated">Tệp đã lưu trữ</target>
          </trans-unit>
@@ -7767,7 +7831,7 @@
             <source>Original files</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">147</context>
+               <context context-type="linenumber">162</context>
             </context-group>
             <target state="translated">Tập tin gốc</target>
          </trans-unit>
@@ -7775,7 +7839,7 @@
             <source>Use formatted filename</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
-               <context context-type="linenumber">152</context>
+               <context context-type="linenumber">167</context>
             </context-group>
             <target state="translated">Sử dụng tên tệp được định dạng</target>
          </trans-unit>
@@ -7783,7 +7847,7 @@
             <source>Error executing bulk operation</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">249</context>
+               <context context-type="linenumber">263</context>
             </context-group>
             <target state="translated">Error executing bulk operation</target>
          </trans-unit>
@@ -7795,11 +7859,11 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">337</context>
+               <context context-type="linenumber">375</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">343</context>
+               <context context-type="linenumber">381</context>
             </context-group>
             <target state="translated">
                "
@@ -7817,7 +7881,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">339</context>
+               <context context-type="linenumber">377</context>
             </context-group>
             <note priority="1" from="description">This is for messages like 'modify "tag1" and "tag2"'</note>
             <target state="translated">
@@ -7837,7 +7901,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">347,348</context>
+               <context context-type="linenumber">385,386</context>
             </context-group>
             <note priority="1" from="description">this is for messages like 'modify "tag1", "tag2" and "tag3"'</note>
          </trans-unit>
@@ -7845,7 +7909,7 @@
             <source>Confirm tags assignment</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">363</context>
+               <context context-type="linenumber">401</context>
             </context-group>
             <target state="translated">Confirm tags assignment</target>
          </trans-unit>
@@ -7859,7 +7923,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">369</context>
+               <context context-type="linenumber">407</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ thêm thẻ "
@@ -7879,7 +7943,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">374,376</context>
+               <context context-type="linenumber">412,414</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ thêm các thẻ
@@ -7899,7 +7963,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">382</context>
+               <context context-type="linenumber">420</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ xóa thẻ "
@@ -7919,7 +7983,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">387,389</context>
+               <context context-type="linenumber">425,427</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ xóa các thẻ
@@ -7941,7 +8005,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">391,395</context>
+               <context context-type="linenumber">429,433</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ thêm các thẻ
@@ -7957,7 +8021,7 @@
             <source>Confirm correspondent assignment</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">432</context>
+               <context context-type="linenumber">470</context>
             </context-group>
             <target state="translated">Confirm correspondent assignment</target>
          </trans-unit>
@@ -7971,7 +8035,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">434</context>
+               <context context-type="linenumber">472</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ gán người liên hệ "
@@ -7990,7 +8054,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">436</context>
+               <context context-type="linenumber">474</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ xóa người biên tập từ
@@ -8002,7 +8066,7 @@
             <source>Confirm document type assignment</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">470</context>
+               <context context-type="linenumber">508</context>
             </context-group>
             <target state="translated">Xác nhận việc chỉ định loại tài liệu</target>
          </trans-unit>
@@ -8016,7 +8080,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">472</context>
+               <context context-type="linenumber">510</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ gán loại tài liệu "
@@ -8034,10 +8098,10 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">474</context>
+               <context context-type="linenumber">512</context>
             </context-group>
             <target state="translated">
-               Thao tác này sẽ xóa loại tài liệu từ 
+               Thao tác này sẽ xóa loại tài liệu từ
                <x id="PH" equiv-text="this.list.selected.size" />
                tài liệu được chọn.
             </target>
@@ -8046,7 +8110,7 @@
             <source>Confirm storage path assignment</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">508</context>
+               <context context-type="linenumber">546</context>
             </context-group>
             <target state="translated">Xác nhận gán chỉ định đường dẫn lưu trữ</target>
          </trans-unit>
@@ -8060,7 +8124,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">510</context>
+               <context context-type="linenumber">548</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ gán đường dẫn lưu trữ "
@@ -8068,7 +8132,8 @@
                " cho
                <x id="PH_1" equiv-text="this.list.selected.size" />
                tài liệu được chọn.
-            </target>         </trans-unit>
+            </target>
+         </trans-unit>
          <trans-unit id="60728365335056946" datatype="html">
             <source>
                This operation will remove the storage path from
@@ -8077,7 +8142,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">512</context>
+               <context context-type="linenumber">550</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ xóa đường dẫn lưu trữ từ
@@ -8085,56 +8150,55 @@
                tài liệu được chọn.
             </target>
          </trans-unit>
-         <trans-unit id="5188212851227720565" datatype="html">
-            <source>Confirm warehouse assignment</source>
+         <trans-unit id="4448431783194389888" datatype="html">
+            <source>Confirm boxcase assignment</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">546</context>
+               <context context-type="linenumber">584</context>
             </context-group>
-            <target state="translated">Xác nhận gán kho</target>
+            <target state="needs-translation">Xác nhận gán hộp/cặp</target>
          </trans-unit>
-         <trans-unit id="8189366210970420549" datatype="html">
+         <trans-unit id="8246577126919227099" datatype="html">
             <source>
-               This operation will assign the warehouse "
-               <x id="PH" equiv-text="warehouse.name" />
+               This operation will assign the boxcase "
+               <x id="PH" equiv-text="boxcase.name" />
                " to
                <x id="PH_1" equiv-text="this.list.selected.size" />
                selected document(s).
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">548</context>
+               <context context-type="linenumber">586</context>
             </context-group>
-             <target state="translated">
+            <target state="needs-translation">
                Thao tác này sẽ gán hộp/cặp "
-               <x id="PH" equiv-text="warehouse.name" />
+               <x id="PH" equiv-text="boxcase.name" />
                " cho
                <x id="PH_1" equiv-text="this.list.selected.size" />
                tài liệu được chọn.
             </target>
          </trans-unit>
-         <trans-unit id="286865115431074854" datatype="html">
+         <trans-unit id="1538875431124706832" datatype="html">
             <source>
-               This operation will remove the warehouse from
+               This operation will remove the boxcase from
                <x id="PH" equiv-text="this.list.selected.size" />
                selected document(s).
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">550</context>
+               <context context-type="linenumber">588</context>
             </context-group>
-             <target state="translated">
-               Thao tác này sẽ xóa hộp/cặp từ "
-               <x id="PH_1" equiv-text="this.list.selected.size" />
-               tài liệu được chọn.
+            <target state="needs-translation">
+               This operation will remove the boxcase from
+               <x id="PH" equiv-text="this.list.selected.size" />
+               selected document(s).
             </target>
-               
          </trans-unit>
          <trans-unit id="749430623564850405" datatype="html">
             <source>Delete confirm</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">681</context>
+               <context context-type="linenumber">754</context>
             </context-group>
             <target state="translated">Xác nhận xóa</target>
          </trans-unit>
@@ -8146,7 +8210,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">682</context>
+               <context context-type="linenumber">755</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ xóa vĩnh viễn
@@ -8158,7 +8222,7 @@
             <source>Delete document(s)</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">685</context>
+               <context context-type="linenumber">758</context>
             </context-group>
             <target state="translated">Xóa (các) tài liệu</target>
          </trans-unit>
@@ -8170,7 +8234,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">733</context>
+               <context context-type="linenumber">806</context>
             </context-group>
             <target state="translated">Thao tác này sẽ thực hiện lại OCR vĩnh viễn cho</target>
          </trans-unit>
@@ -8182,7 +8246,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">766</context>
+               <context context-type="linenumber">839</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ xoay phiên bản gốc của
@@ -8194,7 +8258,7 @@
             <source>Merge confirm</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">786</context>
+               <context context-type="linenumber">859</context>
             </context-group>
             <target state="translated">Xác nhận hợp nhất</target>
          </trans-unit>
@@ -8206,7 +8270,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">787</context>
+               <context context-type="linenumber">860</context>
             </context-group>
             <target state="translated">
                Thao tác này sẽ hợp nhất
@@ -8218,7 +8282,7 @@
             <source>Merged document will be queued for consumption.</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.ts</context>
-               <context context-type="linenumber">800</context>
+               <context context-type="linenumber">873</context>
             </context-group>
             <target state="translated">Tài liệu đã hợp nhất sẽ được xếp hàng đợi để sử dụng.</target>
          </trans-unit>
@@ -8595,7 +8659,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
-               <context context-type="linenumber">106</context>
+               <context context-type="linenumber">123</context>
             </context-group>
             <target state="translated">Bỏ lọc</target>
          </trans-unit>
@@ -8623,7 +8687,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">125</context>
+               <context context-type="linenumber">131</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/services/rest/document.service.ts</context>
@@ -8711,7 +8775,7 @@
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
-               <context context-type="linenumber">92</context>
+               <context context-type="linenumber">109</context>
             </context-group>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/services/rest/document.service.ts</context>
@@ -8759,11 +8823,27 @@
                " đã được tạo thành công.
             </target>
          </trans-unit>
+         <trans-unit id="6904053157270858713" datatype="html">
+            <source>Filter shelf</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+               <context context-type="linenumber">83</context>
+            </context-group>
+            <target state="needs-translation">Filter shelf</target>
+         </trans-unit>
+         <trans-unit id="1572067110076791420" datatype="html">
+            <source>Filter boxcase</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+               <context context-type="linenumber">92</context>
+            </context-group>
+            <target state="needs-translation">Filter boxcase</target>
+         </trans-unit>
          <trans-unit id="3100631071441658964" datatype="html">
             <source>Title &amp; content</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">123</context>
+               <context context-type="linenumber">129</context>
             </context-group>
             <target state="translated">Tiêu đề &amp; nội dung</target>
          </trans-unit>
@@ -8771,7 +8851,7 @@
             <source>Custom fields</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">128</context>
+               <context context-type="linenumber">134</context>
             </context-group>
             <target state="translated">Trường tùy chỉnh</target>
          </trans-unit>
@@ -8779,7 +8859,7 @@
             <source>Advanced search</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">132</context>
+               <context context-type="linenumber">138</context>
             </context-group>
             <target state="translated">Tìm kiếm mở rộng</target>
          </trans-unit>
@@ -8787,7 +8867,7 @@
             <source>More like</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">138</context>
+               <context context-type="linenumber">144</context>
             </context-group>
             <target state="translated">Tương tự</target>
          </trans-unit>
@@ -8795,7 +8875,7 @@
             <source>equals</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">144</context>
+               <context context-type="linenumber">150</context>
             </context-group>
             <target state="translated">bằng</target>
          </trans-unit>
@@ -8803,7 +8883,7 @@
             <source>is empty</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">148</context>
+               <context context-type="linenumber">154</context>
             </context-group>
             <target state="translated">rỗng</target>
          </trans-unit>
@@ -8811,7 +8891,7 @@
             <source>is not empty</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">152</context>
+               <context context-type="linenumber">158</context>
             </context-group>
             <target state="translated">không rỗng</target>
          </trans-unit>
@@ -8819,7 +8899,7 @@
             <source>greater than</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">156</context>
+               <context context-type="linenumber">162</context>
             </context-group>
             <target state="translated">lớn hơn</target>
          </trans-unit>
@@ -8827,7 +8907,7 @@
             <source>less than</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">160</context>
+               <context context-type="linenumber">166</context>
             </context-group>
             <target state="translated">nhỏ hơn</target>
          </trans-unit>
@@ -8838,7 +8918,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">179,181</context>
+               <context context-type="linenumber">185,187</context>
             </context-group>
             <target state="translated">
                Người biên tập:
@@ -8849,7 +8929,7 @@
             <source>Without correspondent</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">183</context>
+               <context context-type="linenumber">189</context>
             </context-group>
             <target state="translated">Không có người biên tập</target>
          </trans-unit>
@@ -8860,7 +8940,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">189,191</context>
+               <context context-type="linenumber">195,197</context>
             </context-group>
             <target state="translated">
                Loại tài liệu:
@@ -8871,7 +8951,7 @@
             <source>Without document type</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">193</context>
+               <context context-type="linenumber">199</context>
             </context-group>
             <target state="translated">Không có loại tài liệu</target>
          </trans-unit>
@@ -8882,7 +8962,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">199,201</context>
+               <context context-type="linenumber">205,207</context>
             </context-group>
             <target state="translated">
                Kho:
@@ -8893,9 +8973,53 @@
             <source>Without warehouse</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">203</context>
+               <context context-type="linenumber">209</context>
             </context-group>
             <target state="translated">Không có kho</target>
+         </trans-unit>
+         <trans-unit id="8793667344497533747" datatype="html">
+            <source>
+               Shelf:
+               <x id="PH" equiv-text="this.shelfs.find(               (w) =&gt; w.id == +rule.value             )?.name" />
+            </source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
+               <context context-type="linenumber">214,216</context>
+            </context-group>
+            <target state="needs-translation">
+               Shelf:
+               <x id="PH" equiv-text="this.shelfs.find(               (w) =&gt; w.id == +rule.value             )?.name" />
+            </target>
+         </trans-unit>
+         <trans-unit id="5263801403568396127" datatype="html">
+            <source>Without shelf</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
+               <context context-type="linenumber">218</context>
+            </context-group>
+            <target state="needs-translation">Without shelf</target>
+         </trans-unit>
+         <trans-unit id="3684906098484454630" datatype="html">
+            <source>
+               Boxcase:
+               <x id="PH" equiv-text="this.boxcases.find(               (w) =&gt; w.id == +rule.value             )?.name" />
+            </source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
+               <context context-type="linenumber">223,225</context>
+            </context-group>
+            <target state="needs-translation">
+               Boxcase:
+               <x id="PH" equiv-text="this.boxcases.find(               (w) =&gt; w.id == +rule.value             )?.name" />
+            </target>
+         </trans-unit>
+         <trans-unit id="3447155650163618913" datatype="html">
+            <source>Without boxcase</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
+               <context context-type="linenumber">227</context>
+            </context-group>
+            <target state="needs-translation">Without boxcase</target>
          </trans-unit>
          <trans-unit id="232202047340644471" datatype="html">
             <source>
@@ -8904,7 +9028,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">209,211</context>
+               <context context-type="linenumber">233,235</context>
             </context-group>
             <target state="translated">
                Đường dẫn lưu trữ:
@@ -8915,7 +9039,7 @@
             <source>Without storage path</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">213</context>
+               <context context-type="linenumber">237</context>
             </context-group>
             <target state="translated">Không có đường dẫn lưu trữ</target>
          </trans-unit>
@@ -8926,7 +9050,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">217,218</context>
+               <context context-type="linenumber">241,242</context>
             </context-group>
             <target state="translated">Thẻ:</target>
          </trans-unit>
@@ -8934,7 +9058,7 @@
             <source>Without any tag</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">222</context>
+               <context context-type="linenumber">246</context>
             </context-group>
             <target state="translated">Không có thẻ nào</target>
          </trans-unit>
@@ -8945,7 +9069,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">226</context>
+               <context context-type="linenumber">250</context>
             </context-group>
             <target state="translated">
                Tiêu đề:
@@ -8959,7 +9083,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">229</context>
+               <context context-type="linenumber">253</context>
             </context-group>
             <target state="translated">
                ASN:
@@ -8973,7 +9097,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">232</context>
+               <context context-type="linenumber">256</context>
             </context-group>
             <target state="translated">
                Chủ sở hữu:
@@ -8987,7 +9111,7 @@
             </source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">235</context>
+               <context context-type="linenumber">259</context>
             </context-group>
             <target state="translated">
                Chủ sở hữu không nằm trong:
@@ -8998,7 +9122,7 @@
             <source>Without an owner</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
-               <context context-type="linenumber">238</context>
+               <context context-type="linenumber">262</context>
             </context-group>
             <target state="translated">Không có chủ sở hữu</target>
          </trans-unit>
@@ -9165,6 +9289,46 @@
                <context context-type="linenumber">22</context>
             </context-group>
             <target state="translated">Tìm kiếm:</target>
+         </trans-unit>
+         <trans-unit id="1488347670280290838" datatype="html">
+            <source>Document count</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/box-list/box-list.component.html</context>
+               <context context-type="linenumber">39</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/custom-folder-list/custom-folder-list.component.html</context>
+               <context context-type="linenumber">94</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/custom-folder-list/custom-folder-list.component.html</context>
+               <context context-type="linenumber">94</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/custom-list/custom-list.component.html</context>
+               <context context-type="linenumber">41</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
+               <context context-type="linenumber">39</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
+               <context context-type="linenumber">39</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
+               <context context-type="linenumber">39</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
+               <context context-type="linenumber">39</context>
+            </context-group>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/components/manage/warehouse/warehouse.component.html</context>
+               <context context-type="linenumber">42</context>
+            </context-group>
+            <target state="translated">Số lượng</target>
          </trans-unit>
          <trans-unit id="7376880254267897616" datatype="html">
             <source>Filter Documents</source>
@@ -9721,34 +9885,6 @@
                <context context-type="linenumber">85</context>
             </context-group>
             <target state="translated">Lỗi xóa trường</target>
-         </trans-unit>
-         <trans-unit id="1488347670280290838" datatype="html">
-            <source>Document count</source>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/manage/custom-folder-list/custom-folder-list.component.html</context>
-               <context context-type="linenumber">94</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/manage/custom-folder-list/custom-folder-list.component.html</context>
-               <context context-type="linenumber">94</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
-               <context context-type="linenumber">39</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
-               <context context-type="linenumber">39</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
-               <context context-type="linenumber">39</context>
-            </context-group>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/components/manage/management-list/management-list.component.html</context>
-               <context context-type="linenumber">39</context>
-            </context-group>
-            <target state="translated">Số lượng</target>
          </trans-unit>
          <trans-unit id="3217819268541951032" datatype="html">
             <source>shelf</source>
@@ -10442,11 +10578,19 @@
             </context-group>
             <target state="translated">Cài đặt OCR</target>
          </trans-unit>
+         <trans-unit id="4872392783685868279" datatype="html">
+            <source>Enable/Disable Ocr</source>
+            <context-group purpose="location">
+               <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
+               <context context-type="linenumber">75</context>
+            </context-group>
+            <target state="needs-translation">Enable/Disable Ocr</target>
+         </trans-unit>
          <trans-unit id="1313137480169642057" datatype="html">
             <source>Output Type</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">75</context>
+               <context context-type="linenumber">82</context>
             </context-group>
             <target state="translated">Loại đầu ra</target>
          </trans-unit>
@@ -10454,7 +10598,7 @@
             <source>Language</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">83</context>
+               <context context-type="linenumber">90</context>
             </context-group>
             <target state="translated">Ngôn ngữ</target>
          </trans-unit>
@@ -10462,7 +10606,7 @@
             <source>Pages</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">90</context>
+               <context context-type="linenumber">97</context>
             </context-group>
             <target state="translated">Trang</target>
          </trans-unit>
@@ -10470,7 +10614,7 @@
             <source>Mode</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">97</context>
+               <context context-type="linenumber">104</context>
             </context-group>
             <target state="translated">Cách thức</target>
          </trans-unit>
@@ -10478,7 +10622,7 @@
             <source>Skip Archive File</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">105</context>
+               <context context-type="linenumber">112</context>
             </context-group>
             <target state="translated">Bỏ qua tập tin lưu trữ</target>
          </trans-unit>
@@ -10486,7 +10630,7 @@
             <source>Image DPI</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">113</context>
+               <context context-type="linenumber">120</context>
             </context-group>
             <target state="translated">Độ phân giải ảnh</target>
          </trans-unit>
@@ -10494,7 +10638,7 @@
             <source>Clean</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">120</context>
+               <context context-type="linenumber">127</context>
             </context-group>
             <target state="translated">Làm sạch</target>
          </trans-unit>
@@ -10502,7 +10646,7 @@
             <source>Deskew</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">128</context>
+               <context context-type="linenumber">135</context>
             </context-group>
             <target state="translated">Nghiêng</target>
          </trans-unit>
@@ -10510,7 +10654,7 @@
             <source>Rotate Pages</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">135</context>
+               <context context-type="linenumber">142</context>
             </context-group>
             <target state="translated">Xoay trang</target>
          </trans-unit>
@@ -10518,7 +10662,7 @@
             <source>Rotate Pages Threshold</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">142</context>
+               <context context-type="linenumber">149</context>
             </context-group>
             <target state="translated">Ngưỡng xoay trang</target>
          </trans-unit>
@@ -10526,7 +10670,7 @@
             <source>Max Image Pixels</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">149</context>
+               <context context-type="linenumber">156</context>
             </context-group>
             <target state="translated">Số điểm ảnh tối đa</target>
          </trans-unit>
@@ -10534,7 +10678,7 @@
             <source>Color Conversion Strategy</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">156</context>
+               <context context-type="linenumber">163</context>
             </context-group>
             <target state="translated">Chiến lược chuyển đổi màu sắc</target>
          </trans-unit>
@@ -10542,16 +10686,9 @@
             <source>OCR Arguments</source>
             <context-group purpose="location">
                <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
-               <context context-type="linenumber">164</context>
-            </context-group>
-            <target state="translated">Đối số OCR</target>
-         </trans-unit>
-         <trans-unit id="4301951240854951353" datatype="html">
-            <source>OCR Key</source>
-            <context-group purpose="location">
-               <context context-type="sourcefile">src/app/data/paperless-config.ts</context>
                <context context-type="linenumber">171</context>
             </context-group>
+            <target state="translated">Đối số OCR</target>
          </trans-unit>
          <trans-unit id="7106327322456204362" datatype="html">
             <source>Application Logo</source>
