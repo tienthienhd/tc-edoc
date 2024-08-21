@@ -370,7 +370,7 @@ def update_document_field(document_id):
     parser: DocumentParser = parser_class(logging_group=uuid.uuid4())
 
     try:
-        data_ocr_fields = parser.parse(document.source_path, mime_type, document.get_public_filename())
+        data_ocr_fields = parser.parse_field(document.source_path, mime_type, document.get_public_filename())
 
         
         if parser.get_archive_path():
