@@ -181,7 +181,7 @@ class RasterisedDocumentParser(DocumentParser):
                 if response_ocr.status_code in status_code_fail :
                     return False
                 else:
-                    logging.error('OCR error response: %s', response_ocr.status_code)
+                    logging.error('OCR error response: %s', response_ocr.json())
                     retries += 1
                     time.sleep(delay)
             except requests.exceptions.Timeout:
@@ -338,7 +338,7 @@ class RasterisedDocumentParser(DocumentParser):
                                                                 url_ocr_pdf_by_fileid,
                                                                 headers, params,
                                                                 {},max_retries = 5,
-                                                                delay=page_count * 2,
+                                                                delay=page_count * 3,
                                                                 timeout=30,data_compare={'status_code':1})
                 
                 if data_ocr_general is not None:
@@ -357,7 +357,7 @@ class RasterisedDocumentParser(DocumentParser):
                             "list_form_code": [
                                 f"{i.get('name')}"
                             ],
-                            "list_form_code": True
+                            "is_single_form": True
                         })
                         headers = {
                             'Authorization': f"Bearer {args['access_token_ocr']}",
