@@ -356,7 +356,8 @@ class RasterisedDocumentParser(DocumentParser):
                             "request_id": f"{get_request_id}",
                             "list_form_code": [
                                 f"{i.get('name')}"
-                            ]
+                            ],
+                            "list_form_code": True
                         })
                         headers = {
                             'Authorization': f"Bearer {args['access_token_ocr']}",
