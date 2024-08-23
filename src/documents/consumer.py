@@ -19,6 +19,7 @@ from django.utils import timezone
 from filelock import FileLock
 from multiselectfield.utils import string
 from rest_framework.reverse import reverse
+from rest_framework.templatetags.rest_framework import data
 
 from documents.classifier import load_classifier
 from documents.data_models import DocumentMetadataOverrides
@@ -713,8 +714,8 @@ class Consumer(LoggingMixin):
                 try:
                     if data_ocr_fields is not None:
                         # set file_id and request_id
-                        if isinstance(data_ocr_fields[2], str):
-                            document.file_id = data_ocr_fields[2]
+                        if isinstance(data_ocr_fields[2], int) or isinstance(data_ocr_fields[2], str):
+                            document.file_id = str(data_ocr_fields[2])
                         if isinstance(data_ocr_fields[3], str):
                             document.request_id = data_ocr_fields[3]
 
