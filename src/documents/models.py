@@ -94,13 +94,13 @@ class Approval(models.Model):
 
     ALL_STATES = sorted(states.ALL_STATES)
     APPROVAL_STATE_CHOICES = sorted(zip(ALL_STATES, ALL_STATES))
-    
+
     APPROVAL_ACCESS_TYPE_CHOICES = [
         ('OWNER', _('Owner')),
         ('EDIT', _('Edit')),
         ('VIEW', _('View')),
     ]
-    
+
     submitted_by = models.ForeignKey(
         User,
         blank=True,
@@ -108,7 +108,7 @@ class Approval(models.Model):
         on_delete=models.SET_NULL,
         verbose_name=_("submitted_by"),
     )
-    
+
     submitted_by_group = models.ManyToManyField(
         Group,
         blank=True,
@@ -116,7 +116,7 @@ class Approval(models.Model):
     )
 
     object_pk = models.CharField(_('object ID'), max_length=255, blank=True)
-    
+
     ctype = models.ForeignKey(
         ContentType,
         blank=True,
@@ -156,7 +156,7 @@ class Approval(models.Model):
         editable=False,
         db_index=True,
     )
-        
+
 
 class Correspondent(MatchingModel):
     class Meta(MatchingModel.Meta):
@@ -198,7 +198,7 @@ class StoragePath(MatchingModel):
         verbose_name_plural = _("storage paths")
 
 class Warehouse(MatchingModel):
-       
+
     WAREHOUSE = "Warehouse"
     SHELF = "Shelf"
     BOXCASE = "Boxcase"
@@ -207,21 +207,21 @@ class Warehouse(MatchingModel):
         (SHELF, _("Shelf")),
         (BOXCASE, _("Boxcase")),
     )
-    
-    type = models.CharField(max_length=20, null=True, blank=True, 
+
+    type = models.CharField(max_length=20, null=True, blank=True,
                                       choices=TYPE_WAREHOUSE,
                                       default=WAREHOUSE,)
     parent_warehouse = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True )
     path = models.TextField(_("path"), null=True, blank=True)
-    
-    class Meta(MatchingModel.Meta): 
+
+    class Meta(MatchingModel.Meta):
         verbose_name = _("warehouse")
         verbose_name_plural = _("warehouses")
         constraints = []
-    
+
     def __str__(self):
         return self.name
-    
+
 class Folder(MatchingModel):
     parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True )
     path = models.TextField(_("path"), null=True, blank=True)
@@ -243,20 +243,20 @@ class Folder(MatchingModel):
     type = models.CharField(max_length=20,
                                       choices=TYPE_FOLDER,
                                       default=FOLDER,)
-    
+
     created = models.DateTimeField(_("created"), null=True, default=timezone.now, db_index=True)
 
     updated = models.DateTimeField(_("updated"), null=True, default=timezone.now, editable=False, db_index=True)
-    
+
 
     class Meta(MatchingModel.Meta):
-        
+
         verbose_name = _("folder")
         verbose_name_plural = _("folders")
         constraints = []
-    def __str__(self): 
+    def __str__(self):
         return self.name
-    
+
 class Document(ModelWithOwner):
     STORAGE_TYPE_UNENCRYPTED = "unencrypted"
     STORAGE_TYPE_GPG = "gpg"
@@ -282,7 +282,7 @@ class Document(ModelWithOwner):
         on_delete=models.SET_NULL,
         verbose_name=_("storage path"),
     )
-    
+
     folder = models.ForeignKey(
         Folder,
         blank=True,
@@ -291,7 +291,9 @@ class Document(ModelWithOwner):
         on_delete=models.SET_NULL,
         verbose_name=_("folder"),
     )
-    
+
+
+
     warehouse = models.ForeignKey(
         Warehouse,
         blank=True,
@@ -329,13 +331,27 @@ class Document(ModelWithOwner):
         blank=True,
         verbose_name=_("tags"),
     )
-    
+
     checksum = models.CharField(
         _("checksum"),
         max_length=32,
         editable=False,
         unique=True,
         help_text=_("The checksum of the original document."),
+    )
+
+    file_id = models.CharField(
+        _("file_id"),
+        max_length=100,
+        editable=False,
+        default=''
+    )
+
+    request_id = models.CharField(
+        _("request_id"),
+        max_length=100,
+        editable=False,
+        default=''
     )
 
     archive_checksum = models.CharField(
@@ -1134,7 +1150,7 @@ class WorkflowTrigger(models.Model):
         on_delete=models.SET_NULL,
         verbose_name=_("has this correspondent"),
     )
-    
+
     filter_has_groups = models.ManyToManyField(
         Group,
         blank=True,

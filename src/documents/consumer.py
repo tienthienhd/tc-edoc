@@ -17,6 +17,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from filelock import FileLock
+from multiselectfield.utils import string
 from rest_framework.reverse import reverse
 
 from documents.classifier import load_classifier
@@ -535,8 +536,8 @@ class Consumer(LoggingMixin):
         self.override_change_users = override_change_users
         self.override_change_groups = override_change_groups
         self.override_custom_field_ids = override_custom_field_ids
-        
-    
+
+
         self._send_progress(
             0,
             100,
@@ -613,6 +614,7 @@ class Consumer(LoggingMixin):
         archive_path = None
         data_ocr_fields = None
         form_code=''
+
         try:
             self._send_progress(
                 20,
@@ -623,9 +625,9 @@ class Consumer(LoggingMixin):
             enable_ocr = ApplicationConfiguration.objects.filter().first().enable_ocr
             if enable_ocr:
                 self.log.debug(f"Parsing {self.filename}...")
-               
+
                 if isinstance(document_parser,RasterisedDocumentCustomParser):
-                    data_ocr_fields = document_parser.parse(self.working_copy, mime_type, self.filename, self.get_config_dossier_form())
+                    data_ocr_fields = document_parser.parse(self.working_copy, mime_type, self.filename)
                 else:
                     document_parser.parse(self.working_copy, mime_type, self.filename)
 
@@ -702,7 +704,7 @@ class Consumer(LoggingMixin):
                     logging_group=self.logging_group,
                     classifier=classifier,
                 )
-               
+
                 # update custom field by document_id
                 fields = CustomFieldInstance.objects.filter(
                                     document=document,
@@ -710,8 +712,13 @@ class Consumer(LoggingMixin):
                 dict_data = {}
                 try:
                     if data_ocr_fields is not None:
-                        if isinstance(data_ocr_fields[0],list):
+                        # set file_id and request_id
+                        if isinstance(data_ocr_fields[2], str):
+                            document.file_id = data_ocr_fields[2]
+                        if isinstance(data_ocr_fields[3], str):
+                            document.request_id = data_ocr_fields[3]
 
+                        if isinstance(data_ocr_fields[0],list):
                             for r in data_ocr_fields[0][0].get("fields"):
                                 dict_data[r.get("name")] = r.get("values")[0].get("value") if r.get("values") else None
                             user_args=ApplicationConfiguration.objects.filter().first().user_args
@@ -720,7 +727,7 @@ class Consumer(LoggingMixin):
                                 if f.get("name") == data_ocr_fields[1]:
                                     mapping_field_user_args = f.get("mapping",[])
                             map_fields = {}
-                  
+
                             for key,value in mapping_field_user_args[0].items():
                                 map_fields[key]=dict_data.get(value)
                             for f in fields:
@@ -730,8 +737,9 @@ class Consumer(LoggingMixin):
                     self.log.error("error ocr field",e)
                 # create file from document
                 # self.log.info('gia tri documentt', document.folder)
-            
-                
+
+
+
                 new_file = Folder.objects.create(name=document.title, parent_folder = document.folder,type = Folder.FILE, owner = document.owner, created = document.created, updated = document.modified)
                 new_file.checksum=hashlib.md5(f'{new_file.id}.{new_file.name}'.encode()).hexdigest()
                 if document.folder :
@@ -930,12 +938,12 @@ class Consumer(LoggingMixin):
             document.storage_path = StoragePath.objects.get(
                 pk=self.override_storage_path_id,
             )
-        
+
         if self.override_folder_id:
             document.folder = Folder.objects.get(
                 pk=self.override_folder_id,
             )
-        
+
         if self.override_warehouse_id:
             document.warehouse = Warehouse.objects.get(
                 pk=self.override_warehouse_id,

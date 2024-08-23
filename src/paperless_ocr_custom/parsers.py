@@ -274,6 +274,8 @@ class RasterisedDocumentCustomParser(DocumentParser):
         data_ocr = None
         data_ocr_fields = None
         form_code = ""
+        file_id = ""
+        request_id = ""
         app_config = ApplicationConfiguration.objects.filter().first()
 
          # count page number
@@ -304,7 +306,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
                     app_config.user_args[
                         "refresh_token_ocr"] = token['refresh']
                     app_config.save()
-           
+
             # upload file -------------------
             get_file_id = ''
             url_upload_file = args.get("api_upload_file_ocr", "")
@@ -326,7 +328,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
 
             if response_upload.status_code == 201:
                 get_file_id = response_upload.json().get('id', '')
-                
+
                 # else :
                 #     # logging.error('upload file: ', response_upload.status_code)
                 #     return data_ocr, data_ocr_fields, form_code
@@ -340,9 +342,9 @@ class RasterisedDocumentCustomParser(DocumentParser):
                                                                 {},max_retries = 5,
                                                                 delay=page_count * 3,
                                                                 timeout=30,data_compare={'status_code':1})
-                
+
                 if data_ocr_general is not None:
-                    
+
                     data_ocr = data_ocr_general.get('response', None)
                     enable_ocr_field = args.get("enable_ocr_field",False)
                     url_ocr_pdf_custom_field_by_fileid = args.get("api_ocr_field",False)
@@ -350,7 +352,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
                         return (data_ocr, data_ocr_fields, form_code)
                     # peeling field
                     get_request_id = data_ocr_general.get('request_id', None)
-                
+
                     for i in app_config.user_args.get("form_code", []):
                         payload = json.dumps({
                             "request_id": f"{get_request_id}",
@@ -379,8 +381,8 @@ class RasterisedDocumentCustomParser(DocumentParser):
                             break
         except Exception as e:
             self.log.error("error", e)
-        
-        return (data_ocr, data_ocr_fields, form_code)
+
+        return (data_ocr, data_ocr_fields, form_code,file_id,request_id)
 
     # get ocr file img/pdf
     # def ocr_file(self, path_file, **args):
@@ -481,7 +483,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
                        data_ocr):
         font_name = 'Arial'
         data = data_ocr or {}
-        
+
         font_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                  'fonts', 'arial-font/arial.ttf')
         with open(sidecar, "w") as txt_sidecar:
@@ -586,11 +588,13 @@ class RasterisedDocumentCustomParser(DocumentParser):
         data_ocr=None
         data_ocr_fields=None
         form_code=None
-        data_ocr, data_ocr_fields, form_code = self.ocr_file(document_path,
+        file_id=""
+        request_id=""
+        data_ocr, data_ocr_fields, form_code, file_id, request_id = self.ocr_file(document_path,
                                                              **kwargs)
         self.render_pdf_ocr(sidecar, mime_type, document_path, output_file,
                             data_ocr)
-        return data_ocr, data_ocr_fields, form_code
+        return data_ocr, data_ocr_fields, form_code, file_id, request_id
 
     def extract_text(
         self,
@@ -819,11 +823,11 @@ class RasterisedDocumentCustomParser(DocumentParser):
             archive_path,
             sidecar_file,
         )
-        data_ocr, data_ocr_fields, form_code = None, None, ''
+        data_ocr, data_ocr_fields, form_code, file_id, request_id = None, None, '', '', ''
         try:
             self.log.debug(f"Calling OCRmyPDF with args: {args}")
             # ocrmypdf.ocr(**args)
-            data_ocr, data_ocr_fields, form_code = self.ocr_img_or_pdf(
+            data_ocr, data_ocr_fields, form_code, file_id, request_id = self.ocr_img_or_pdf(
                 document_path, mime_type, **args)
             if self.settings.skip_archive_file != ArchiveFileChoices.ALWAYS:
                 self.archive_path = archive_path
@@ -876,7 +880,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
             try:
                 self.log.debug(f"Fallback: Calling OCRmyPDF with args: {args}")
                 # ocrmypdf.ocr(**args)
-                data_ocr, data_ocr_fields, form_code = self.ocr_img_or_pdf(
+                data_ocr, data_ocr_fields, form_code, file_id, request_id = self.ocr_img_or_pdf(
                     document_path, mime_type, **args)
                 # Don't return the archived file here, since this file
                 # is bigger and blurry due to --force-ocr.
@@ -905,7 +909,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
                     f"be empty.",
                 )
                 self.text = ""
-        return data_ocr_fields, form_code
+        return data_ocr_fields, form_code, file_id, request_id
 
     def parse_field(self, document_path: Path, mime_type, file_name=None):
         # This forces tesseract to use one core per page.
@@ -922,11 +926,11 @@ class RasterisedDocumentCustomParser(DocumentParser):
             archive_path,
             sidecar_file,
         )
-        data_ocr, data_ocr_fields, form_code = None, None, ''
+        data_ocr, data_ocr_fields, form_code, file_id, request_id = None, None, '', '', ''
         try:
             self.log.debug(f"Calling OCRmyPDF with args: {args}")
             # ocrmypdf.ocr(**args)
-            data_ocr, data_ocr_fields, form_code = self.ocr_img_or_pdf(
+            data_ocr, data_ocr_fields, form_code, file_id, request_id = self.ocr_img_or_pdf(
                 document_path, mime_type, **args)
             if self.settings.skip_archive_file != ArchiveFileChoices.ALWAYS:
                 self.archive_path = archive_path
@@ -953,7 +957,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
             try:
                 self.log.debug(f"Fallback: Calling OCRmyPDF with args: {args}")
                 # ocrmypdf.ocr(**args)
-                data_ocr, data_ocr_fields, form_code = self.ocr_img_or_pdf(
+                data_ocr, data_ocr_fields, form_code, file_id, request_id = self.ocr_img_or_pdf(
                     document_path, mime_type, **args)
 
             except Exception as e:
