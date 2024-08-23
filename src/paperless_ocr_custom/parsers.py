@@ -328,7 +328,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
 
             if response_upload.status_code == 201:
                 get_file_id = response_upload.json().get('id', '')
-
+                file_id=response_upload.json().get('id', '')
                 # else :
                 #     # logging.error('upload file: ', response_upload.status_code)
                 #     return data_ocr, data_ocr_fields, form_code
@@ -352,7 +352,7 @@ class RasterisedDocumentCustomParser(DocumentParser):
                         return (data_ocr, data_ocr_fields, form_code)
                     # peeling field
                     get_request_id = data_ocr_general.get('request_id', None)
-
+                    request_id=data_ocr_general.get('request_id', None)
                     for i in app_config.user_args.get("form_code", []):
                         payload = json.dumps({
                             "request_id": f"{get_request_id}",
