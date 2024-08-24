@@ -59,7 +59,7 @@ export interface SelectionData {
   selected_warehouses: SelectionDataItem[]
   selected_shelfs: SelectionDataItem[]
   selected_boxcases: SelectionDataItem[]
-  
+
 
 }
 
@@ -195,6 +195,14 @@ export class DocumentService extends AbstractPaperlessService<Document> {
     }
     return url
   }
+  getDownloaDocxdUrl(id: number, original: boolean = false): string {
+    let url = this.getResourceUrl(id, 'download')
+    if (original) {
+      url += '?original=true'
+    }
+    return 'https://world-schools.com/wp-content/uploads/2023/01/IMG-Academy-cover-WS.webp'
+  }
+
   getDownloadExcel(id: number): string {
     let url = this.getResourceUrl(id, 'export_excel')
     return url
@@ -245,7 +253,7 @@ export class DocumentService extends AbstractPaperlessService<Document> {
       this.getResourceUrl(id, 'suggestions')
     )
   }
-  
+
   bulkExportExcels(
     ids: number[]
   ) {
@@ -258,7 +266,7 @@ export class DocumentService extends AbstractPaperlessService<Document> {
     )
   }
 
- 
+
 
 
   bulkDownload(
@@ -276,7 +284,7 @@ export class DocumentService extends AbstractPaperlessService<Document> {
       { responseType: 'blob' }
     )
   }
-  
+
 
   public set searchQuery(query: string) {
     this._searchQuery = query

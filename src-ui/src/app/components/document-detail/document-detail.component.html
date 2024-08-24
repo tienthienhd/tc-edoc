@@ -32,8 +32,10 @@
     @if (metadata?.has_archive_version) {
       <div class="btn-group" ngbDropdown role="group">
         <button class="btn btn-sm btn-outline-primary dropdown-toggle" ngbDropdownToggle></button>
+
         <div class="dropdown-menu shadow" ngbDropdownMenu>
           <a ngbDropdownItem [href]="downloadOriginalUrl" i18n>Download original</a>
+          <a ngbDropdownItem [href]="downloadOriginalDocxUrl" i18n>Download docx</a>
         </div>
       </div>
     }
