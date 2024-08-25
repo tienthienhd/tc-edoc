@@ -47,6 +47,7 @@ from documents.plugins.helpers import ProgressStatusOptions
 from documents.sanity_checker import SanityCheckFailedException
 from documents.signals import document_updated
 from paperless.models import ApplicationConfiguration
+from paperless_ocr_custom.parsers import RasterisedDocumentCustomParser
 
 if settings.AUDIT_LOG_ENABLED:
     import json
@@ -73,7 +74,7 @@ def revoke_permission():
     # approvals_reject = Approval.objects.filter(
     #     status__in=["REJECT", "REVOKED"],
     #     expiration__lte=thirty_days_ago
-        
+
     # ).delete()
 
 
@@ -280,7 +281,11 @@ def update_document_archive_file(document_id):
     parser: DocumentParser = parser_class(logging_group=uuid.uuid4())
 
     try:
-        parser.parse(document.source_path, mime_type, document.get_public_filename())
+        data_ocr_fields=None
+        if isinstance(parser, RasterisedDocumentCustomParser):
+            data_ocr_fields = parser.parse(document.source_path, mime_type, document.get_public_filename())
+        else:
+            parser.parse(document.source_path, mime_type, document.get_public_filename())
 
         thumbnail = parser.get_thumbnail(
             document.source_path,
@@ -301,11 +306,21 @@ def update_document_archive_file(document_id):
                     archive_filename=True,
                 )
                 oldDocument = Document.objects.get(pk=document.pk)
+                file_id=''
+                request_id=''
+                if data_ocr_fields is not None:
+                    if isinstance(data_ocr_fields[2], int) or isinstance(data_ocr_fields[2], str):
+                        file_id = str(data_ocr_fields[2])
+                    if isinstance(data_ocr_fields[3], str):
+                        request_id = data_ocr_fields[3]
                 Document.objects.filter(pk=document.pk).update(
                     archive_checksum=checksum,
                     content=parser.get_text(),
                     archive_filename=document.archive_filename,
+                    file_id=file_id,
+                    request_id=request_id
                 )
+
                 newDocument = Document.objects.get(pk=document.pk)
                 if settings.AUDIT_LOG_ENABLED:
                     LogEntry.objects.log_create(
@@ -372,7 +387,7 @@ def update_document_field(document_id):
     try:
         data_ocr_fields = parser.parse_field(document.source_path, mime_type, document.get_public_filename())
 
-        
+
         if parser.get_archive_path():
             with transaction.atomic():
                 oldDocument = Document.objects.get(pk=document.pk)
@@ -392,7 +407,7 @@ def update_document_field(document_id):
                                 if f.get("name") == data_ocr_fields[1]:
                                     mapping_field_user_args = f.get("mapping",[])
                             map_fields = {}
-                  
+
                             for key,value in mapping_field_user_args[0].items():
                                 map_fields[key]=dict_data.get(value)
                             for f in fields:
