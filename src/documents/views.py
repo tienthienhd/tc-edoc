@@ -684,6 +684,11 @@ class DocumentViewSet(
                                         data=payload)
 
             if response.status_code == 200:
+                if response.headers.get('content-type')=='application/json':
+                    return HttpResponse(
+                        response.content,
+                        content_type=response.headers.get('Content-Type',
+                                                          'application/octet-stream'))
                 # Trả về file cho người dùng
                 return HttpResponse(
                     response.content,
