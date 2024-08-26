@@ -195,12 +195,9 @@ export class DocumentService extends AbstractPaperlessService<Document> {
     }
     return url
   }
-  getDownloaDocxdUrl(id: number, original: boolean = false): string {
-    let url = this.getResourceUrl(id, 'download')
-    if (original) {
-      url += '?original=true'
-    }
-    return 'https://world-schools.com/wp-content/uploads/2023/01/IMG-Academy-cover-WS.webp'
+  getDownloadDocxdUrl(id: number, archived_file_name: string): string {
+    let url = this.getResourceUrl(id, 'download_docx')
+    return url
   }
 
   getDownloadExcel(id: number): string {

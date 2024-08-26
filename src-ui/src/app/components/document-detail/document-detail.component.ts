@@ -401,9 +401,9 @@ export class DocumentDetailComponent
             this.documentId,
             true
           )
-          this.downloadOriginalDocxUrl = this.documentsService.getDownloaDocxdUrl(
+          this.downloadOriginalDocxUrl = this.documentsService.getDownloadDocxdUrl(
             this.documentId,
-            true
+            this.title
           )
           this.downloadExcel = this.documentsService.getDownloadExcel(
             this.documentId,
