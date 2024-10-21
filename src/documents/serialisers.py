@@ -32,7 +32,7 @@ from rest_framework.fields import SerializerMethodField
 
 from documents import bulk_edit
 from documents.data_models import DocumentSource
-from documents.models import Approval, Correspondent, Dossier, DossierForm
+from documents.models import Approval, Correspondent, Dossier, DossierForm, Announcement
 from documents.models import CustomField
 from documents.models import CustomFieldInstance
 from documents.models import Document
@@ -1584,6 +1584,23 @@ class ApprovalViewSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 f"status must be one of: {', '.join(valid_statuses)}")
         return status
+
+class AnnouncementSerializer(serializers.ModelSerializer):
+    ctype = serializers.ReadOnlyField(source='ctype.model')
+    ctype_id = serializers.PrimaryKeyRelatedField(source='ctype', queryset=ContentType.objects.all(), write_only=True)
+    name = serializers.SerializerMethodField(read_only=True)
+    def get_name(self, obj):
+        if obj.ctype:
+            model_name = obj.ctype.name
+            model_class = apps.get_model(obj.ctype.app_label, model_name)
+            if model_class == Document:
+                return model_class.objects.get(id=int(obj.object_pk)).title
+            else:
+                return model_class.objects.get(id=int(obj.object_pk)).name
+        return None
+    class Meta:
+        model = Announcement
+        fields = "__all__"
 
 class AcknowledgeTasksViewSerializer(serializers.Serializer):
     tasks = serializers.ListField(

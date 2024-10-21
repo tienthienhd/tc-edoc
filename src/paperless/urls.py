@@ -14,7 +14,9 @@ from django.views.static import serve
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 
-from documents.views import AcknowledgeTasksView, ApprovalUpdateMutipleView, ApprovalViewSet, BulkExportExcelFromFolderView, BulkExportExcelView, DossierFormViewSet, DossierViewSet
+from documents.views import AcknowledgeTasksView, ApprovalUpdateMutipleView, \
+    ApprovalViewSet, BulkExportExcelFromFolderView, BulkExportExcelView, \
+    DossierFormViewSet, DossierViewSet, AnnouncementViewSet
 from documents.views import BulkDownloadView
 from documents.views import BulkEditObjectsView
 from documents.views import BulkEditView
@@ -57,6 +59,7 @@ from paperless_mail.views import MailRuleViewSet
 
 
 api_router = DefaultRouter()
+api_router.register(r"announcements", AnnouncementViewSet)
 api_router.register(r"correspondents", CorrespondentViewSet)
 api_router.register(r"document_types", DocumentTypeViewSet)
 api_router.register(r"documents", UnifiedSearchViewSet)
@@ -86,7 +89,7 @@ api_router.register(r"dossier_forms", DossierFormViewSet)
 api_router.register(r"content_types", ContentTypeViewSet, basename="content_types")
 
 urlpatterns = [
-    
+
     re_path(
         r"^api/",
         include(

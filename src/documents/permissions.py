@@ -57,6 +57,11 @@ def get_groups_with_only_permission(obj, codename):
     return Group.objects.filter(id__in=group_object_perm_group_ids).distinct()
 
 
+def send_permission_notifications(permission, users_to_add, groups_to_add,
+                                  users_to_remove, groups_to_remove):
+    pass
+
+
 def set_permissions_for_object(permissions: list[str], object, merge: bool = False):
     """
     Set permissions for an object. The permissions are given as a list of strings
@@ -120,6 +125,8 @@ def set_permissions_for_object(permissions: list[str], object, merge: bool = Fal
                         group,
                         object,
                     )
+        # Send notification to users and groups
+        send_permission_notifications(permission = permission,users_to_add = users_to_add, groups_to_add = groups_to_add, users_to_remove = users_to_remove, groups_to_remove = groups_to_remove)
 
 
 def get_objects_for_user_owner_aware(user, perms, Model):

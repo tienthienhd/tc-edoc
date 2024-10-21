@@ -111,7 +111,7 @@ from documents.matching import match_storage_paths
 from documents.matching import match_warehouses
 from documents.matching import match_folders
 from documents.matching import match_tags
-from documents.models import Approval, Correspondent, CustomFieldInstance, Dossier, DossierForm
+from documents.models import Approval, Correspondent, CustomFieldInstance, Dossier, DossierForm, Announcement
 from documents.models import CustomField
 from documents.models import Document
 from documents.models import DocumentType
@@ -135,7 +135,10 @@ from documents.permissions import PaperlessObjectPermissions
 from documents.permissions import get_objects_for_user_owner_aware
 from documents.permissions import has_perms_owner_aware
 from documents.permissions import set_permissions_for_object
-from documents.serialisers import AcknowledgeTasksViewSerializer, ApprovalSerializer, ApprovalViewSerializer, DossierFormSerializer, DossierSerializer, ExportDocumentFromFolderSerializer
+from documents.serialisers import AcknowledgeTasksViewSerializer, \
+    ApprovalSerializer, ApprovalViewSerializer, DossierFormSerializer, \
+    DossierSerializer, ExportDocumentFromFolderSerializer, \
+    AnnouncementSerializer
 from documents.serialisers import BulkDownloadSerializer
 from documents.serialisers import BulkEditObjectsSerializer
 from documents.serialisers import BulkEditSerializer
@@ -171,6 +174,75 @@ if settings.AUDIT_LOG_ENABLED:
     from auditlog.models import LogEntry
 
 logger = logging.getLogger("paperless.api")
+
+class AnnouncementViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+
+    serializer_class = AnnouncementSerializer
+
+    # pagination_class = StandardPagination
+
+    def get_queryset(self):
+        queryset = (
+            Announcement.objects.filter(
+            )
+            .order_by("created")
+            .reverse()
+        )
+        # task_id = self.request.query_params.get("")
+        # if task_id is not None:
+        #     queryset = PaperlessTask.objects.filter(task_id=task_id)
+        user = self.request.user
+        document_ids = Document.objects.filter(owner=user).values_list("id")
+        document_ids = [x[0] for x in document_ids]
+        queryset = queryset.filter(object_pk__in=document_ids)
+        return queryset
+
+    model = Announcement
+
+    queryset = Announcement.objects.all()
+
+    # def create(self, request, *args, **kwargs):
+    #     serializer = AnnouncementSerializer(data=request.data)
+    #     existing_announcement = False
+    #     if serializer.is_valid(raise_exception=True):
+    #         serializer.validated_data['submitted_by'] = request.user
+    #
+    #         existing_ = Announcement.objects.filter(
+    #             object_pk=serializer.validated_data.get("object_pk"),
+    #             access_type=serializer.validated_data.get("access_type"),
+    #             ctype=serializer.validated_data.get("ctype"),
+    #             submitted_by=serializer.validated_data.get("submitted_by"),
+    #             status__in=["SUCCESS", "PENDING"]
+    #         )
+    #
+    #         submitted_by_groups = serializer.validated_data.get(
+    #             "submitted_by_group", None)
+    #         group_names = ''
+    #         if submitted_by_groups:
+    #             existing_approval = existing_approval.filter(
+    #                 Q(submitted_by_group__in=submitted_by_groups)
+    #             ).prefetch_related('submitted_by_group').values_list(
+    #                 'submitted_by_group__name', flat=True)
+    #             group_names = ', '.join(group for group in existing_approval)
+    #
+    #         if existing_approval:
+    #             return Response({'status': 400,
+    #                              'message': f'{group_names} already exists'},
+    #                             status=status.HTTP_400_BAD_REQUEST)
+    #
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #
+    # def update(self, request, *args, **kwargs):
+    #     response = super().update(request, *args, **kwargs)
+    #
+    #     approval_updated.send(
+    #         sender=self.__class__,
+    #         approval=self.get_object(),
+    #     )
+    #
+    #     return response
 
 
 class IndexView(TemplateView):
@@ -2262,20 +2334,16 @@ class WarehouseViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             ordering = request.query_params.get('ordering', None)
-            print('ordering',ordering)
             if ordering == 'document_count':
-                print('-document_count')
                 sorted_data = sorted(serializer.data,
                                      key=lambda x: x['document_count'])
 
             elif ordering == '-document_count':
-                print('+document_count')
                 sorted_data = sorted(serializer.data,
                                      key=lambda x: x['document_count'],
                                      reverse=True)
             else:
                 sorted_data = serializer.data
-            print(sorted_data)
             return self.get_paginated_response(sorted_data)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
@@ -2433,7 +2501,6 @@ class FolderViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             ordering = request.query_params.get('ordering', None)
-            print('ordering',ordering)
             if ordering == 'document_count':
                 sorted_data = sorted(serializer.data,
                                      key=lambda x: x['document_count'])
@@ -2444,7 +2511,6 @@ class FolderViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
                                      reverse=True)
             else:
                 sorted_data = serializer.data
-            print(sorted_data)
             return self.get_paginated_response(sorted_data)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
