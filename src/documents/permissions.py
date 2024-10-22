@@ -11,6 +11,7 @@ from guardian.shortcuts import remove_perm
 from rest_framework.permissions import BasePermission
 from rest_framework.permissions import DjangoObjectPermissions
 
+from documents.notifications import alert_users_of_permission_changes
 
 class PaperlessObjectPermissions(DjangoObjectPermissions):
     """
@@ -56,13 +57,8 @@ def get_groups_with_only_permission(obj, codename):
     )
     return Group.objects.filter(id__in=group_object_perm_group_ids).distinct()
 
-
-def send_permission_notifications(permission, users_to_add, groups_to_add,
-                                  users_to_remove, groups_to_remove):
-    pass
-
-
-def set_permissions_for_object(permissions: list[str], object, merge: bool = False):
+def set_permissions_for_object(permissions: list[str], object,
+                               merge: bool = False, **kwargs):
     """
     Set permissions for an object. The permissions are given as a list of strings
     in the format "action_modelname", e.g. "view_document".
@@ -85,6 +81,7 @@ def set_permissions_for_object(permissions: list[str], object, merge: bool = Fal
             if not merge
             else User.objects.none()
         )
+        users_to_add_last = list(users_to_add.exclude(id__in=users_to_remove))
         if len(users_to_add) > 0 and len(users_to_remove) > 0:
             users_to_remove = users_to_remove.exclude(id__in=users_to_add)
         if len(users_to_remove) > 0:
@@ -101,7 +98,8 @@ def set_permissions_for_object(permissions: list[str], object, merge: bool = Fal
                         object,
                     )
         # groups
-        groups_to_add = Group.objects.filter(id__in=permissions[action]["groups"])
+        groups_to_add = Group.objects.filter(
+            id__in=permissions[action]["groups"])
         groups_to_remove = (
             get_groups_with_only_permission(
                 object,
@@ -110,6 +108,8 @@ def set_permissions_for_object(permissions: list[str], object, merge: bool = Fal
             if not merge
             else Group.objects.none()
         )
+        groups_to_add_last = list(
+            groups_to_add.exclude(id__in=groups_to_remove))
         if len(groups_to_add) > 0 and len(groups_to_remove) > 0:
             groups_to_remove = groups_to_remove.exclude(id__in=groups_to_add)
         if len(groups_to_remove) > 0:
@@ -126,7 +126,12 @@ def set_permissions_for_object(permissions: list[str], object, merge: bool = Fal
                         object,
                     )
         # Send notification to users and groups
-        send_permission_notifications(permission = permission,users_to_add = users_to_add, groups_to_add = groups_to_add, users_to_remove = users_to_remove, groups_to_remove = groups_to_remove)
+        alert_users_of_permission_changes(action=action, object=object,
+                                      users_to_add=users_to_add_last,
+                                      groups_to_add=groups_to_add_last,
+                                      users_to_remove=users_to_remove,
+                                      groups_to_remove=groups_to_remove,
+                                      **kwargs)
 
 
 def get_objects_for_user_owner_aware(user, perms, Model):
@@ -143,4 +148,5 @@ def get_objects_for_user_owner_aware(user, perms, Model):
 
 def has_perms_owner_aware(user, perms, obj):
     checker = ObjectPermissionChecker(user)
-    return obj.owner is None or obj.owner == user or checker.has_perm(perms, obj)
+    return obj.owner is None or obj.owner == user or checker.has_perm(perms,
+                                                                      obj)

@@ -166,8 +166,8 @@ class SetPermissionsMixin:
                     )
         return permissions_dict
 
-    def _set_permissions(self, permissions, object):
-        set_permissions_for_object(permissions, object)
+    def _set_permissions(self, permissions, object, user_submit):
+        set_permissions_for_object(permissions, object, user_submit=user_submit)
 
 
 class SerializerWithPerms(serializers.Serializer):
@@ -272,12 +272,12 @@ class OwnedObjectSerializer(
             permissions = validated_data.pop("set_permissions")
         instance = super().create(validated_data)
         if permissions is not None:
-            self._set_permissions(permissions, instance)
+            self._set_permissions(permissions, instance, self.user)
         return instance
 
     def update(self, instance, validated_data):
         if "set_permissions" in validated_data:
-            self._set_permissions(validated_data["set_permissions"], instance)
+            self._set_permissions(validated_data["set_permissions"], instance, self.user)
         if "owner" in validated_data and "name" in self.Meta.fields:
             name = validated_data.get("name", instance.name)
             not_unique = (
