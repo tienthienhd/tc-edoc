@@ -189,17 +189,14 @@ class AnnouncementViewSet(ModelViewSet):
 
     serializer_class = AnnouncementSerializer
 
-    # pagination_class = StandardPagination
+    pagination_class = StandardPagination
 
     def get_queryset(self):
         queryset = Announcement.objects.filter().order_by("created").reverse()
-        # task_id = self.request.query_params.get("")
-        # if task_id is not None:
-        #     queryset = PaperlessTask.objects.filter(task_id=task_id)
         user = self.request.user
-        document_ids = Document.objects.filter(owner=user).values_list("id")
-        document_ids = [x[0] for x in document_ids]
-        queryset = queryset.filter(object_pk__in=document_ids)
+        # document_ids = Document.objects.filter(owner=user).values_list("id")
+        # document_ids = [x[0] for x in document_ids]
+        queryset = queryset.filter(received_by=user)
         return queryset
 
     model = Announcement

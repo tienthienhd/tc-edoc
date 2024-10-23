@@ -963,7 +963,7 @@ OCR_PAGES = __get_optional_int("PAPERLESS_OCR_PAGES")
 
 # The default language that tesseract will attempt to use when parsing
 # documents.  It should be a 3-letter language code consistent with ISO 639.
-OCR_LANGUAGE = os.getenv("PAPERLESS_OCR_LANGUAGE", "via")
+OCR_LANGUAGE = os.getenv("PAPERLESS_OCR_LANGUAGE", "vie")
 
 # OCRmyPDF --output-type options are available.
 OCR_OUTPUT_TYPE = os.getenv("PAPERLESS_OCR_OUTPUT_TYPE", "pdfa")

@@ -210,15 +210,6 @@ class Announcement(models.Model):
         related_name=_("submitted_by"),
     )
 
-    submitted_by_group = models.ForeignKey(
-        Group,
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("submitted_by_group"),
-        related_name=_("submitted_by_group"),
-    )
-
     received_by = models.ForeignKey(
         User,
         blank=True,
