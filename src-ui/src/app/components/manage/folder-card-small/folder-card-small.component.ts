@@ -34,12 +34,11 @@ export class FolderCardSmallComponent extends ComponentWithPermissions {
     private documentService: DocumentService,
     // public settingsService: SettingsService,
     private modalService: NgbModal,
-    private toastService: ToastService,
+    private toastService: ToastService
     // public permissionType: PermissionType,
   ) {
     super()
   }
-
 
   @Input()
   selected = false
@@ -50,18 +49,18 @@ export class FolderCardSmallComponent extends ComponentWithPermissions {
 
   @Output()
   toggleSelected = new EventEmitter()
-  @Output() 
-  filterDocuments = new EventEmitter<any>();
-  @Output() 
-  goToFolder = new EventEmitter<any>();
-  @Output() 
-  openEditDialog = new EventEmitter<any>();
-  @Output() 
-  openDeleteDialog = new EventEmitter<any>();
-  @Output() 
-  userCanEdit=new EventEmitter<any>();
-  @Output() 
-  userCanDelete=new EventEmitter<any>();
+  @Output()
+  filterDocuments = new EventEmitter<any>()
+  @Output()
+  goToFolder = new EventEmitter<any>()
+  @Output()
+  openEditDialog = new EventEmitter<any>()
+  @Output()
+  openDeleteDialog = new EventEmitter<any>()
+  @Output()
+  userCanEdit = new EventEmitter<any>()
+  @Output()
+  userCanDelete = new EventEmitter<any>()
   // @Input() permissionType: PermissionType;
   @Input()
   folder: Folder
@@ -71,21 +70,16 @@ export class FolderCardSmallComponent extends ComponentWithPermissions {
 
   @Output()
   clickTag = new EventEmitter<number>()
-  ColorTheme = ColorTheme;
+  ColorTheme = ColorTheme
 
   moreTags: number = null
 
-  
-
-
   mouseOnPreview = false
   popoverHidden = true
-  
+
   // getIsThumbInverted() {
   //   return this.settingsService.get(SETTINGS_KEYS.DARK_MODE_THUMB_INVERTED)
   // }
-
-  
 
   get privateName() {
     return $localize`Private`
@@ -112,7 +106,6 @@ export class FolderCardSmallComponent extends ComponentWithPermissions {
     //   submitted_by_group: [],
     //   name: undefined,
     // }
-
     // const modal = this.modalService.open(ApprovalEditDialogComponent)
     // modal.componentInstance.dialogMode = EditDialogMode.CREATE
     // modal.componentInstance.object = this.documentApproval

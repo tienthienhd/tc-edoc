@@ -41,10 +41,9 @@ import { ShareLink } from 'src/app/data/share-link'
 import { environment } from 'src/environments/environment'
 import { Router } from '@angular/router'
 
-
 import { DocumentService } from 'src/app/services/rest/document.service'
 import { saveAs } from 'file-saver'
-import { NgxBootstrapIconsModule, ColorTheme } from 'ngx-bootstrap-icons';
+import { NgxBootstrapIconsModule, ColorTheme } from 'ngx-bootstrap-icons'
 import { DossierService } from 'src/app/services/rest/dossier.service'
 import { Dossier } from 'src/app/data/dossier'
 export interface ManagementListColumn {
@@ -60,9 +59,9 @@ export interface ManagementListColumn {
 @Directive()
 export abstract class CustomDossierListComponent<T extends ObjectWithId>
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   [x: string]: any
-  
 
   constructor(
     private service: AbstractNameFilterService<T>,
@@ -78,7 +77,6 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
     public extraColumns: ManagementListColumn[],
     public dossierService: DossierService,
     public isForm: boolean
-    
   ) {
     super()
   }
@@ -106,7 +104,7 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
   public dossier: Dossier[] = []
   public dossierPath: Dossier[] = []
   public documentService: DocumentService
-  public ColorTheme : ColorTheme
+  public ColorTheme: ColorTheme
   public canCreate: boolean = false
 
   ngOnInit(): void {
@@ -115,7 +113,7 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
       this.displayMode = localStorage.getItem('dossier-list:displayMode')
     }
     this.reloadData()
-    
+
     this.nameFilterDebounce = new Subject<string>()
 
     this.nameFilterDebounce
@@ -142,13 +140,14 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
     } else if (o.matching_algorithm == MATCH_NONE) {
       return $localize`None`
     } else if (o.match && o.match.length > 0) {
-      return `${MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
-        }: ${o.match}`
+      return `${
+        MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
+      }: ${o.match}`
     } else {
       return '-'
     }
   }
-  
+
   // exportToExcelSelected() {
   //   this.awaitingDownload = true
   //   this.dossierService
@@ -161,7 +160,7 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
   //       this.awaitingDownload = false
   //     })
   // }
-  
+
   userCanEditAll(): boolean {
     let canEdit: boolean = this.permissionService.currentUserCan(
       PermissionAction.Change,
@@ -187,27 +186,21 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
 
   reloadData() {
     this.selectedObjects.clear()
-    if (this.id){
+    if (this.id) {
       let listDossierPath
-      this.dossierService.getDossierPath(this.id).subscribe(
-        
-        (dossier) => {
-          listDossierPath = dossier
-          // console.log(listDossierPath)
-          this.dossierPath = listDossierPath?.results
-        },)
-      this.dossierService.get(this.id).subscribe(
-        (dossier)=>{
-          if (dossier?.type=='DOCUMENT') 
-            this.canCreate=true
-          else{
-            this.canCreate=false
-          }
+      this.dossierService.getDossierPath(this.id).subscribe((dossier) => {
+        listDossierPath = dossier
+        // console.log(listDossierPath)
+        this.dossierPath = listDossierPath?.results
+      })
+      this.dossierService.get(this.id).subscribe((dossier) => {
+        if (dossier?.type == 'DOCUMENT') this.canCreate = true
+        else {
+          this.canCreate = false
         }
-      )
-
+      })
     }
-    // let listFolderPath 
+    // let listFolderPath
     // if (this.id){
     //   this.dossierService.getFolderPath(this.id).subscribe(
     //     (dossier) => {
@@ -215,7 +208,7 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
     //       // console.log(listFolderPath)
     //       this.dossier = listFolderPath.results
     //     },)
-      
+
     // }
     // console.log(this.dossier)
     this.isLoading = true
@@ -238,10 +231,9 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
       })
   }
 
-
   openCreateDialog() {
     var activeModal = this.modalService.open(this.editDialogComponent, {
-      size:'xl',
+      size: 'xl',
       backdrop: 'static',
     })
     activeModal.componentInstance.object = { parent_dossier: this.id }
@@ -259,11 +251,10 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
       )
     })
   }
-  
 
   openEditDialog(object: T) {
     var activeModal = this.modalService.open(this.editDialogComponent, {
-      size:'xl',
+      size: 'xl',
       backdrop: 'static',
     })
     activeModal.componentInstance.object = object
@@ -289,7 +280,7 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
       { rule_type: this.filterRuleType, value: object.id.toString() },
     ])
   }
-  isSelected(object: T){
+  isSelected(object: T) {
     return this.selectedObjects.has(object.id)
   }
   saveDisplayMode() {
@@ -381,8 +372,7 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
       ? this.selectedObjects.delete(object.id)
       : this.selectedObjects.add(object.id)
   }
-  selectAll(){
-    
+  selectAll() {
     this.selectedObjects = new Set(this.data.map((o) => o.id))
   }
 
@@ -452,5 +442,4 @@ export abstract class CustomDossierListComponent<T extends ObjectWithId>
         })
     })
   }
-
 }

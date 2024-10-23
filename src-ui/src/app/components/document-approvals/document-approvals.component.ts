@@ -33,7 +33,7 @@ export class DocumentApprovalsComponent extends ComponentWithPermissions {
 
   @Output()
   updated: EventEmitter<DocumentApproval[]> = new EventEmitter()
-  
+
   users: User[]
   groups: Group[]
 
@@ -54,11 +54,13 @@ export class DocumentApprovalsComponent extends ComponentWithPermissions {
         this.users = users.results
       },
     })
-   
   }
 
   addApproval() {
-    const approval: string = this.approvalForm.get('newApproval').value.toString().trim()
+    const approval: string = this.approvalForm
+      .get('newApproval')
+      .value.toString()
+      .trim()
     if (approval.length == 0) {
       this.newApprovalError = true
       return
@@ -80,32 +82,38 @@ export class DocumentApprovalsComponent extends ComponentWithPermissions {
   }
 
   updateApproval(approvalId: number) {
-    this.approvalsService.updateApproval(this.documentId, approvalId).subscribe({
-      next: (result) => {
-        this.approvals = result
-        this.networkActive = false
-        this.updated.emit(this.approvals)
-      },
-      error: (e) => {
-        this.networkActive = false
-        this.toastService.showError($localize`Error deleting approval`, e)
-      },
-    })
+    this.approvalsService
+      .updateApproval(this.documentId, approvalId)
+      .subscribe({
+        next: (result) => {
+          this.approvals = result
+          this.networkActive = false
+          this.updated.emit(this.approvals)
+        },
+        error: (e) => {
+          this.networkActive = false
+          this.toastService.showError($localize`Error deleting approval`, e)
+        },
+      })
   }
 
   displayName(approval: DocumentApproval): string {
-    if (!approval.submitted_by) return '';
-      if (!approval.submitted_by) return ''
-      const user_id = typeof approval.submitted_by === 'number' ? approval.submitted_by : approval.submitted_by
-      const user = this.users?.find((u) => u.id === user_id)
-      if (!user) return ''
-      return user.username
-  }
-  
-  displayGroup(approval: DocumentApproval): string {
-    if (!approval.submitted_by_group) return ''
-    const nameArray = this.groups?.filter(obj => approval.submitted_by_group.includes(obj.id)).map(obj => obj.name);
-    return nameArray?.toString()
+    if (!approval.submitted_by) return ''
+    if (!approval.submitted_by) return ''
+    const user_id =
+      typeof approval.submitted_by === 'number'
+        ? approval.submitted_by
+        : approval.submitted_by
+    const user = this.users?.find((u) => u.id === user_id)
+    if (!user) return ''
+    return user.username
   }
 
+  displayGroup(approval: DocumentApproval): string {
+    if (!approval.submitted_by_group) return ''
+    const nameArray = this.groups
+      ?.filter((obj) => approval.submitted_by_group.includes(obj.id))
+      .map((obj) => obj.name)
+    return nameArray?.toString()
+  }
 }

@@ -14,8 +14,9 @@ import { CustomFieldsService } from 'src/app/services/rest/custom-fields.service
   styleUrls: ['./dossier-instance-customfield-form-edit-dialog.component.scss'],
 })
 export class DossierCustomFieldFormEditDialogComponent
-extends EditDialogComponent<Dossier>
-  implements OnInit {
+  extends EditDialogComponent<Dossier>
+  implements OnInit
+{
   // groups: Group[]
   passwordIsSet: boolean = false
 
@@ -27,7 +28,6 @@ extends EditDialogComponent<Dossier>
   ) {
     super(service, activeModal, userService, settingsService)
   }
-
 
   ngOnInit(): void {
     super.ngOnInit()

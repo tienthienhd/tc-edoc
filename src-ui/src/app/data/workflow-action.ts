@@ -4,7 +4,7 @@ export enum WorkflowActionType {
   Assignment = 1,
   Removal = 2,
   Assignment_with_approval = 3,
-  Removal_with_approval = 4
+  Removal_with_approval = 4,
 }
 export interface WorkflowAction extends ObjectWithId {
   type: WorkflowActionType
@@ -20,8 +20,6 @@ export interface WorkflowAction extends ObjectWithId {
   assign_correspondent?: number // Correspondent.id
 
   assign_storage_path?: number // StoragePath.id
-
-  
 
   assign_owner?: number // User.id
 

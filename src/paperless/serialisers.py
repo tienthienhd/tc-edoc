@@ -23,10 +23,12 @@ class ObfuscatedUserPasswordField(serializers.Field):
     def to_internal_value(self, data):
         return data
 
+
 class ContentTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentType
         fields = "__all__"
+
 
 class UserSerializer(serializers.ModelSerializer):
     password = ObfuscatedUserPasswordField(required=False)
@@ -153,7 +155,7 @@ class ApplicationConfigurationSerializer(serializers.ModelSerializer):
     user_args = serializers.JSONField(binary=True, allow_null=True)
     api_ocr = serializers.JSONField(binary=True, allow_null=True)
     api_ocr_field = serializers.JSONField(binary=True, allow_null=True)
-    
+
     def run_validation(self, data):
         # Empty strings treated as None to avoid unexpected behavior
         if "user_args" in data and data["user_args"] == "":

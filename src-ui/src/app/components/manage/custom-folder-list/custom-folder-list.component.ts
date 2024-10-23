@@ -44,7 +44,7 @@ import { Folder } from 'src/app/data/folder'
 import { FolderService } from 'src/app/services/rest/folder.service'
 import { DocumentService } from 'src/app/services/rest/document.service'
 import { saveAs } from 'file-saver'
-import { NgxBootstrapIconsModule, ColorTheme } from 'ngx-bootstrap-icons';
+import { NgxBootstrapIconsModule, ColorTheme } from 'ngx-bootstrap-icons'
 export interface ManagementListColumn {
   key: string
 
@@ -58,9 +58,9 @@ export interface ManagementListColumn {
 @Directive()
 export abstract class CustomFolderListComponent<T extends ObjectWithId>
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   [x: string]: any
-
 
   constructor(
     private service: AbstractNameFilterService<T>,
@@ -74,8 +74,7 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
     public typeNamePlural: string,
     public permissionType: PermissionType,
     public extraColumns: ManagementListColumn[],
-    public folderService: FolderService,
-
+    public folderService: FolderService
   ) {
     super()
   }
@@ -102,9 +101,8 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
   public folderPath: Folder[] = []
   public documentService: DocumentService
   public folderCut: number[] = []
-  public isFolderCutClicked = false;
-  public preFolder: number = null;
-
+  public isFolderCutClicked = false
+  public preFolder: number = null
 
   ngOnInit(): void {
     if (localStorage.getItem('folder-list:displayMode') != null) {
@@ -138,8 +136,9 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
     } else if (o.matching_algorithm == MATCH_NONE) {
       return $localize`None`
     } else if (o.match && o.match.length > 0) {
-      return `${MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
-        }: ${o.match}`
+      return `${
+        MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
+      }: ${o.match}`
     } else {
       return '-'
     }
@@ -150,9 +149,7 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
   exportToExcelSelected() {
     this.awaitingDownload = true
     this.folderService
-      .bulkExportExcels(
-        Array.from(this.selectedObjects)
-      )
+      .bulkExportExcels(Array.from(this.selectedObjects))
       .pipe(first())
       .subscribe((result: any) => {
         saveAs(result, 'download.xlsx')
@@ -184,17 +181,15 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
   }
 
   reloadData() {
-    if (this.id!=this.preFolder)
-      this.page=1
+    if (this.id != this.preFolder) this.page = 1
     this.selectedObjects.clear()
     let listFolderPath
-    if (this.id){
-      this.folderService.getFolderPath(this.id).subscribe(
-        (folder) => {
-          listFolderPath = folder;
-          // console.log(listFolderPath)
-          this.folderPath = listFolderPath.results
-        },)
+    if (this.id) {
+      this.folderService.getFolderPath(this.id).subscribe((folder) => {
+        listFolderPath = folder
+        // console.log(listFolderPath)
+        this.folderPath = listFolderPath.results
+      })
     }
     // console.log(this.folderPath)
     this.isLoading = true
@@ -214,9 +209,8 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
         this.collectionSize = c.count
         this.isLoading = false
       })
-    this.preFolder=this.id
+    this.preFolder = this.id
   }
-
 
   openCreateDialog() {
     var activeModal = this.modalService.open(this.editDialogComponent, {
@@ -237,7 +231,6 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
       )
     })
   }
-
 
   openEditDialog(object: T) {
     var activeModal = this.modalService.open(this.editDialogComponent, {
@@ -266,7 +259,7 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
       { rule_type: this.filterRuleType, value: object.id.toString() },
     ])
   }
-  isSelected(object: T){
+  isSelected(object: T) {
     return this.selectedObjects.has(object.id)
   }
   saveDisplayMode() {
@@ -358,8 +351,7 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
       ? this.selectedObjects.delete(object.id)
       : this.selectedObjects.add(object.id)
   }
-  selectAll(){
-
+  selectAll() {
     this.selectedObjects = new Set(this.data.map((o) => o.id))
   }
 
@@ -434,7 +426,7 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
 
   cutFolder() {
     this.folderCut = Array.from(this.selectedObjects)
-    this.isFolderCutClicked = true;
+    this.isFolderCutClicked = true
     return this.folderCut
   }
 
@@ -442,29 +434,26 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
     this.reloadData()
 
     if (this.router.url.includes('/folders/')) {
-      this.id = this.route.snapshot.params['id'];
+      this.id = this.route.snapshot.params['id']
       this.router.navigate(['/folders/', this.id], {
-        queryParams: {}
-      });
-    }
-
-    else {
+        queryParams: {},
+      })
+    } else {
       this.router.navigate(['/folders/'], {
-        queryParams: {}
-      });
+        queryParams: {},
+      })
     }
   }
-  setCutFolder(){
+  setCutFolder() {
     let folderIds
-    this.route.queryParams.subscribe(params => {
-      folderIds = params['folderIds'];
-    });
+    this.route.queryParams.subscribe((params) => {
+      folderIds = params['folderIds']
+    })
 
-    const parts = folderIds.split(',');
-    this.folderCut = parts.map(part => parseInt(part, 10));
+    const parts = folderIds.split(',')
+    this.folderCut = parts.map((part) => parseInt(part, 10))
     return this.folderCut
   }
-
 
   update() {
     this.id = this.route.snapshot.params['id']
@@ -492,15 +481,13 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
 
             if (this.router.url.includes('/folders/')) {
               this.router.navigate(['/folders/', this.id], {
-                queryParams: {}
-              });
-            }
-            else {
+                queryParams: {},
+              })
+            } else {
               this.router.navigate(['/folders/'], {
-                queryParams: {}
-              });
+                queryParams: {},
+              })
             }
-
           },
           error: (error) => {
             modal.componentInstance.buttonsEnabled = true
@@ -512,5 +499,4 @@ export abstract class CustomFolderListComponent<T extends ObjectWithId>
         })
     })
   }
-
 }

@@ -30,7 +30,7 @@ export class UploadDocumentsService {
 
   uploadFiles(files: FileList, payload) {
     for (let index = 0; index < files.length; index++) {
-      this.uploadFile(files.item(index),payload)
+      this.uploadFile(files.item(index), payload)
     }
   }
 
@@ -38,15 +38,13 @@ export class UploadDocumentsService {
     // console.log("payload",payload)
     let formData = new FormData()
     formData.append('document', file, file.name)
-    if (payload?.folder!='' && payload?.folder!=undefined){
-      formData.append('folder',payload.folder)
+    if (payload?.folder != '' && payload?.folder != undefined) {
+      formData.append('folder', payload.folder)
     }
-    if (payload?.dossiers!='' && payload?.dossiers!=undefined){
-      formData.append('dossier',payload.dossiers)
-
-
+    if (payload?.dossiers != '' && payload?.dossiers != undefined) {
+      formData.append('dossier', payload.dossiers)
     }
-      
+
     let status = this.consumerStatusService.newFileUpload(file.name)
 
     status.message = $localize`Connecting...`

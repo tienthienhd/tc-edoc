@@ -174,7 +174,8 @@ const DEFAULT_TEXT_FILTER_MODIFIER_OPTIONS = [
 })
 export class FilterEditorComponent
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   generateFilterName() {
     if (this.filterRules.length == 1) {
       let rule = this.filterRules[0]
@@ -336,7 +337,6 @@ export class FilterEditorComponent
   warehouseSelectionModel = new FilterableDropdownSelectionModel()
   shelfSelectionModel = new FilterableDropdownSelectionModel()
   boxcaseSelectionModel = new FilterableDropdownSelectionModel()
-
 
   dateCreatedBefore: string
   dateCreatedAfter: string
@@ -792,62 +792,50 @@ export class FilterEditorComponent
     if (this.warehouseSelectionModel.isNoneSelected()) {
       filterRules.push({ rule_type: FILTER_WAREHOUSE, value: null })
     } else {
-      this.warehouseSelectionModel
-        .getSelectedItems()
-        .forEach((warehouse) => {
-          filterRules.push({
-            rule_type: FILTER_HAS_WAREHOUSE_ANY,
-            value: warehouse.id?.toString(),
-          })
+      this.warehouseSelectionModel.getSelectedItems().forEach((warehouse) => {
+        filterRules.push({
+          rule_type: FILTER_HAS_WAREHOUSE_ANY,
+          value: warehouse.id?.toString(),
         })
-      this.warehouseSelectionModel
-        .getExcludedItems()
-        .forEach((warehouse) => {
-          filterRules.push({
-            rule_type: FILTER_DOES_NOT_HAVE_WAREHOUSE,
-            value: warehouse.id?.toString(),
-          })
+      })
+      this.warehouseSelectionModel.getExcludedItems().forEach((warehouse) => {
+        filterRules.push({
+          rule_type: FILTER_DOES_NOT_HAVE_WAREHOUSE,
+          value: warehouse.id?.toString(),
         })
+      })
     }
     if (this.shelfSelectionModel.isNoneSelected()) {
       filterRules.push({ rule_type: FILTER_CUSTOM_SHELF, value: null })
     } else {
-      this.shelfSelectionModel
-        .getSelectedItems()
-        .forEach((shelf) => {
-          filterRules.push({
-            rule_type: FILTER_HAS_CUSTOM_SHELF_ANY,
-            value: shelf.id?.toString(),
-          })
+      this.shelfSelectionModel.getSelectedItems().forEach((shelf) => {
+        filterRules.push({
+          rule_type: FILTER_HAS_CUSTOM_SHELF_ANY,
+          value: shelf.id?.toString(),
         })
-      this.shelfSelectionModel
-        .getExcludedItems()
-        .forEach((shelf) => {
-          filterRules.push({
-            rule_type: FILTER_DOES_NOT_HAVE_CUSTOM_SHELF,
-            value: shelf.id?.toString(),
-          })
+      })
+      this.shelfSelectionModel.getExcludedItems().forEach((shelf) => {
+        filterRules.push({
+          rule_type: FILTER_DOES_NOT_HAVE_CUSTOM_SHELF,
+          value: shelf.id?.toString(),
         })
+      })
     }
     if (this.boxcaseSelectionModel.isNoneSelected()) {
       filterRules.push({ rule_type: FILTER_BOX, value: null })
     } else {
-      this.boxcaseSelectionModel
-        .getSelectedItems()
-        .forEach((box) => {
-          filterRules.push({
-            rule_type: FILTER_HAS_BOX_ANY,
-            value: box.id?.toString(),
-          })
+      this.boxcaseSelectionModel.getSelectedItems().forEach((box) => {
+        filterRules.push({
+          rule_type: FILTER_HAS_BOX_ANY,
+          value: box.id?.toString(),
         })
-      this.boxcaseSelectionModel
-        .getExcludedItems()
-        .forEach((box) => {
-          filterRules.push({
-            rule_type: FILTER_DOES_NOT_HAVE_BOX,
-            value: box.id?.toString(),
-          })
+      })
+      this.boxcaseSelectionModel.getExcludedItems().forEach((box) => {
+        filterRules.push({
+          rule_type: FILTER_DOES_NOT_HAVE_BOX,
+          value: box.id?.toString(),
         })
+      })
     }
     if (this.storagePathSelectionModel.isNoneSelected()) {
       filterRules.push({ rule_type: FILTER_STORAGE_PATH, value: null })
@@ -919,9 +907,10 @@ export class FilterEditorComponent
       let existingRuleArgs = existingRule?.value.split(',')
       if (this.dateCreatedRelativeDate !== null) {
         queryArgs.push(
-          `created:[${RELATIVE_DATE_QUERYSTRINGS.find(
-            (qS) => qS.relativeDate == this.dateCreatedRelativeDate
-          ).dateQuery
+          `created:[${
+            RELATIVE_DATE_QUERYSTRINGS.find(
+              (qS) => qS.relativeDate == this.dateCreatedRelativeDate
+            ).dateQuery
           }]`
         )
         if (existingRule) {
@@ -932,9 +921,10 @@ export class FilterEditorComponent
       }
       if (this.dateAddedRelativeDate !== null) {
         queryArgs.push(
-          `added:[${RELATIVE_DATE_QUERYSTRINGS.find(
-            (qS) => qS.relativeDate == this.dateAddedRelativeDate
-          ).dateQuery
+          `added:[${
+            RELATIVE_DATE_QUERYSTRINGS.find(
+              (qS) => qS.relativeDate == this.dateAddedRelativeDate
+            ).dateQuery
           }]`
         )
         if (existingRule) {
@@ -1009,12 +999,9 @@ export class FilterEditorComponent
       selectionData?.selected_correspondents ?? null
     this.storagePathDocumentCounts =
       selectionData?.selected_storage_paths ?? null
-    this.warehouseDocumentCounts =
-      selectionData?.selected_warehouses ?? null
-    this.shelfDocumentCounts =
-      selectionData?.selected_shelfs ?? null
-    this.boxcaseDocumentCounts =
-      selectionData?.selected_boxcases ?? null
+    this.warehouseDocumentCounts = selectionData?.selected_warehouses ?? null
+    this.shelfDocumentCounts = selectionData?.selected_shelfs ?? null
+    this.boxcaseDocumentCounts = selectionData?.selected_boxcases ?? null
   }
 
   rulesModified: boolean = false
@@ -1074,7 +1061,7 @@ export class FilterEditorComponent
       // this.warehouseService
       //   .listAll(null, null, { type__iexact: 'Warehouse' })
       //   .subscribe((result) => (this.warehouses = result.results))
-        
+
       // this.warehouseService
       //   .listAll(null, null, { type__iexact: 'Shelf' })
       //   .subscribe((result) => (this.shelfs = result.results))
@@ -1082,15 +1069,21 @@ export class FilterEditorComponent
       //   .listAll(null, null, { type__iexact: 'Boxcase' })
       //   .subscribe((result) => (this.boxcases = result.results))
       // this.warehouseService.clearCache()
-      this.warehouseService.list(1,null,null,true,{type__iexact:"Warehouse"})
-      .subscribe((result) => {this.warehouses = result.results;
-      })
-      this.warehouseService.list(1,null,null,true,{type__iexact:"Shelf"})
-      .subscribe((result) => {this.shelfs = result.results;
-      })
-      this.warehouseService.list(1,null,null,true,{type__iexact:"Boxcase"})
-      .subscribe((result) => {this.boxcases = result.results;
-      })
+      this.warehouseService
+        .list(1, null, null, true, { type__iexact: 'Warehouse' })
+        .subscribe((result) => {
+          this.warehouses = result.results
+        })
+      this.warehouseService
+        .list(1, null, null, true, { type__iexact: 'Shelf' })
+        .subscribe((result) => {
+          this.shelfs = result.results
+        })
+      this.warehouseService
+        .list(1, null, null, true, { type__iexact: 'Boxcase' })
+        .subscribe((result) => {
+          this.boxcases = result.results
+        })
       // this.warehouseService
       //   .listAll()
       //   .subscribe((result) => (this.warehouses = result.results))

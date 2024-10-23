@@ -4,7 +4,6 @@ import { Observable } from 'rxjs'
 import { AbstractNameFilterService } from './abstract-name-filter-service'
 import { DossierForm } from 'src/app/data/dossier-form'
 
-
 @Injectable({
   providedIn: 'root',
 })

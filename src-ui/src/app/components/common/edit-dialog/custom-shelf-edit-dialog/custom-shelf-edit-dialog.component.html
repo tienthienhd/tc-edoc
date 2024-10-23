@@ -9,7 +9,7 @@
   </div>
   <div class="modal-body">
     <pngx-input-text i18n-title title="Name" formControlName="name" [error]="error?.name" autocomplete="off"></pngx-input-text>
-  
+
     <div *ngIf="getCheckCreate()">
      <label  i18n>Warehouse</label>
      <select id="parentWarehouse" class="form-select" formControlName="parent_warehouse"  i18n-title>
@@ -18,7 +18,7 @@
   </option>
 </select>
   </div>
-   
+
       <br>
     <!-- <pngx-input-select i18n-title title="Parent Warehouse" formControlName="parent_warehouse" [error]="error?.parent_warehouse" autocomplete="off"></pngx-input-select>
     <pngx-input-select i18n-title title="Matching algorithm" [items]="getMatchingAlgorithms()" formControlName="matching_algorithm"></pngx-input-select>
@@ -39,5 +39,3 @@
     <button type="submit" class="btn btn-primary" i18n [disabled]="networkActive">Save</button>
   </div>
 </form>
-
-

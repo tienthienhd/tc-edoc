@@ -7,15 +7,15 @@ from documents.models import CustomField
 from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Folder
 from documents.models import Note
 from documents.models import PaperlessTask
 from documents.models import SavedView
 from documents.models import SavedViewFilterRule
 from documents.models import ShareLink
 from documents.models import StoragePath
-from documents.models import Warehouse
-from documents.models import Folder
 from documents.models import Tag
+from documents.models import Warehouse
 
 if settings.AUDIT_LOG_ENABLED:
     from auditlog.admin import LogEntryAdmin
@@ -40,15 +40,25 @@ class DocumentTypeAdmin(GuardedModelAdmin):
     list_filter = ("matching_algorithm",)
     list_editable = ("match", "matching_algorithm")
 
+
 class WarehouseAdmin(GuardedModelAdmin):
-    list_display = ("name", "type", "path", "parent_warehouse", "match", "matching_algorithm")
+    list_display = (
+        "name",
+        "type",
+        "path",
+        "parent_warehouse",
+        "match",
+        "matching_algorithm",
+    )
     list_filter = ("matching_algorithm",)
     list_editable = ("match", "matching_algorithm")
+
 
 class FolderAdmin(GuardedModelAdmin):
     list_display = ("name", "path", "parent_folder", "match", "matching_algorithm")
     list_filter = ("matching_algorithm",)
     list_editable = ("match", "matching_algorithm")
+
 
 class DocumentAdmin(GuardedModelAdmin):
     search_fields = ("correspondent__name", "title", "content", "tags__name")

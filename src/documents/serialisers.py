@@ -6,15 +6,14 @@ import re
 import zoneinfo
 from decimal import Decimal
 
-from django.apps import apps
 import magic
 from celery import states
+from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.validators import DecimalValidator
-from django.core.validators import MaxLengthValidator
 from django.core.validators import RegexValidator
 from django.core.validators import integer_validator
 from django.utils import timezone
@@ -32,11 +31,16 @@ from rest_framework.fields import SerializerMethodField
 
 from documents import bulk_edit
 from documents.data_models import DocumentSource
-from documents.models import Approval, Correspondent, Dossier, DossierForm, Announcement
+from documents.models import Announcement
+from documents.models import Approval
+from documents.models import Correspondent
 from documents.models import CustomField
 from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Dossier
+from documents.models import DossierForm
+from documents.models import Folder
 from documents.models import MatchingModel
 from documents.models import PaperlessTask
 from documents.models import SavedView
@@ -45,18 +49,18 @@ from documents.models import ShareLink
 from documents.models import StoragePath
 from documents.models import Tag
 from documents.models import UiSettings
+from documents.models import Warehouse
 from documents.models import Workflow
 from documents.models import WorkflowAction
 from documents.models import WorkflowTrigger
-from documents.models import Warehouse
-from documents.models import Folder
 from documents.parsers import is_mime_type_supported
-from documents.permissions import get_groups_with_only_permission, has_perms_owner_aware
+from documents.permissions import get_groups_with_only_permission
+from documents.permissions import has_perms_owner_aware
 from documents.permissions import set_permissions_for_object
 from documents.validators import uri_validator
 
-
 logger = logging.getLogger("paperless.api")
+
 
 # https://www.django-rest-framework.org/api-guide/serializers/#example
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -277,7 +281,11 @@ class OwnedObjectSerializer(
 
     def update(self, instance, validated_data):
         if "set_permissions" in validated_data:
-            self._set_permissions(validated_data["set_permissions"], instance, self.user)
+            self._set_permissions(
+                validated_data["set_permissions"],
+                instance,
+                self.user,
+            )
         if "owner" in validated_data and "name" in self.Meta.fields:
             name = validated_data.get("name", instance.name)
             not_unique = (
@@ -429,17 +437,21 @@ class CorrespondentField(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
         return Correspondent.objects.all()
 
+
 class TagsField(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
         return Tag.objects.all()
+
 
 class WarehouseField(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
         return Warehouse.objects.all()
 
+
 class FolderField(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
         return Folder.objects.all()
+
 
 class DocumentTypeField(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
@@ -497,9 +509,10 @@ class ReadWriteSerializerMethodField(serializers.SerializerMethodField):
 class CustomFieldInstanceSerializer(serializers.ModelSerializer):
     field = serializers.PrimaryKeyRelatedField(queryset=CustomField.objects.all())
     value = ReadWriteSerializerMethodField(allow_null=True)
-    match_value = ReadWriteSerializerMethodField(allow_null=True,required=False)
+    match_value = ReadWriteSerializerMethodField(allow_null=True, required=False)
     field_name = SerializerMethodField(read_only=True)
     dossier_document = SerializerMethodField(read_only=True)
+
     def get_field_name(self, obj):
         if obj is None:
             return None
@@ -538,9 +551,11 @@ class CustomFieldInstanceSerializer(serializers.ModelSerializer):
 
     def get_value(self, obj: CustomFieldInstance):
         return obj.value
-    def get_match_value(self,obj: CustomFieldInstance):
+
+    def get_match_value(self, obj: CustomFieldInstance):
         return obj.match_value
-    def get_dossier_document(self,obj: CustomFieldInstance):
+
+    def get_dossier_document(self, obj: CustomFieldInstance):
         if obj.reference is not None:
             if obj.reference.dossier_form is not None:
                 return obj.reference.dossier_form.id
@@ -674,7 +689,7 @@ class CustomFieldInstanceSerializer(serializers.ModelSerializer):
             "match_value",
             "field_name",
             "reference",
-            "dossier_document"
+            "dossier_document",
         ]
 
 
@@ -696,17 +711,21 @@ class DocumentSerializer(
     original_file_name = SerializerMethodField()
     archived_file_name = SerializerMethodField()
 
-
     created_date = serializers.DateField(required=False)
 
-    def get_warehouse_w(self,obj):
+    def get_warehouse_w(self, obj):
         try:
             if obj.warehouse is None:
                 return None
-            return Warehouse.objects.filter(id=obj.warehouse.parent_warehouse.id).first().parent_warehouse.id
+            return (
+                Warehouse.objects.filter(id=obj.warehouse.parent_warehouse.id)
+                .first()
+                .parent_warehouse.id
+            )
         except Exception:
             return None
-    def get_warehouse_s(self,obj):
+
+    def get_warehouse_s(self, obj):
         try:
 
             if obj.warehouse is None:
@@ -718,7 +737,6 @@ class DocumentSerializer(
     def to_representation(self, instance):
         value = instance.created
         return value.astimezone(timezone.get_default_timezone()).isoformat()
-
 
     custom_fields = CustomFieldInstanceSerializer(
         many=True,
@@ -739,8 +757,6 @@ class DocumentSerializer(
         required=False,
     )
 
-
-
     # def get_filesize(self, obj):
     #     file_size = len(obj.archive_filename)
     #     if file_size < 1024 * 1024:
@@ -749,7 +765,6 @@ class DocumentSerializer(
     #         return f"{file_size / (1024 * 1024):.2f} MB"
     #     else:
     #         return f"{file_size / (1024 * 1024 * 1024):.2f} GB"
-
 
     exploit = serializers.SerializerMethodField(read_only=True)
 
@@ -763,12 +778,14 @@ class DocumentSerializer(
             doc,
         ):
             return 1
-        elif Approval.objects.filter(object_pk=obj.pk, status="PENDING", submitted_by=current_user):
+        elif Approval.objects.filter(
+            object_pk=obj.pk,
+            status="PENDING",
+            submitted_by=current_user,
+        ):
             return 2
         else:
             return 3
-
-
 
     def get_approvals(self, obj):
         doc = Document.objects.get(pk=obj.pk)
@@ -897,10 +914,8 @@ class DocumentSerializer(
             "custom_fields",
             "exploit",
             "remove_inbox_tags",
-            'warehouse_s',
-            'warehouse_w'
-
-
+            "warehouse_s",
+            "warehouse_w",
         )
 
 
@@ -1535,11 +1550,16 @@ class TasksViewSerializer(serializers.ModelSerializer):
 
         return result
 
+
 class ApprovalSerializer(serializers.ModelSerializer):
     # submitted_by = serializers.ReadOnlyField(source='submitted_by.username')
-    ctype = serializers.ReadOnlyField(source='ctype.model')
+    ctype = serializers.ReadOnlyField(source="ctype.model")
     # submitted_by_id = serializers.PrimaryKeyRelatedField(source='submitted_by', queryset=User.objects.all(), write_only=True, allow_null=True)
-    ctype_id = serializers.PrimaryKeyRelatedField(source='ctype', queryset=ContentType.objects.all(), write_only=True)
+    ctype_id = serializers.PrimaryKeyRelatedField(
+        source="ctype",
+        queryset=ContentType.objects.all(),
+        write_only=True,
+    )
     name = serializers.SerializerMethodField(read_only=True)
 
     def get_name(self, obj):
@@ -1550,9 +1570,11 @@ class ApprovalSerializer(serializers.ModelSerializer):
                 return model_class.objects.get(id=int(obj.object_pk)).title
 
         return None
+
     class Meta:
         model = Approval
         fields = "__all__"
+
 
 class ApprovalViewSerializer(serializers.Serializer):
     approvals = serializers.ListField(
@@ -1582,13 +1604,20 @@ class ApprovalViewSerializer(serializers.Serializer):
         valid_statuses = ["PENDING", "SUCCESS", "FAILURE", "REVOKED"]
         if status not in valid_statuses:
             raise serializers.ValidationError(
-                f"status must be one of: {', '.join(valid_statuses)}")
+                f"status must be one of: {', '.join(valid_statuses)}",
+            )
         return status
 
+
 class AnnouncementSerializer(serializers.ModelSerializer):
-    ctype = serializers.ReadOnlyField(source='ctype.model')
-    ctype_id = serializers.PrimaryKeyRelatedField(source='ctype', queryset=ContentType.objects.all(), write_only=True)
+    ctype = serializers.ReadOnlyField(source="ctype.model")
+    ctype_id = serializers.PrimaryKeyRelatedField(
+        source="ctype",
+        queryset=ContentType.objects.all(),
+        write_only=True,
+    )
     name = serializers.SerializerMethodField(read_only=True)
+
     def get_name(self, obj):
         if obj.ctype:
             model_name = obj.ctype.name
@@ -1598,9 +1627,11 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             else:
                 return model_class.objects.get(id=int(obj.object_pk)).name
         return None
+
     class Meta:
         model = Announcement
         fields = "__all__"
+
 
 class AcknowledgeTasksViewSerializer(serializers.Serializer):
     tasks = serializers.ListField(
@@ -1657,7 +1688,7 @@ class BulkEditObjectsSerializer(SerializerWithPerms, SetPermissionsMixin):
         allow_null=True,
         label="Parent_folder",
         write_only=True,
-        default=None
+        default=None,
     )
 
     object_type = serializers.ChoiceField(
@@ -1668,7 +1699,7 @@ class BulkEditObjectsSerializer(SerializerWithPerms, SetPermissionsMixin):
             "storage_paths",
             "warehouses",
             "folders",
-            "dossiers"
+            "dossiers",
         ],
         label="Object Type",
         write_only=True,
@@ -1739,7 +1770,10 @@ class BulkEditObjectsSerializer(SerializerWithPerms, SetPermissionsMixin):
         if parent_folder is not None and not isinstance(parent_folder, int):
             raise serializers.ValidationError("parent_folder must be an integer")
         object_class = self.get_object_class(object_type)
-        if parent_folder is not None and not object_class.objects.filter(id=parent_folder).exists():
+        if (
+            parent_folder is not None
+            and not object_class.objects.filter(id=parent_folder).exists()
+        ):
             raise serializers.ValidationError(
                 "The parent_folder id doesn't exist.",
             )
@@ -1839,7 +1873,6 @@ class WorkflowActionSerializer(serializers.ModelSerializer):
     assign_tags = TagsField(many=True, allow_null=True, required=False)
     assign_document_type = DocumentTypeField(allow_null=True, required=False)
     assign_storage_path = StoragePathField(allow_null=True, required=False)
-
 
     class Meta:
         model = WorkflowAction
@@ -2063,71 +2096,93 @@ def generate_unique_name(name, existing_names):
         i += 1
     return new_name
 
+
 class AdjustedNameFieldFolder(serializers.CharField):
     def to_internal_value(self, data):
         model = self.parent.Meta.model
 
-        if hasattr(model, 'name'):
-            parent_folder = self.parent.initial_data.get('parent_folder')
-            type = self.parent.initial_data.get('type')
+        if hasattr(model, "name"):
+            parent_folder = self.parent.initial_data.get("parent_folder")
+            type = self.parent.initial_data.get("type")
 
-            if type == 'file':
+            if type == "file":
                 return data
 
             if type and not parent_folder:
-                existing_names = model.objects.filter(type=type).values_list('name', flat=True)
-                if getattr(self.parent,'instance') is None:
+                existing_names = model.objects.filter(type=type).values_list(
+                    "name",
+                    flat=True,
+                )
+                if getattr(self.parent, "instance") is None:
                     pass
-                elif data == getattr(self.parent.instance,'name'):
+                elif data == getattr(self.parent.instance, "name"):
                     return data
 
             elif parent_folder:
-                existing_names = model.objects.filter(parent_folder=parent_folder).order_by('name').values_list('name', flat=True)
-                if getattr(self.parent,'instance') is None:
+                existing_names = (
+                    model.objects.filter(parent_folder=parent_folder)
+                    .order_by("name")
+                    .values_list("name", flat=True)
+                )
+                if getattr(self.parent, "instance") is None:
                     pass
-                elif data == getattr(self.parent.instance,'name'):
+                elif data == getattr(self.parent.instance, "name"):
                     return data
 
             else:
-                existing_names = model.objects.filter(name__startswith=data,parent_folder=None).order_by('name').values_list('name', flat=True)
+                existing_names = (
+                    model.objects.filter(name__startswith=data, parent_folder=None)
+                    .order_by("name")
+                    .values_list("name", flat=True)
+                )
 
             if data in existing_names:
                 data = generate_unique_name(data, existing_names)
         return data
+
 
 class AdjustedNameFieldWarehouse(serializers.CharField):
     def to_internal_value(self, data):
         model = self.parent.Meta.model
 
-        if hasattr(model, 'name'):
-            parent_warehouse = self.parent.initial_data.get('parent_warehouse')
-            type = self.parent.initial_data.get('type')
+        if hasattr(model, "name"):
+            parent_warehouse = self.parent.initial_data.get("parent_warehouse")
+            type = self.parent.initial_data.get("type")
 
-            if type == 'file':
+            if type == "file":
                 return data
 
             if type and not parent_warehouse:
-                existing_names = model.objects.filter(type=type).values_list('name', flat=True)
-                if getattr(self.parent,'instance') is None:
+                existing_names = model.objects.filter(type=type).values_list(
+                    "name",
+                    flat=True,
+                )
+                if getattr(self.parent, "instance") is None:
                     pass
-                elif data == getattr(self.parent.instance,'name'):
+                elif data == getattr(self.parent.instance, "name"):
                     return data
 
             elif parent_warehouse:
-                existing_names = model.objects.filter(parent_warehouse=parent_warehouse).order_by('name').values_list('name', flat=True)
-                if getattr(self.parent,'instance') is None:
+                existing_names = (
+                    model.objects.filter(parent_warehouse=parent_warehouse)
+                    .order_by("name")
+                    .values_list("name", flat=True)
+                )
+                if getattr(self.parent, "instance") is None:
                     pass
-                elif data == getattr(self.parent.instance,'name'):
+                elif data == getattr(self.parent.instance, "name"):
                     return data
 
             else:
-                existing_names = model.objects.filter(name__startswith=data,parent_warehouse=None).order_by('name').values_list('name', flat=True)
+                existing_names = (
+                    model.objects.filter(name__startswith=data, parent_warehouse=None)
+                    .order_by("name")
+                    .values_list("name", flat=True)
+                )
 
             if data in existing_names:
                 data = generate_unique_name(data, existing_names)
         return data
-
-
 
 
 class WarehouseSerializer(MatchingModelSerializer, OwnedObjectSerializer):
@@ -2142,7 +2197,7 @@ class WarehouseSerializer(MatchingModelSerializer, OwnedObjectSerializer):
 
     class Meta:
         model = Warehouse
-        fields = '__all__'
+        fields = "__all__"
 
     def get_document_count(self, obj):
         return self.get_total_document_count(obj)
@@ -2150,13 +2205,7 @@ class WarehouseSerializer(MatchingModelSerializer, OwnedObjectSerializer):
     def get_total_document_count(self, warehouse):
         if warehouse.type == Warehouse.BOXCASE:
             return Document.objects.filter(warehouse=warehouse).count()
-        elif warehouse.type == Warehouse.SHELF:
-            child_warehouses = Warehouse.objects.filter(parent_warehouse=warehouse)
-            total_count = 0
-            for child_warehouse in child_warehouses:
-                total_count += self.get_total_document_count(child_warehouse)
-            return total_count
-        elif warehouse.type == Warehouse.WAREHOUSE:
+        elif warehouse.type == Warehouse.SHELF or warehouse.type == Warehouse.WAREHOUSE:
             child_warehouses = Warehouse.objects.filter(parent_warehouse=warehouse)
             total_count = 0
             for child_warehouse in child_warehouses:
@@ -2207,14 +2256,15 @@ class FolderSerializer(MatchingModelSerializer, OwnedObjectSerializer):
 
     class Meta:
         model = Folder
-        fields = '__all__'
+        fields = "__all__"
+
 
 class ExportDocumentFromFolderSerializer(serializers.Serializer):
     folders = serializers.ListField(child=serializers.IntegerField())
 
     def validate_folders(self, value):
         if not value:
-            return Folder.objects.all().values_list('id', flat=True)
+            return Folder.objects.all().values_list("id", flat=True)
         return value
 
 
@@ -2223,10 +2273,13 @@ class ExportDocumentFromFolderSerializer(serializers.Serializer):
 #         model = CustomFieldInstance
 #         fields = '__all__'
 
+
 class ParentDossierTypeSerializer(MatchingModelSerializer, OwnedObjectSerializer):
     class Meta:
         model = Dossier
-        fields = '__all__'
+        fields = "__all__"
+
+
 class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
     custom_fields = CustomFieldInstanceSerializer(
         many=True,
@@ -2237,15 +2290,17 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
     document_count = serializers.SerializerMethodField()
 
     document_matching = serializers.SerializerMethodField()
+
     def get_document_matching(self, obj):
-        if obj.type == 'FILE':
+        if obj.type == "FILE":
             document = Document.objects.filter(dossier=obj).first()
             if document:
                 return document.id
         return None
+
     dossier_form_name = SerializerMethodField(read_only=True)
 
-    def get_dossier_form_name(self,obj):
+    def get_dossier_form_name(self, obj):
         if obj.dossier_form is None:
             return None
         return obj.dossier_form.name
@@ -2255,29 +2310,31 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
         documents = Document.objects.filter(dossier__in=dossiers)
 
         return documents.count()
+
     class Meta:
         model = Dossier
         fields = [
-            'id',
-            'document_count',
-            'slug',
-            'user_can_change',
-            'is_shared_by_requester',
-            'name',
-            'match',
-            'matching_algorithm',
-            'is_insensitive',
-            'created',
-            'owner',
-            'parent_dossier',
-            'dossier_form',
-            'type',
-            'dossier_form_name',
-            'document_matching',
-            'custom_fields'
+            "id",
+            "document_count",
+            "slug",
+            "user_can_change",
+            "is_shared_by_requester",
+            "name",
+            "match",
+            "matching_algorithm",
+            "is_insensitive",
+            "created",
+            "owner",
+            "parent_dossier",
+            "dossier_form",
+            "type",
+            "dossier_form_name",
+            "document_matching",
+            "custom_fields",
         ]
+
     def create(self, validated_data):
-        custom_fields_data = validated_data.pop('custom_fields', [])
+        custom_fields_data = validated_data.pop("custom_fields", [])
 
         dossier = Dossier.objects.create(**validated_data)
         type_to_data_store_name_map = {
@@ -2302,14 +2359,17 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
                 field=custom_field,
                 defaults={data_store_name: custom_field_data["value"]},
             )
-            custom_field_instance.match_value = custom_field_data['match_value']
+            custom_field_instance.match_value = custom_field_data["match_value"]
             custom_field_instance.save()
             lst_dossier_custom_field.append(custom_field_instance.pk)
         return dossier
 
-        records_to_delete = CustomFieldInstance.objects.exclude(id__in=lst_dossier_custom_field).filter(dossier=dossier.pk)
+        records_to_delete = CustomFieldInstance.objects.exclude(
+            id__in=lst_dossier_custom_field,
+        ).filter(dossier=dossier.pk)
+
     def update(self, instance, validated_data):
-        custom_fields_data = validated_data.pop('custom_fields', [])
+        custom_fields_data = validated_data.pop("custom_fields", [])
         # validated_data['parent_dossier_type']
         dossier = super().update(instance, validated_data)
         type_to_data_store_name_map = {
@@ -2335,20 +2395,23 @@ class DossierSerializer(MatchingModelSerializer, OwnedObjectSerializer):
                 defaults={data_store_name: custom_field_data["value"]},
             )
 
-            custom_field_instance.match_value = custom_field_data['match_value']
-            custom_field_instance.reference = custom_field_data['reference']
+            custom_field_instance.match_value = custom_field_data["match_value"]
+            custom_field_instance.reference = custom_field_data["reference"]
             # custom_field_data['field'].
             # custom_field_instance.value()
             custom_field_instance.save()
             lst_dossier_custom_field.append(custom_field_instance.pk)
 
-        records_to_delete = CustomFieldInstance.objects.exclude(id__in=lst_dossier_custom_field).filter(dossier=dossier.pk)
-
+        records_to_delete = CustomFieldInstance.objects.exclude(
+            id__in=lst_dossier_custom_field,
+        ).filter(dossier=dossier.pk)
 
         # Delete the filtered records
         records_to_delete.delete()
 
         return dossier
+
+
 class DossierFormSerializer(MatchingModelSerializer, OwnedObjectSerializer):
     custom_fields = CustomFieldInstanceSerializer(
         many=True,
@@ -2359,23 +2422,24 @@ class DossierFormSerializer(MatchingModelSerializer, OwnedObjectSerializer):
     class Meta:
         model = DossierForm
         fields = [
-            'id',
-            'document_count',
-            'slug',
-            'user_can_change',
-            'is_shared_by_requester',
-            'name',
-            'match',
-            'matching_algorithm',
-            'is_insensitive',
-            'created',
-            'owner',
-            'type',
-            'form_rule',
-            'custom_fields'
+            "id",
+            "document_count",
+            "slug",
+            "user_can_change",
+            "is_shared_by_requester",
+            "name",
+            "match",
+            "matching_algorithm",
+            "is_insensitive",
+            "created",
+            "owner",
+            "type",
+            "form_rule",
+            "custom_fields",
         ]
+
     def create(self, validated_data):
-        custom_fields_data = validated_data.pop('custom_fields', [])
+        custom_fields_data = validated_data.pop("custom_fields", [])
 
         dossier_form = DossierForm.objects.create(**validated_data)
         type_to_data_store_name_map = {
@@ -2400,14 +2464,17 @@ class DossierFormSerializer(MatchingModelSerializer, OwnedObjectSerializer):
                 field=custom_field,
                 defaults={data_store_name: custom_field_data["value"]},
             )
-            custom_field_instance.match_value = custom_field_data['match_value']
+            custom_field_instance.match_value = custom_field_data["match_value"]
             custom_field_instance.save()
             lst_dossier_custom_field.append(custom_field_instance.pk)
         return dossier_form
 
-        records_to_delete = CustomFieldInstance.objects.exclude(id__in=lst_dossier_custom_field).filter(dossier=dossier.pk)
+        records_to_delete = CustomFieldInstance.objects.exclude(
+            id__in=lst_dossier_custom_field,
+        ).filter(dossier=dossier.pk)
+
     def update(self, instance, validated_data):
-        custom_fields_data = validated_data.pop('custom_fields', [])
+        custom_fields_data = validated_data.pop("custom_fields", [])
         # validated_data['parent_dossier_type']
         dossier_form = super().update(instance, validated_data)
         type_to_data_store_name_map = {
@@ -2433,13 +2500,14 @@ class DossierFormSerializer(MatchingModelSerializer, OwnedObjectSerializer):
                 defaults={data_store_name: custom_field_data["value"]},
             )
 
-            custom_field_instance.match_value = custom_field_data['match_value']
-            custom_field_instance.reference = custom_field_data['reference']
+            custom_field_instance.match_value = custom_field_data["match_value"]
+            custom_field_instance.reference = custom_field_data["reference"]
             custom_field_instance.save()
             lst_dossier_custom_field_form.append(custom_field_instance.pk)
 
-        records_to_delete = CustomFieldInstance.objects.exclude(id__in=lst_dossier_custom_field_form).filter(dossier_form=dossier_form.pk)
-
+        records_to_delete = CustomFieldInstance.objects.exclude(
+            id__in=lst_dossier_custom_field_form,
+        ).filter(dossier_form=dossier_form.pk)
 
         # Delete the filtered records
         records_to_delete.delete()

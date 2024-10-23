@@ -14,15 +14,21 @@ from django.views.static import serve
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 
-from documents.views import AcknowledgeTasksView, ApprovalUpdateMutipleView, \
-    ApprovalViewSet, BulkExportExcelFromFolderView, BulkExportExcelView, \
-    DossierFormViewSet, DossierViewSet, AnnouncementViewSet
+from documents.views import AcknowledgeTasksView
+from documents.views import AnnouncementViewSet
+from documents.views import ApprovalUpdateMutipleView
+from documents.views import ApprovalViewSet
 from documents.views import BulkDownloadView
 from documents.views import BulkEditObjectsView
 from documents.views import BulkEditView
+from documents.views import BulkExportExcelFromFolderView
+from documents.views import BulkExportExcelView
 from documents.views import CorrespondentViewSet
 from documents.views import CustomFieldViewSet
 from documents.views import DocumentTypeViewSet
+from documents.views import DossierFormViewSet
+from documents.views import DossierViewSet
+from documents.views import FolderViewSet
 from documents.views import IndexView
 from documents.views import LogViewSet
 from documents.views import PostDocumentView
@@ -39,13 +45,13 @@ from documents.views import TagViewSet
 from documents.views import TasksViewSet
 from documents.views import UiSettingsView
 from documents.views import UnifiedSearchViewSet
+from documents.views import WarehouseViewSet
 from documents.views import WorkflowActionViewSet
 from documents.views import WorkflowTriggerViewSet
 from documents.views import WorkflowViewSet
-from documents.views import WarehouseViewSet
-from documents.views import FolderViewSet
 from paperless.consumers import StatusConsumer
-from paperless.views import ApplicationConfigurationViewSet, ContentTypeViewSet
+from paperless.views import ApplicationConfigurationViewSet
+from paperless.views import ContentTypeViewSet
 from paperless.views import DisconnectSocialAccountView
 from paperless.views import FaviconView
 from paperless.views import GenerateAuthTokenView
@@ -56,7 +62,6 @@ from paperless.views import UserViewSet
 from paperless_mail.views import MailAccountTestView
 from paperless_mail.views import MailAccountViewSet
 from paperless_mail.views import MailRuleViewSet
-
 
 api_router = DefaultRouter()
 api_router.register(r"announcements", AnnouncementViewSet)
@@ -89,7 +94,6 @@ api_router.register(r"dossier_forms", DossierFormViewSet)
 api_router.register(r"content_types", ContentTypeViewSet, basename="content_types")
 
 urlpatterns = [
-
     re_path(
         r"^api/",
         include(

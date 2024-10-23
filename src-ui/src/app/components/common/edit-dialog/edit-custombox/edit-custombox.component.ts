@@ -1,4 +1,3 @@
-
 import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FormGroup } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
@@ -26,14 +25,15 @@ export enum EditCustomBoxdMode {
 @Directive()
 export abstract class EditCustomBoxComponent<
   T extends ObjectWithPermissions | ObjectWithId,
-> implements OnInit {
+> implements OnInit
+{
   [x: string]: any
   constructor(
     protected service: AbstractPaperlessService<T>,
     private activeModal: NgbActiveModal,
     private userService: UserService,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   users: User[]
 
@@ -61,7 +61,7 @@ export abstract class EditCustomBoxComponent<
 
   ngOnInit(): void {
     // console.log("Test", this.object)
-    this.loadShelf();
+    this.loadShelf()
     if (this.object != null && this.dialogMode !== EditCustomBoxdMode.CREATE) {
       if ((this.object as ObjectWithPermissions).permissions) {
         this.object['set_permissions'] = this.object['permissions']
@@ -112,10 +112,9 @@ export abstract class EditCustomBoxComponent<
 
   getCheckCreate() {
     if (this.dialogMode == EditCustomBoxdMode.CREATE) {
-      return false;
-    }
-    else {
-      return true;
+      return false
+    } else {
+      return true
     }
   }
 

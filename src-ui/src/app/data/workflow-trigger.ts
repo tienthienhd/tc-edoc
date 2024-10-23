@@ -12,20 +12,19 @@ export enum WorkflowTriggerType {
   DocumentUpdated = 3,
   ApprovalAdded = 4,
   ApprovalUpdated = 5,
-
 }
 
 export enum WorkflowTriggerStatus {
-  Pending = "PENDING",
-  Success = "SUCCESS",
-  Revoked = "REVOKED",
-  Failure = "FAILURE",
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Revoked = 'REVOKED',
+  Failure = 'FAILURE',
 }
 
 export enum WorkflowTriggerAccessType {
-  Edit = "EDIT",
-  View = "VIEW",
-  Owner = "OWNER",
+  Edit = 'EDIT',
+  View = 'VIEW',
+  Owner = 'OWNER',
 }
 
 export interface WorkflowTrigger extends ObjectWithId {

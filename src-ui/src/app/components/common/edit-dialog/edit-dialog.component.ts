@@ -24,13 +24,14 @@ export enum EditDialogMode {
 @Directive()
 export abstract class EditDialogComponent<
   T extends ObjectWithPermissions | ObjectWithId,
-> implements OnInit {
+> implements OnInit
+{
   constructor(
     protected service: AbstractPaperlessService<T>,
     private activeModal: NgbActiveModal,
     private userService: UserService,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   users: User[]
 
@@ -125,15 +126,14 @@ export abstract class EditDialogComponent<
     }
   }
 
-  getFormOrigin(){
+  getFormOrigin() {
     return this.objectForm
   }
- 
-  setFormOrigin(objectForm){
+
+  setFormOrigin(objectForm) {
     // console.log('gia tri gan',objectForm)
-    return this.objectForm=objectForm
+    return (this.objectForm = objectForm)
   }
- 
 
   getMatchingAlgorithms() {
     return MATCHING_ALGORITHMS

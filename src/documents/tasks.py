@@ -1,12 +1,10 @@
 import hashlib
 import logging
-import os
 import shutil
 import uuid
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Optional
-from datetime import datetime, timedelta
 
 import tqdm
 from celery import Task
@@ -31,13 +29,14 @@ from documents.data_models import DocumentMetadataOverrides
 from documents.double_sided import CollatePlugin
 from documents.file_handling import create_source_path_directory
 from documents.file_handling import generate_unique_filename
-from documents.models import Approval, Correspondent, CustomFieldInstance
+from documents.models import Correspondent
+from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentType
-from documents.models import StoragePath
-from documents.models import Warehouse
 from documents.models import Folder
+from documents.models import StoragePath
 from documents.models import Tag
+from documents.models import Warehouse
 from documents.parsers import DocumentParser
 from documents.parsers import custom_get_parser_class_for_mime_type
 from documents.plugins.base import ConsumeTaskPlugin
@@ -54,8 +53,9 @@ if settings.AUDIT_LOG_ENABLED:
     from auditlog.models import LogEntry
 logger = logging.getLogger("paperless.tasks")
 
+
 def revoke_permission():
-    logger.debug('run')
+    logger.debug("run")
     # today = date.today()
     # approvals = Approval.objects.filter(
     #     status="SUCCESS",
@@ -75,7 +75,6 @@ def revoke_permission():
     #     expiration__lte=thirty_days_ago
 
     # ).delete()
-
 
 
 @shared_task
@@ -269,7 +268,9 @@ def update_document_archive_file(document_id):
 
     mime_type = document.mime_type
 
-    parser_class: type[DocumentParser] = custom_get_parser_class_for_mime_type(mime_type)
+    parser_class: type[DocumentParser] = custom_get_parser_class_for_mime_type(
+        mime_type,
+    )
 
     if not parser_class:
         logger.error(
@@ -359,7 +360,9 @@ def update_document_field(document_id):
 
     mime_type = document.mime_type
 
-    parser_class: type[DocumentParser] = custom_get_parser_class_for_mime_type(mime_type)
+    parser_class: type[DocumentParser] = custom_get_parser_class_for_mime_type(
+        mime_type,
+    )
 
     if not parser_class:
         logger.error(
@@ -371,38 +374,53 @@ def update_document_field(document_id):
     parser: DocumentParser = parser_class(logging_group=uuid.uuid4())
 
     try:
-        data_ocr_fields = parser.parse(document.source_path, mime_type, document.get_public_filename())
-
+        data_ocr_fields = parser.parse(
+            document.source_path,
+            mime_type,
+            document.get_public_filename(),
+        )
 
         if parser.get_archive_path():
             with transaction.atomic():
                 oldDocument = Document.objects.get(pk=document.pk)
                 fields = CustomFieldInstance.objects.filter(
-                                    document=document,
-                                )
+                    document=document,
+                )
                 dict_data = {}
                 try:
                     if data_ocr_fields is not None:
-                        if isinstance(data_ocr_fields[0],list):
+                        if isinstance(data_ocr_fields[0], list):
 
                             for r in data_ocr_fields[0][0].get("fields"):
-                                dict_data[r.get("name")] = r.get("values")[0].get("value") if r.get("values") else None
-                            user_args=ApplicationConfiguration.objects.filter().first().user_args
+                                dict_data[r.get("name")] = (
+                                    r.get("values")[0].get("value")
+                                    if r.get("values")
+                                    else None
+                                )
+                            user_args = (
+                                ApplicationConfiguration.objects.filter()
+                                .first()
+                                .user_args
+                            )
                             mapping_field_user_args = []
-                            for f in user_args.get("form_code",[]):
+                            for f in user_args.get("form_code", []):
                                 if f.get("name") == data_ocr_fields[1]:
-                                    mapping_field_user_args = f.get("mapping",[])
+                                    mapping_field_user_args = f.get("mapping", [])
                             map_fields = {}
 
-                            for key,value in mapping_field_user_args[0].items():
-                                map_fields[key]=dict_data.get(value)
+                            for key, value in mapping_field_user_args[0].items():
+                                map_fields[key] = dict_data.get(value)
                             for f in fields:
-                                f.value_text = map_fields.get(f.field.name,None)
-                            CustomFieldInstance.objects.bulk_update(fields, ['value_text'])
-                except Exception as e:
-                    logger.exception(f"Error while parsing field form document {document} (ID: {document_id})",
-                    # self.log.error("error ocr field",e)
-        )
+                                f.value_text = map_fields.get(f.field.name, None)
+                            CustomFieldInstance.objects.bulk_update(
+                                fields,
+                                ["value_text"],
+                            )
+                except Exception:
+                    logger.exception(
+                        f"Error while parsing field form document {document} (ID: {document_id})",
+                        # self.log.error("error ocr field",e)
+                    )
                 if settings.AUDIT_LOG_ENABLED:
                     LogEntry.objects.log_create(
                         instance=oldDocument,

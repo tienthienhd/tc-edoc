@@ -14,8 +14,6 @@ import { DocumentSuggestions } from 'src/app/data/document-suggestions'
 import { queryParamsFromFilterRules } from '../../utils/query-params'
 import { StoragePathService } from './storage-path.service'
 
-
-
 import {
   PermissionAction,
   PermissionType,
@@ -59,8 +57,6 @@ export interface SelectionData {
   selected_warehouses: SelectionDataItem[]
   selected_shelfs: SelectionDataItem[]
   selected_boxcases: SelectionDataItem[]
-  
-
 }
 
 @Injectable({
@@ -245,10 +241,8 @@ export class DocumentService extends AbstractPaperlessService<Document> {
       this.getResourceUrl(id, 'suggestions')
     )
   }
-  
-  bulkExportExcels(
-    ids: number[]
-  ) {
+
+  bulkExportExcels(ids: number[]) {
     return this.http.post(
       this.getResourceUrl(null, 'bulk_export_excel'),
       {
@@ -257,9 +251,6 @@ export class DocumentService extends AbstractPaperlessService<Document> {
       { responseType: 'blob' }
     )
   }
-
- 
-
 
   bulkDownload(
     ids: number[],
@@ -276,10 +267,8 @@ export class DocumentService extends AbstractPaperlessService<Document> {
       { responseType: 'blob' }
     )
   }
-  
 
   public set searchQuery(query: string) {
     this._searchQuery = query
   }
 }
-

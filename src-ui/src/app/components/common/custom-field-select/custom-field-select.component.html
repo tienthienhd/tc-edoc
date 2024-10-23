@@ -27,12 +27,12 @@
               <input type="checkbox" class="form-check-input" id="{{f.value.field}}" [checked]="this.dictCustomFieldsEnable[f.value.field] || false" (change)="toggleAll($event, f.value.field)">
               <label class="form-check-label visually-hidden" for="{{f.value.field}}" i18n>All</label>
             </div>
-         
+
             <div class="col "  placement="left" triggers="mouseenter:mouseleave">
               <input type="text" class="form-control" id="{{f.value.field}}" [value]="f.value.match_value" [disabled]="!this.dictCustomFieldsEnable[f.value.field] || false" (change)="onMatchValueChange($event, f)">
               <label class="visually-hidden" i18n>{{f.value.match_value}}</label>
             </div>
-         
+
             <div class="col">
                 <pngx-input-select [items]="dossier"  bindLabel="name" [allowNull]="true"></pngx-input-select>
             </div>
@@ -50,7 +50,7 @@
             <input type="checkbox" class="form-check-input" id="{{customField.get('field').value}}"  [checked]="this.dictCustomFieldsEnable[customField.get('field').value] || false" (change)="toggleAll($event, customField.get('field'))">
             <label class="form-check-label visually-hidden" for="{{customField.get('field').value}}" i18n>All</label>
           </div>
-       
+
           <div class="col-lg-3" [hidden]=" !inputDossier" placement="left" triggers="mouseenter:mouseleave">
             <input type="text" class="form-control" [formControl]="customField.get('value')" >
             <label class="visually-hidden" i18n>{{customField.get('value')}}</label>
@@ -69,7 +69,7 @@
         </div>
       </li>
     <!-- } -->
-    
+
     @if (error) {
       <div class="invalid-feedback d-block">{{error}}</div>
     }

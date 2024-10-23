@@ -22,12 +22,10 @@ export class WarehouseEditDialogComponent extends EditDialogComponent<Warehouse>
     settingsService: SettingsService
   ) {
     super(service, activeModal, userService, settingsService)
-
   }
   getCreateTitle() {
     return $localize`Create new warehouse`
   }
-
 
   getEditTitle() {
     return $localize`Edit warehouse`

@@ -19,12 +19,18 @@ export class DocumentApprovalsService extends AbstractPaperlessService<DocumentA
   }
 
   addApproval(id: number, approval: string): Observable<DocumentApproval[]> {
-    return this.http.post<DocumentApproval[]>(this.getResourceUrl(id, 'approvals'), {
-      approval: approval,
-    })
+    return this.http.post<DocumentApproval[]>(
+      this.getResourceUrl(id, 'approvals'),
+      {
+        approval: approval,
+      }
+    )
   }
 
-  updateApproval(documentId: number, approvalId: number): Observable<DocumentApproval[]> {
+  updateApproval(
+    documentId: number,
+    approvalId: number
+  ): Observable<DocumentApproval[]> {
     return this.http.put<DocumentApproval[]>(
       this.getResourceUrl(documentId, 'approvals'),
       { params: new HttpParams({ fromString: `id=${approvalId}` }) }

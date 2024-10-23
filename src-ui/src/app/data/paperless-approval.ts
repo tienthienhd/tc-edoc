@@ -5,7 +5,6 @@ export enum PaperlessApprovalAccessType {
   Owner = 'OWNER',
   Edit = 'EDIT',
   View = 'VIEW',
-
 }
 
 export enum PaperlessApprovalStatus {
@@ -16,7 +15,6 @@ export enum PaperlessApprovalStatus {
 }
 
 export interface PaperlessApproval extends ObjectWithId {
-  
   access_type: PaperlessApprovalAccessType
 
   status: PaperlessApprovalStatus

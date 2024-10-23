@@ -1,8 +1,7 @@
 import { MatchingModel } from './matching-model'
 
 export interface Box extends MatchingModel {
+  type?: string
 
-    type?: string
-
-    parent_box?: number
+  parent_box?: number
 }

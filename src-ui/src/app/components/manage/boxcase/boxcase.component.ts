@@ -2,7 +2,10 @@ import { Component, Renderer2, ViewContainerRef } from '@angular/core'
 import { BoxService } from 'src/app/services/rest/box.service'
 import { ToastService } from 'src/app/services/toast.service'
 import { DocumentListViewService } from 'src/app/services/document-list-view.service'
-import { PermissionType, PermissionsService } from 'src/app/services/permissions.service'
+import {
+  PermissionType,
+  PermissionsService,
+} from 'src/app/services/permissions.service'
 import { Box } from 'src/app/data/box'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { BoxEditDialogComponent } from '../../common/edit-dialog/box-edit-dialog/box-edit-dialog.component'
@@ -32,7 +35,7 @@ export class BoxCaseComponent extends ManagementListComponent<Box> {
     private route: ActivatedRoute,
     private router: Router,
     private viewContainer: ViewContainerRef,
-    private renderer: Renderer2,
+    private renderer: Renderer2
   ) {
     super(
       boxService,
@@ -54,84 +57,83 @@ export class BoxCaseComponent extends ManagementListComponent<Box> {
             return c.type
           },
         },
-      ],
+      ]
     )
   }
 
   openCreateDialog() {
-    var activeModal = this.getModalService().open(this.getEditDialogComponent(), {
-      backdrop: 'static',
-    })
-    activeModal.componentInstance.object = { parent_warehouse: this.id, type: 'Boxcase' }
+    var activeModal = this.getModalService().open(
+      this.getEditDialogComponent(),
+      {
+        backdrop: 'static',
+      }
+    )
+    activeModal.componentInstance.object = {
+      parent_warehouse: this.id,
+      type: 'Boxcase',
+    }
     activeModal.componentInstance.dialogMode = EditDialogMode.CREATE
     activeModal.componentInstance.succeeded.subscribe(() => {
       this.reloadData()
       // this.getDocuments(this.id);
       this.getToastService().showInfo(
-        $localize`Successfully created ${this.typeName}.`,
+        $localize`Successfully created ${this.typeName}.`
       )
     })
     activeModal.componentInstance.failed.subscribe((e) => {
       this.getToastService().showError(
         $localize`Error occurred while creating ${this.typeName}.`,
-        e,
+        e
       )
     })
   }
 
   renderWarehouse() {
-
     const treeWarehouse = document.querySelector('.warehouse-tree')
     const warehouseElement = document.querySelector('.warehouse')
     warehouseElement.innerHTML = ''
-    const warehouseRootElement = this.viewContainer.createComponent(WarehouseComponent)
+    const warehouseRootElement =
+      this.viewContainer.createComponent(WarehouseComponent)
 
     const componentElement = warehouseRootElement.location.nativeElement
     const treeWarehouseRoot = componentElement.querySelector('.warehouse-tree')
     treeWarehouseRoot.innerHTML = ''
     this.renderer.appendChild(treeWarehouseRoot, treeWarehouse)
     this.renderer.appendChild(warehouseElement, componentElement)
-
   }
-  renderShelf(){
-
-    const treeWarehouseOld = document.querySelector('.warehouse-tree');
-    const warehouseElement = document.querySelector('.warehouse');
+  renderShelf() {
+    const treeWarehouseOld = document.querySelector('.warehouse-tree')
+    const warehouseElement = document.querySelector('.warehouse')
     warehouseElement.innerHTML = ''
-    const shelfElement = this.viewContainer.createComponent(ShelfComponent);
+    const shelfElement = this.viewContainer.createComponent(ShelfComponent)
 
     const componentElement = shelfElement.location.nativeElement
-    const treeWarehouseNew= componentElement.querySelector('.warehouse-tree');
+    const treeWarehouseNew = componentElement.querySelector('.warehouse-tree')
 
     this.renderer.appendChild(treeWarehouseNew, treeWarehouseOld)
     this.renderer.appendChild(warehouseElement, componentElement)
-
   }
 
   goToWarehouseRoot(param) {
     this.router.navigate(['/warehouses', 'root'])
     this.renderWarehouse()
-
   }
-
-
 
   reloadData() {
     let type = ''
     let params = {}
-    this.route.params.subscribe(param => {
+    this.route.params.subscribe((param) => {
       this.id = +param['id']
     })
-    this.route.queryParams.subscribe(query_param => {
+    this.route.queryParams.subscribe((query_param) => {
       type = query_param['type']
     })
     let warehousePathList
     if (this.id) {
-      this.boxService.getWarehousePath(this.id).subscribe(
-        (warehouse) => {
-          warehousePathList = warehouse
-          this.warehousePath = warehousePathList.results
-        })
+      this.boxService.getWarehousePath(this.id).subscribe((warehouse) => {
+        warehousePathList = warehouse
+        this.warehousePath = warehousePathList.results
+      })
     }
 
     params['type__iexact'] = 'Boxcase'
@@ -146,7 +148,7 @@ export class BoxCaseComponent extends ManagementListComponent<Box> {
         params,
         this.sortReverse,
         this.nameFilter,
-        true,
+        true
       )
       .pipe(takeUntil(this.getUnsubscribeNotifier()))
       .subscribe((c) => {
@@ -156,15 +158,15 @@ export class BoxCaseComponent extends ManagementListComponent<Box> {
       })
   }
 
-
   getDeleteMessage(object: Box) {
     return $localize`Do you really want to delete the Boxcase "${object.name}"?`
   }
 
-
   goToShelf(w: Warehouse) {
     if (w.type == 'Warehouse') {
-      this.router.navigate(['/warehouses', w.id], { queryParams: { type: 'Shelf' } })
+      this.router.navigate(['/warehouses', w.id], {
+        queryParams: { type: 'Shelf' },
+      })
       this.renderShelf()
     }
   }

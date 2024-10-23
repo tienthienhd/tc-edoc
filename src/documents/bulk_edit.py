@@ -11,16 +11,18 @@ from django.db.models import Q
 from documents.data_models import ConsumableDocument
 from documents.data_models import DocumentMetadataOverrides
 from documents.data_models import DocumentSource
-from documents.models import Correspondent, Dossier
+from documents.models import Correspondent
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Dossier
+from documents.models import Folder
 from documents.models import StoragePath
 from documents.models import Warehouse
-from documents.models import Folder
 from documents.permissions import set_permissions_for_object
-from documents.tasks import bulk_update_documents, update_document_field
+from documents.tasks import bulk_update_documents
 from documents.tasks import consume_file
 from documents.tasks import update_document_archive_file
+from documents.tasks import update_document_field
 
 logger = logging.getLogger("paperless.bulk_edit")
 
@@ -54,6 +56,7 @@ def set_storage_path(doc_ids, storage_path):
 
     return "OK"
 
+
 def set_folder(doc_ids, folder):
     if folder:
         folder = Folder.objects.get(id=folder)
@@ -70,6 +73,7 @@ def set_folder(doc_ids, folder):
 
     return "OK"
 
+
 def set_dossier(doc_ids, dossier):
     if dossier:
         dossier = Dossier.objects.get(id=dossier)
@@ -85,6 +89,7 @@ def set_dossier(doc_ids, dossier):
     )
 
     return "OK"
+
 
 def set_warehouse(doc_ids, warehouse):
     if warehouse:
@@ -199,6 +204,7 @@ def redo_ocr(doc_ids):
         )
 
     return "OK"
+
 
 def redo_peeling_field(doc_ids):
     for document_id in doc_ids:

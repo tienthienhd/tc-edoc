@@ -29,12 +29,15 @@ export class ApprovalsService {
   }
 
   public get pendingApprovals(): PaperlessApproval[] {
-    return this.approvals.filter((t) => t.status == PaperlessApprovalStatus.Pending)
+    return this.approvals.filter(
+      (t) => t.status == PaperlessApprovalStatus.Pending
+    )
   }
 
   public get successApprovals(): PaperlessApproval[] {
-    return this.approvals.filter((t) => t.status == PaperlessApprovalStatus.Success)
-    
+    return this.approvals.filter(
+      (t) => t.status == PaperlessApprovalStatus.Success
+    )
   }
 
   public get failureApprovals(): PaperlessApproval[] {
@@ -44,7 +47,9 @@ export class ApprovalsService {
   }
 
   public get revokedApprovals(): PaperlessApproval[] {
-    return this.approvals.filter((t) => t.status == PaperlessApprovalStatus.Revoked)
+    return this.approvals.filter(
+      (t) => t.status == PaperlessApprovalStatus.Revoked
+    )
   }
 
   constructor(private http: HttpClient) {}
@@ -52,18 +57,19 @@ export class ApprovalsService {
   public reload() {
     this.loading = true
     this.http
-    .get<PaperlessApproval[]>(`${this.baseUrl}approvals/`)
-    .pipe(takeUntil(this.unsubscribeNotifer), first())
-    .subscribe((r) => {
-      this.approvals = r // they're all  approvals, for now
-      this.loading = false
-    })
+      .get<PaperlessApproval[]>(`${this.baseUrl}approvals/`)
+      .pipe(takeUntil(this.unsubscribeNotifer), first())
+      .subscribe((r) => {
+        this.approvals = r // they're all  approvals, for now
+        this.loading = false
+      })
   }
 
-  public updateApprovals(id: Set<number>,status: String) {
+  public updateApprovals(id: Set<number>, status: String) {
     this.http
       .post(`${this.baseUrl}update_approvals/`, {
-        approvals: [...id],status: status
+        approvals: [...id],
+        status: status,
       })
       .pipe(takeUntil(this.unsubscribeNotifer), first())
       .subscribe((r) => {

@@ -85,7 +85,7 @@ enum DocumentDetailNavIDs {
   Preview = 4,
   Notes = 5,
   Permissions = 6,
-  Approvals = 7
+  Approvals = 7,
 }
 
 enum ContentRenderType {
@@ -115,7 +115,8 @@ enum ZoomSetting {
 })
 export class DocumentDetailComponent
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy, DirtyComponent {
+  implements OnInit, OnDestroy, DirtyComponent
+{
   @ViewChild('inputTitle')
   titleInput: TextComponent
 
@@ -146,7 +147,6 @@ export class DocumentDetailComponent
   warehouses: Warehouse[]
   shelfs: Warehouse[]
   boxcases: Warehouse[]
-
 
   documentForm: FormGroup = new FormGroup({
     title: new FormControl(''),
@@ -295,7 +295,11 @@ export class DocumentDetailComponent
       this.warehouseService
         .listAll(null, null, { type__iexact: 'Warehouse' })
         .pipe(first(), takeUntil(this.unsubscribeNotifier))
-        .subscribe((result) => {this.warehouses = result.results;this.shelfs = []; this.boxcases=[]})
+        .subscribe((result) => {
+          this.warehouses = result.results
+          this.shelfs = []
+          this.boxcases = []
+        })
       // this.warehouseService.clearCache()
       // this.warehouseService
       //   .listAll(null, null, { type__iexact: 'Shelf' })
@@ -326,7 +330,6 @@ export class DocumentDetailComponent
       //   .pipe(first(), takeUntil(this.unsubscribeNotifier))
       //   .subscribe((result) => {this.boxcases = result.results;        console.log('gia tri Shelf',this.boxcases)
       //   })
-
     }
     if (
       this.permissionsService.currentUserCan(
@@ -389,8 +392,9 @@ export class DocumentDetailComponent
               this.previewText = res.toString()
             },
             error: (err) => {
-              this.previewText = $localize`An error occurred loading content: ${err.message ?? err.toString()
-                }`
+              this.previewText = $localize`An error occurred loading content: ${
+                err.message ?? err.toString()
+              }`
             },
           })
           this.downloadUrl = this.documentsService.getDownloadUrl(
@@ -401,7 +405,7 @@ export class DocumentDetailComponent
             true
           )
           this.downloadExcel = this.documentsService.getDownloadExcel(
-            this.documentId,
+            this.documentId
           )
           this.suggestions = null
           const openDocument = this.openDocumentService.getOpenDocument(
@@ -430,7 +434,7 @@ export class DocumentDetailComponent
                 this.documentForm.get('permissions_form').value['owner']
               openDocument['permissions'] =
                 this.documentForm.get('permissions_form').value[
-                'set_permissions'
+                  'set_permissions'
                 ]
               delete openDocument['permissions_form']
             }
@@ -993,7 +997,7 @@ export class DocumentDetailComponent
     this.previewZoomScale = ZoomSetting.PageWidth
     this.previewZoomSetting =
       Object.values(ZoomSetting)[
-      Math.min(Object.values(ZoomSetting).length - 1, currentIndex + 1)
+        Math.min(Object.values(ZoomSetting).length - 1, currentIndex + 1)
       ]
   }
 
@@ -1077,7 +1081,7 @@ export class DocumentDetailComponent
 
   filterDocuments(items: ObjectWithId[] | NgbDateStruct[]) {
     const filterRules: FilterRule[] = items.flatMap((i) => {
-      console.log('gia tri i',i)
+      console.log('gia tri i', i)
       if (i.hasOwnProperty('year')) {
         const isoDateAdapter = new ISODateAdapter()
         const dateAfter: Date = new Date(isoDateAdapter.toModel(i))
@@ -1101,8 +1105,7 @@ export class DocumentDetailComponent
           rule_type: FILTER_CORRESPONDENT,
           value: (i as Correspondent).id.toString(),
         }
-
-      } else if (i.hasOwnProperty('path')&&i.hasOwnProperty('type')) {
+      } else if (i.hasOwnProperty('path') && i.hasOwnProperty('type')) {
         // Warehouse
         return {
           rule_type: FILTER_HAS_WAREHOUSE_ANY,
@@ -1114,7 +1117,7 @@ export class DocumentDetailComponent
           rule_type: FILTER_STORAGE_PATH,
           value: (i as StoragePath).id.toString(),
         }
-      }else if (i.hasOwnProperty('is_inbox_tag')) {
+      } else if (i.hasOwnProperty('is_inbox_tag')) {
         // Tag
         return {
           rule_type: FILTER_HAS_TAGS_ALL,
@@ -1268,33 +1271,49 @@ export class DocumentDetailComponent
       })
   }
 
-  modelChangeWarehouse(event){
-
+  modelChangeWarehouse(event) {
     this.warehouseService.clearCache()
-    this.warehouseService.list(1,null,null,true,{type__iexact:"Shelf",parent_warehouse:event})
+    this.warehouseService
+      .list(1, null, null, true, {
+        type__iexact: 'Shelf',
+        parent_warehouse: event,
+      })
       .pipe(first(), takeUntil(this.unsubscribeNotifier))
-      .subscribe((result) => {this.shelfs = result.results;
-        if (this.documentForm.get("warehouse_w").value==null||!this.shelfs.some(item => item.id === this.documentForm.get("warehouse_s").value)){
-          this.documentForm.get("warehouse_s").setValue(null);
-          this.documentForm.get("warehouse").setValue(null);
+      .subscribe((result) => {
+        this.shelfs = result.results
+        if (
+          this.documentForm.get('warehouse_w').value == null ||
+          !this.shelfs.some(
+            (item) => item.id === this.documentForm.get('warehouse_s').value
+          )
+        ) {
+          this.documentForm.get('warehouse_s').setValue(null)
+          this.documentForm.get('warehouse').setValue(null)
         }
       })
-      this.shelfs=[]
-      this.boxcases=[]
-
-    }
-  modelChangeShelf(event){
-      // this.documentForm.get("warehouse").setValue(null)
-      this.warehouseService.clearCache()
-      this.warehouseService.list(1,null,null,true,{type__iexact:"Boxcase",parent_warehouse:event})
+    this.shelfs = []
+    this.boxcases = []
+  }
+  modelChangeShelf(event) {
+    // this.documentForm.get("warehouse").setValue(null)
+    this.warehouseService.clearCache()
+    this.warehouseService
+      .list(1, null, null, true, {
+        type__iexact: 'Boxcase',
+        parent_warehouse: event,
+      })
       .pipe(first(), takeUntil(this.unsubscribeNotifier))
-      .subscribe((result) => {this.boxcases = result.results;
-        if (this.documentForm.get("warehouse_s").value==null||!this.boxcases.some(item => item.id === this.documentForm.get("warehouse").value)){
-          this.documentForm.get("warehouse").setValue(null)
+      .subscribe((result) => {
+        this.boxcases = result.results
+        if (
+          this.documentForm.get('warehouse_s').value == null ||
+          !this.boxcases.some(
+            (item) => item.id === this.documentForm.get('warehouse').value
+          )
+        ) {
+          this.documentForm.get('warehouse').setValue(null)
         }
       })
-      this.boxcases=[]
-
-
+    this.boxcases = []
   }
 }

@@ -25,7 +25,6 @@ import { saveAs } from 'file-saver'
 import { StoragePathService } from 'src/app/services/rest/storage-path.service'
 import { StoragePath } from 'src/app/data/storage-path'
 
-
 import { Warehouse } from 'src/app/data/warehouse'
 import { SETTINGS_KEYS } from 'src/app/data/ui-settings'
 import { ComponentWithPermissions } from '../../with-permissions/with-permissions.component'
@@ -54,7 +53,8 @@ import { WarehouseService } from 'src/app/services/rest/warehouse.service'
 })
 export class BulkEditorComponent
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   tags: Tag[]
   correspondents: Correspondent[]
   documentTypes: DocumentType[]
@@ -62,10 +62,8 @@ export class BulkEditorComponent
   warehouses: Warehouse[]
   shelfs: Warehouse[]
   boxcases: Warehouse[]
-  select_warehouse:any = null
-  select_shelf:any = null
-
-
+  select_warehouse: any = null
+  select_shelf: any = null
 
   tagSelectionModel = new FilterableDropdownSelectionModel()
   correspondentSelectionModel = new FilterableDropdownSelectionModel()
@@ -190,13 +188,16 @@ export class BulkEditorComponent
         PermissionType.Warehouse
       )
     ) {
-      this.warehouseService.list(1,null,null,true,{type__iexact:"Boxcase"})
+      this.warehouseService
+        .list(1, null, null, true, { type__iexact: 'Boxcase' })
         .pipe(first())
         .subscribe((result) => (this.boxcases = result.results))
-      this.warehouseService.list(1,null,null,true,{type__iexact:"Shelf"})
+      this.warehouseService
+        .list(1, null, null, true, { type__iexact: 'Shelf' })
         .pipe(first())
         .subscribe((result) => (this.shelfs = result.results))
-      this.warehouseService.list(1,null,null,true,{type__iexact:"Warehouse"})
+      this.warehouseService
+        .list(1, null, null, true, { type__iexact: 'Warehouse' })
         .pipe(first())
         .subscribe((result) => (this.warehouses = result.results))
     }
@@ -349,10 +350,7 @@ export class BulkEditorComponent
       .pipe(first())
       .subscribe((s) => {
         this.shelfDocumentCounts = s.selected_shelfs
-        this.applySelectionData(
-          s.selected_shelfs,
-          this.shelfSelectionModel
-        )
+        this.applySelectionData(s.selected_shelfs, this.shelfSelectionModel)
       })
   }
   openBoxcaseDropdown() {
@@ -361,10 +359,7 @@ export class BulkEditorComponent
       .pipe(first())
       .subscribe((s) => {
         this.boxcaseDocumentCounts = s.selected_boxcases
-        this.applySelectionData(
-          s.selected_boxcases,
-          this.boxcaseSelectionModel
-        )
+        this.applySelectionData(s.selected_boxcases, this.boxcaseSelectionModel)
       })
   }
 
@@ -382,8 +377,9 @@ export class BulkEditorComponent
         .join(
           $localize`:this is used to separate enumerations and should probably be a comma and a whitespace in most languages:, `
         )
-      return $localize`:this is for messages like 'modify "tag1", "tag2" and "tag3"':${list} and "${items[items.length - 1].name
-        }"`
+      return $localize`:this is for messages like 'modify "tag1", "tag2" and "tag3"':${list} and "${
+        items[items.length - 1].name
+      }"`
     }
   }
 
@@ -573,9 +569,7 @@ export class BulkEditorComponent
       return
 
     let boxcase =
-      changedShelf.itemsToAdd.length > 0
-        ? changedShelf.itemsToAdd[0]
-        : null
+      changedShelf.itemsToAdd.length > 0 ? changedShelf.itemsToAdd[0] : null
 
     if (this.showConfirmationDialogs) {
       let modal = this.modalService.open(ConfirmDialogComponent, {
@@ -610,14 +604,18 @@ export class BulkEditorComponent
       return
 
     let objWarehouse =
-    changedWarehouse.itemsToAdd.length > 0
+      changedWarehouse.itemsToAdd.length > 0
         ? changedWarehouse.itemsToAdd[0]
         : null
-    this.select_warehouse=objWarehouse?.id
+    this.select_warehouse = objWarehouse?.id
     // this.warehouseService.clearCache()
-    this.warehouseService.list(1,null,null,true,{type__iexact:"Shelf",parent_warehouse:this.select_warehouse})
-        .pipe(first())
-        .subscribe((result) => (this.shelfs = result.results))    
+    this.warehouseService
+      .list(1, null, null, true, {
+        type__iexact: 'Shelf',
+        parent_warehouse: this.select_warehouse,
+      })
+      .pipe(first())
+      .subscribe((result) => (this.shelfs = result.results))
   }
 
   setShelfs(changedShelf: ChangedItems) {
@@ -628,14 +626,15 @@ export class BulkEditorComponent
       return
 
     let objShelf =
-      changedShelf.itemsToAdd.length > 0
-        ? changedShelf.itemsToAdd[0]
-        : null
-    this.select_shelf=objShelf?.id
-    this.warehouseService.list(1,null,null,true,{type__iexact:"Boxcase",parent_warehouse:this.select_shelf})
-    .pipe(first())
-    .subscribe((result) => (this.boxcases = result.results))    
-    
+      changedShelf.itemsToAdd.length > 0 ? changedShelf.itemsToAdd[0] : null
+    this.select_shelf = objShelf?.id
+    this.warehouseService
+      .list(1, null, null, true, {
+        type__iexact: 'Boxcase',
+        parent_warehouse: this.select_shelf,
+      })
+      .pipe(first())
+      .subscribe((result) => (this.boxcases = result.results))
   }
 
   createTag(name: string) {
@@ -745,7 +744,6 @@ export class BulkEditorComponent
       })
   }
 
-
   applyDelete() {
     let modal = this.modalService.open(ConfirmDialogComponent, {
       backdrop: 'static',
@@ -768,7 +766,7 @@ export class BulkEditorComponent
     this.awaitingDownload = true
     let downloadFileType: string =
       this.downloadForm.get('downloadFileTypeArchive').value &&
-        this.downloadForm.get('downloadFileTypeOriginals').value
+      this.downloadForm.get('downloadFileTypeOriginals').value
         ? 'both'
         : this.downloadForm.get('downloadFileTypeArchive').value
           ? 'archive'
@@ -788,9 +786,7 @@ export class BulkEditorComponent
   exportToExcelSelected() {
     this.awaitingDownload = true
     this.documentService
-      .bulkExportExcels(
-        Array.from(this.list.selected)
-      )
+      .bulkExportExcels(Array.from(this.list.selected))
       .pipe(first())
       .subscribe((result: any) => {
         saveAs(result, 'download.xlsx')

@@ -33,7 +33,7 @@ export enum PermissionType {
   Approval = '%s_approval',
   Folder = '%s_folder',
   Dossier = '%s_dossier',
-  DossierForm = '%s_dossierform'
+  DossierForm = '%s_dossierform',
 }
 
 @Injectable({

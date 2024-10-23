@@ -172,14 +172,19 @@ export class DocumentCardLargeComponent extends ComponentWithPermissions {
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((newField) => {
-        this.toastService.showInfo($localize`Successfully sent mining request to "${newField.name}".`)
+        this.toastService.showInfo(
+          $localize`Successfully sent mining request to "${newField.name}".`
+        )
         // this.documentService.clearCache()
         // this.reload()
       })
     modal.componentInstance.failed
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((e) => {
-        this.toastService.showError($localize`Error saving fieldSubmitted mining request failed.`, e)
+        this.toastService.showError(
+          $localize`Error saving fieldSubmitted mining request failed.`,
+          e
+        )
       })
   }
 }

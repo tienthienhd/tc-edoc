@@ -9,12 +9,14 @@ import { environment } from '../../../../../environments/environment'
   styleUrls: ['./welcome-widget.component.scss'],
 })
 export class WelcomeWidgetComponent {
-  constructor(public readonly tourService: TourService, public settingsService: SettingsService) {
-  }
+  constructor(
+    public readonly tourService: TourService,
+    public settingsService: SettingsService
+  ) {}
 
   @Output()
   dismiss: EventEmitter<boolean> = new EventEmitter()
-   get subtitle() {
+  get subtitle() {
     if (this.settingsService.displayName) {
       return $localize`Hello ${this.settingsService.displayName}, welcome to ${environment.appTitle}`
     } else {

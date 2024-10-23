@@ -18,7 +18,7 @@
             <input type="checkbox" class="form-check-input" id="{{customField.get('field').value}}"  [checked]="this.dictCustomFieldsEnable[customField.get('field').value] || false" (change)="enableClick($event, customField.get('field'))">
             <label class="form-check-label visually-hidden" for="{{customField.get('field').value}}" i18n>All</label>
           </div>
-       
+
           <div class="col-lg-3" [hidden]=" !inputDossier" placement="left" triggers="mouseenter:mouseleave">
             <input type="text" class="form-control" [formControl]="customField.get('value')" >
             <label class="visually-hidden" i18n>{{customField.get('value')}}</label>
@@ -37,7 +37,7 @@
         </div>
       </li>
     <!-- } -->
-    
+
     @if (error) {
       <div class="invalid-feedback d-block">{{error}}</div>
     }

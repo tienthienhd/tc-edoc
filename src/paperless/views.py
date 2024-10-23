@@ -19,13 +19,15 @@ from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from documents.permissions import PaperlessObjectPermissions
 from paperless.filters import GroupFilterSet
 from paperless.filters import UserFilterSet
 from paperless.models import ApplicationConfiguration
-from paperless.serialisers import ApplicationConfigurationSerializer, ContentTypeSerializer
+from paperless.serialisers import ApplicationConfigurationSerializer
+from paperless.serialisers import ContentTypeSerializer
 from paperless.serialisers import GroupSerializer
 from paperless.serialisers import ProfileSerializer
 from paperless.serialisers import UserSerializer
@@ -87,12 +89,14 @@ class FaviconView(View):
         with open(favicon, "rb") as f:
             return HttpResponse(f, content_type="image/x-icon")
 
+
 class ContentTypeViewSet(ReadOnlyModelViewSet):
     model = ContentType
 
-    queryset = ContentType.objects.filter(app_label = 'documents')
+    queryset = ContentType.objects.filter(app_label="documents")
 
     serializer_class = ContentTypeSerializer
+
 
 class UserViewSet(ModelViewSet):
     model = User

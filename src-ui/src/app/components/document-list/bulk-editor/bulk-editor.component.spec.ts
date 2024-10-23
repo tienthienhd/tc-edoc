@@ -72,7 +72,7 @@ const selectionData: SelectionData = {
     { id: 66, document_count: 3 },
     { id: 55, document_count: 0 },
   ],
-  selected_warehouses: []
+  selected_warehouses: [],
 }
 
 describe('BulkEditorComponent', () => {
@@ -284,9 +284,9 @@ describe('BulkEditorComponent', () => {
   it('should apply selection data to warehouse menu', () => {
     jest.spyOn(permissionsService, 'currentUserCan').mockReturnValue(true)
     fixture.detectChanges()
-    expect(
-      component.warehousesSelectionModel.getSelectedItems()
-    ).toHaveLength(0)
+    expect(component.warehousesSelectionModel.getSelectedItems()).toHaveLength(
+      0
+    )
     jest
       .spyOn(documentListViewService, 'selected', 'get')
       .mockReturnValue(new Set([3, 5, 7]))
@@ -811,7 +811,6 @@ describe('BulkEditorComponent', () => {
       'This operation will assign the storage path "Warehouse 101" to 2 selected document(s).'
     )
   })
-
 
   it('should only execute bulk operations when changes are detected', () => {
     component.setTags({

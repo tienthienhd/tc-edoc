@@ -59,4 +59,3 @@ describe('BoxEditDialogComponent', () => {
     expect(editTitleSpy).toHaveBeenCalled()
   })
 })
-

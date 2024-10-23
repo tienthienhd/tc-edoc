@@ -14,7 +14,8 @@ import { FolderService } from 'src/app/services/rest/folder.service'
 })
 export class FolderEditDialogComponent
   extends EditDialogComponent<Folder>
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     service: FolderService,
     activeModal: NgbActiveModal,

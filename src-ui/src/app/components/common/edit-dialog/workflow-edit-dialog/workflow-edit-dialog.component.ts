@@ -141,7 +141,8 @@ const TRIGGER_MATCHING_ALGORITHMS = MATCHING_ALGORITHMS.filter(
 })
 export class WorkflowEditDialogComponent
   extends EditDialogComponent<Workflow>
-  implements OnInit {
+  implements OnInit
+{
   public WorkflowTriggerType = WorkflowTriggerType
   public WorkflowActionType = WorkflowActionType
 
@@ -153,7 +154,6 @@ export class WorkflowEditDialogComponent
   customFields: CustomField[]
   groups: Group[]
   contentTypes: ContentType[]
-
 
   expandedItem: number = null
 
@@ -196,7 +196,7 @@ export class WorkflowEditDialogComponent
       .listAll()
       .pipe(first())
       .subscribe((result) => (this.customFields = result.results))
-    
+
     groupService
       .listAll()
       .pipe(first())
@@ -387,7 +387,9 @@ export class WorkflowEditDialogComponent
         ),
         filter_has_groups: new FormControl(trigger.filter_has_groups),
         filter_has_status: new FormControl(trigger.filter_has_status),
-        filter_has_content_type: new FormControl(trigger.filter_has_content_type),
+        filter_has_content_type: new FormControl(
+          trigger.filter_has_content_type
+        ),
         filter_has_access_type: new FormControl(trigger.filter_has_access_type),
       }),
       { emitEvent }
@@ -480,8 +482,13 @@ export class WorkflowEditDialogComponent
     return this.triggerStatusOptions.find((t) => t.id === status)?.name ?? ''
   }
 
-  getTriggerAccessTypesOptionName(access_types: WorkflowTriggerAccessType): string {
-    return this.triggerAccesTypesOptions.find((t) => t.id === access_types)?.name ?? ''
+  getTriggerAccessTypesOptionName(
+    access_types: WorkflowTriggerAccessType
+  ): string {
+    return (
+      this.triggerAccesTypesOptions.find((t) => t.id === access_types)?.name ??
+      ''
+    )
   }
 
   addTrigger() {
@@ -503,7 +510,7 @@ export class WorkflowEditDialogComponent
       filter_has_groups: [],
       filter_has_status: WorkflowTriggerStatus.Pending,
       filter_has_content_type: null,
-      filter_has_access_type: WorkflowTriggerAccessType.View
+      filter_has_access_type: WorkflowTriggerAccessType.View,
     }
     this.object.triggers.push(trigger)
     this.createTriggerField(trigger)

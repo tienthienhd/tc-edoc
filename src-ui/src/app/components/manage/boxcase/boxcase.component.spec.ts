@@ -12,7 +12,6 @@ import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { BoxCaseComponent } from './boxcase.component'
 import { BoxService } from 'src/app/services/rest/box.service'
 
-
 describe('BoxFieldsComponent', () => {
   let component: BoxCaseComponent
   let fixture: ComponentFixture<BoxCaseComponent>

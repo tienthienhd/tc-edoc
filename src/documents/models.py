@@ -91,15 +91,16 @@ class MatchingModel(ModelWithOwner):
     def __str__(self):
         return self.name
 
+
 class Approval(models.Model):
 
     ALL_STATES = sorted(states.ALL_STATES)
     APPROVAL_STATE_CHOICES = sorted(zip(ALL_STATES, ALL_STATES))
 
     APPROVAL_ACCESS_TYPE_CHOICES = [
-        ('OWNER', _('Owner')),
-        ('EDIT', _('Edit')),
-        ('VIEW', _('View')),
+        ("OWNER", _("Owner")),
+        ("EDIT", _("Edit")),
+        ("VIEW", _("View")),
     ]
 
     submitted_by = models.ForeignKey(
@@ -116,7 +117,7 @@ class Approval(models.Model):
         verbose_name=_("submitted_by_group"),
     )
 
-    object_pk = models.CharField(_('object ID'), max_length=255, blank=True)
+    object_pk = models.CharField(_("object ID"), max_length=255, blank=True)
 
     ctype = models.ForeignKey(
         ContentType,
@@ -146,7 +147,7 @@ class Approval(models.Model):
         choices=APPROVAL_ACCESS_TYPE_CHOICES,
         verbose_name=_("access type"),
         null=False,
-        blank=True
+        blank=True,
     )
 
     created = models.DateTimeField(_("created"), default=timezone.now, db_index=True)
@@ -164,31 +165,40 @@ class Announcement(models.Model):
     STATE_CHOICES = sorted(zip(ALL_STATES, ALL_STATES))
 
     ACCESS_TYPE_CHOICES = [
-        ('OWNER', _('Owner')),
-        ('CHANGE', _('Change')),
-        ('VIEW', _('View')),
+        ("OWNER", _("Owner")),
+        ("CHANGE", _("Change")),
+        ("VIEW", _("View")),
     ]
     label = models.CharField(
-        max_length=32, help_text=_(
-            message='Short description of this announcement.'
-        ), verbose_name=_(message='Label')
+        max_length=32,
+        help_text=_(
+            message="Short description of this announcement.",
+        ),
+        verbose_name=_(message="Label"),
     )
     text = models.TextField(
-        help_text=_(message='The actual text to be displayed.'),
-        verbose_name=_(message='Text')
+        help_text=_(message="The actual text to be displayed."),
+        verbose_name=_(message="Text"),
     )
     enabled = models.BooleanField(
-        default=True, verbose_name=_(message='Enabled')
+        default=True,
+        verbose_name=_(message="Enabled"),
     )
     start_datetime = models.DateTimeField(
-        blank=True, help_text=_(
-            message='Date and time after which this announcement will be displayed.'
-        ), null=True, verbose_name=_(message='Start date time')
+        blank=True,
+        help_text=_(
+            message="Date and time after which this announcement will be displayed.",
+        ),
+        null=True,
+        verbose_name=_(message="Start date time"),
     )
     end_datetime = models.DateTimeField(
-        blank=True, help_text=_(
-            message='Date and time until when this announcement is to be displayed.'
-        ), null=True, verbose_name=_(message='End date time')
+        blank=True,
+        help_text=_(
+            message="Date and time until when this announcement is to be displayed.",
+        ),
+        null=True,
+        verbose_name=_(message="End date time"),
     )
 
     submitted_by = models.ForeignKey(
@@ -197,7 +207,7 @@ class Announcement(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("submitted_by"),
-        related_name=_("submitted_by")
+        related_name=_("submitted_by"),
     )
 
     submitted_by_group = models.ForeignKey(
@@ -206,18 +216,26 @@ class Announcement(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("submitted_by_group"),
-        related_name=_("submitted_by_group")
+        related_name=_("submitted_by_group"),
     )
 
-    received_by = models.ForeignKey(User, blank=True, null=True,
-                                    on_delete=models.SET_NULL,
-                                    verbose_name=_("received_by"))
+    received_by = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("received_by"),
+    )
 
-    received_by_group = models.ForeignKey(Group, blank=True, null=True,
-                                          on_delete=models.SET_NULL,
-                                          verbose_name='received_by_group')
+    received_by_group = models.ForeignKey(
+        Group,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="received_by_group",
+    )
 
-    object_pk = models.CharField(_('object ID'), max_length=255, blank=True)
+    object_pk = models.CharField(_("object ID"), max_length=255, blank=True)
 
     ctype = models.ForeignKey(
         ContentType,
@@ -225,7 +243,7 @@ class Announcement(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("content type"),
-        related_name=_("content_type")
+        related_name=_("content_type"),
     )
 
     status = models.CharField(
@@ -241,11 +259,10 @@ class Announcement(models.Model):
         choices=ACCESS_TYPE_CHOICES,
         verbose_name=_("access type"),
         null=False,
-        blank=True
+        blank=True,
     )
 
-    created = models.DateTimeField(_("created"), default=timezone.now,
-                                   db_index=True)
+    created = models.DateTimeField(_("created"), default=timezone.now, db_index=True)
 
     modified = models.DateTimeField(
         _("modified"),
@@ -257,15 +274,15 @@ class Announcement(models.Model):
     is_read = models.BooleanField(_("is_read"), default=False)
 
     class Meta:
-        ordering = ('label',)
-        verbose_name = _(message='Announcement')
-        verbose_name_plural = _(message='Announcements')
+        ordering = ("label",)
+        verbose_name = _(message="Announcement")
+        verbose_name_plural = _(message="Announcements")
 
     def __str__(self):
         return self.label
 
     def get_absolute_url(self):
-        return reverse(viewname='announcements:announcement_list')
+        return reverse(viewname="announcements:announcement_list")
 
 
 class Correspondent(MatchingModel):
@@ -307,6 +324,7 @@ class StoragePath(MatchingModel):
         verbose_name = _("storage path")
         verbose_name_plural = _("storage paths")
 
+
 class Warehouse(MatchingModel):
 
     WAREHOUSE = "Warehouse"
@@ -318,10 +336,19 @@ class Warehouse(MatchingModel):
         (BOXCASE, _("Boxcase")),
     )
 
-    type = models.CharField(max_length=20, null=True, blank=True,
-                                      choices=TYPE_WAREHOUSE,
-                                      default=WAREHOUSE,)
-    parent_warehouse = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True )
+    type = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        choices=TYPE_WAREHOUSE,
+        default=WAREHOUSE,
+    )
+    parent_warehouse = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     path = models.TextField(_("path"), null=True, blank=True)
 
     class Meta(MatchingModel.Meta):
@@ -332,8 +359,14 @@ class Warehouse(MatchingModel):
     def __str__(self):
         return self.name
 
+
 class Folder(MatchingModel):
-    parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True )
+    parent_folder = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     path = models.TextField(_("path"), null=True, blank=True)
     checksum = models.CharField(
         _("checksum"),
@@ -350,28 +383,38 @@ class Folder(MatchingModel):
         (FOLDER, _("folder")),
         (FILE, _("file")),
     )
-    type = models.CharField(max_length=20,
-                                      choices=TYPE_FOLDER,
-                                      default=FOLDER,)
+    type = models.CharField(max_length=20, choices=TYPE_FOLDER, default=FOLDER)
 
-    created = models.DateTimeField(_("created"), null=True, default=timezone.now, db_index=True)
+    created = models.DateTimeField(
+        _("created"),
+        null=True,
+        default=timezone.now,
+        db_index=True,
+    )
 
-    updated = models.DateTimeField(_("updated"), null=True, default=timezone.now, editable=False, db_index=True)
-
+    updated = models.DateTimeField(
+        _("updated"),
+        null=True,
+        default=timezone.now,
+        editable=False,
+        db_index=True,
+    )
 
     class Meta(MatchingModel.Meta):
 
         verbose_name = _("folder")
         verbose_name_plural = _("folders")
         constraints = []
+
     def __str__(self):
         return self.name
+
 
 class DossierForm(MatchingModel):
 
     DOSSIER_TYPE_CHOICES = [
-        ('DOSSIER', _('Dossier')),
-        ('DOCUMENT', _('Document')),
+        ("DOSSIER", _("Dossier")),
+        ("DOCUMENT", _("Document")),
     ]
 
     type = models.CharField(
@@ -380,7 +423,7 @@ class DossierForm(MatchingModel):
         verbose_name=_("access_type"),
         null=False,
         blank=False,
-        default='DOSSIER'
+        default="DOSSIER",
     )
 
     # parent_dossier_form = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='child_dossiers')
@@ -399,6 +442,7 @@ class DossierForm(MatchingModel):
     class Meta(MatchingModel.Meta):
         verbose_name = _("dossier form")
         verbose_name_plural = _("dossiers form")
+
     def __str__(self):
         return self.name
 
@@ -406,9 +450,9 @@ class DossierForm(MatchingModel):
 class Dossier(MatchingModel):
 
     DOSSIER_TYPE_CHOICES = [
-        ('DOSSIER', _('Dossier')),
-        ('DOCUMENT', _('Document')),
-        ('FILE', _('File')),
+        ("DOSSIER", _("Dossier")),
+        ("DOCUMENT", _("Document")),
+        ("FILE", _("File")),
     ]
 
     type = models.CharField(
@@ -417,12 +461,22 @@ class Dossier(MatchingModel):
         verbose_name=_("access_type"),
         null=False,
         blank=False,
-        default='DOSSIER'
+        default="DOSSIER",
     )
 
-    parent_dossier = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    parent_dossier = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
-    dossier_form = models.ForeignKey(DossierForm, on_delete=models.CASCADE, null=True, blank=True)
+    dossier_form = models.ForeignKey(
+        DossierForm,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     path = models.TextField(_("path"), null=True, blank=True)
 
@@ -436,6 +490,7 @@ class Dossier(MatchingModel):
     class Meta(MatchingModel.Meta):
         verbose_name = _("dossier")
         verbose_name_plural = _("dossiers")
+
     def __str__(self):
         return self.name
 
@@ -1093,6 +1148,7 @@ class ShareLink(models.Model):
     def __str__(self):
         return f"Share Link for {self.document.title}"
 
+
 class CustomField(models.Model):
     """
     Defines the name and type of a custom field
@@ -1188,9 +1244,14 @@ class CustomFieldInstance(models.Model):
         editable=False,
     )
 
-    match_value = models.JSONField(null=True,blank=True)
+    match_value = models.JSONField(null=True, blank=True)
 
-    reference = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True )
+    reference = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
 
     # Actual data storage
     value_text = models.TextField(null=True)
@@ -1246,6 +1307,7 @@ class CustomFieldInstance(models.Model):
         elif self.field.data_type == CustomField.FieldDataType.DOCUMENTLINK:
             return self.value_document_ids
         raise NotImplementedError(self.field.data_type)
+
 
 if settings.AUDIT_LOG_ENABLED:
     auditlog.register(Document, m2m_fields={"tags"})
@@ -1369,7 +1431,7 @@ class WorkflowTrigger(models.Model):
         choices=APPROVAL_STATE_CHOICES,
         verbose_name=_("approval state"),
         null=True,
-        blank=True
+        blank=True,
     )
 
     filter_has_content_type = models.ForeignKey(
@@ -1381,16 +1443,16 @@ class WorkflowTrigger(models.Model):
     )
 
     APPROVAL_ACCESS_CHOICES = [
-        ('OWNER', _('Owner')),
-        ('EDIT', _('Edit')),
-        ('VIEW', _('View')),
+        ("OWNER", _("Owner")),
+        ("EDIT", _("Edit")),
+        ("VIEW", _("View")),
     ]
     filter_has_access_type = models.CharField(
         max_length=30,
         choices=APPROVAL_ACCESS_CHOICES,
         verbose_name=_("access type"),
         null=True,
-        blank=True
+        blank=True,
     )
 
     class Meta:
@@ -1658,7 +1720,3 @@ class Workflow(models.Model):
 
     def __str__(self):
         return f"Workflow: {self.name}"
-
-
-
-

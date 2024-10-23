@@ -193,14 +193,14 @@ class DocumentClassifier:
                 y = cor.pk
             hasher.update(y.to_bytes(4, "little", signed=True))
             labels_correspondent.append(y)
-            
+
             y = -1
             fo = doc.folder
             if fo and fo.matching_algorithm == MatchingModel.MATCH_AUTO:
                 y = fo.pk
             hasher.update(y.to_bytes(4, "little", signed=True))
             labels_folder.append(y)
-            
+
             y = -1
             wh = doc.warehouse
             if wh and wh.matching_algorithm == MatchingModel.MATCH_AUTO:
@@ -327,7 +327,7 @@ class DocumentClassifier:
                 "There are no correspondents. Not training correspondent "
                 "classifier.",
             )
-        
+
         if num_folders > 0:
             logger.debug("Training folder classifier...")
             self.folder_classifier = MLPClassifier(tol=0.01)
@@ -335,8 +335,7 @@ class DocumentClassifier:
         else:
             self.folder_classifier = None
             logger.debug(
-                "There are no folders. Not training folder "
-                "classifier.",
+                "There are no folders. Not training folder classifier.",
             )
 
         if num_warehouses > 0:
@@ -346,8 +345,7 @@ class DocumentClassifier:
         else:
             self.warehouse_classifier = None
             logger.debug(
-                "There are no warehouses. Not training warehouse "
-                "classifier.",
+                "There are no warehouses. Not training warehouse classifier.",
             )
 
         if num_document_types > 0:
@@ -460,7 +458,7 @@ class DocumentClassifier:
                 return None
         else:
             return None
-    
+
     def predict_folder(self, content: str) -> Optional[int]:
         if self.folder_classifier:
             X = self.data_vectorizer.transform([self.preprocess_content(content)])
@@ -471,7 +469,7 @@ class DocumentClassifier:
                 return None
         else:
             return None
-        
+
     def predict_warehouse(self, content: str) -> Optional[int]:
         if self.warehouse_classifier:
             X = self.data_vectorizer.transform([self.preprocess_content(content)])

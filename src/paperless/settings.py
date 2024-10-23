@@ -15,9 +15,9 @@ from urllib.parse import urlparse
 
 from celery.schedules import crontab
 from concurrent_log_handler.queue import setup_logging_queues
+from decouple import config
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
-from decouple import config
 
 # Tap paperless.conf if it's available
 configuration_path = os.getenv("PAPERLESS_CONFIGURATION_PATH")
@@ -386,7 +386,7 @@ STORAGES = {
 }
 
 _CELERY_REDIS_URL, _CHANNELS_REDIS_URL = _parse_redis_url(
-    os.getenv("PAPERLESS_REDIS", 'redis://:@123bytech@172.16.100.203:9377'),
+    os.getenv("PAPERLESS_REDIS", "redis://:@123bytech@172.16.100.203:9377"),
 )
 
 TEMPLATES = [
@@ -421,10 +421,19 @@ CHANNEL_LAYERS = {
 # PAPERLESS_OCR_CUSTOM
 TCGROUP_OCR_CUSTOM = {
     "URL": {
-        "URL_UPLOAD_FILE": os.getenv("URL_UPLOAD_FILE","https://ocr-core-api.tcgroup.vn/api/v1/file/upload"),
-        "URL_OCR_BY_FILEID": os.getenv("URL_OCR_BY_FILEID","https://ocr-core-api.tcgroup.vn/api/v1/ocr/general"),
-        "URL_OCR_CUSTOM_FIELD_BY_FILEID": os.getenv("URL_OCR_CUSTOM_FIELD_BY_FILEID","https://ocr-general-api.tcgroup.vn/home/api/v1/extract-by-rule"),
-    }
+        "URL_UPLOAD_FILE": os.getenv(
+            "URL_UPLOAD_FILE",
+            "https://ocr-core-api.tcgroup.vn/api/v1/file/upload",
+        ),
+        "URL_OCR_BY_FILEID": os.getenv(
+            "URL_OCR_BY_FILEID",
+            "https://ocr-core-api.tcgroup.vn/api/v1/ocr/general",
+        ),
+        "URL_OCR_CUSTOM_FIELD_BY_FILEID": os.getenv(
+            "URL_OCR_CUSTOM_FIELD_BY_FILEID",
+            "https://ocr-general-api.tcgroup.vn/home/api/v1/extract-by-rule",
+        ),
+    },
 }
 
 ###############################################################################
@@ -954,7 +963,7 @@ OCR_PAGES = __get_optional_int("PAPERLESS_OCR_PAGES")
 
 # The default language that tesseract will attempt to use when parsing
 # documents.  It should be a 3-letter language code consistent with ISO 639.
-OCR_LANGUAGE = os.getenv("PAPERLESS_OCR_LANGUAGE", "vie")
+OCR_LANGUAGE = os.getenv("PAPERLESS_OCR_LANGUAGE", "via")
 
 # OCRmyPDF --output-type options are available.
 OCR_OUTPUT_TYPE = os.getenv("PAPERLESS_OCR_OUTPUT_TYPE", "pdfa")

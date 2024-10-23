@@ -16,7 +16,7 @@ class DocumentMetadataOverrides:
     be set from content or matching.  All fields default to None,
     meaning no override is happening
     """
-   
+
     filename: Optional[str] = None
     title: Optional[str] = None
     correspondent_id: Optional[int] = None

@@ -1,29 +1,32 @@
 from functools import reduce
 from operator import or_
+
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import CharField
 from django.db.models import Count
 from django.db.models import OuterRef
 from django.db.models import Q
 from django.db.models.functions import Cast
+from django_filters import NumberFilter
 from django_filters.rest_framework import BooleanFilter
 from django_filters.rest_framework import Filter
 from django_filters.rest_framework import FilterSet
-from django_filters import CharFilter, NumberFilter
 from guardian.utils import get_group_obj_perms_model
 from guardian.utils import get_user_obj_perms_model
 from rest_framework_guardian.filters import ObjectPermissionsFilter
 
-from documents.models import Approval, Correspondent, Dossier, DossierForm
+from documents.models import Correspondent
 from documents.models import CustomField
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Dossier
+from documents.models import DossierForm
+from documents.models import Folder
 from documents.models import Log
 from documents.models import ShareLink
 from documents.models import StoragePath
 from documents.models import Tag
 from documents.models import Warehouse
-from documents.models import Folder
 
 CHAR_KWARGS = ["istartswith", "iendswith", "icontains", "iexact"]
 ID_KWARGS = ["in", "exact"]
@@ -86,7 +89,7 @@ class ObjectFilter(Filter):
 
         if self.in_list:
             qs = qs.filter(**{f"{self.field_name}__id__in": object_ids}).distinct()
-            print('ksdlfjs',qs)
+            print("ksdlfjs", qs)
         else:
             for obj_id in object_ids:
                 if self.exclude:
@@ -98,7 +101,7 @@ class ObjectFilter(Filter):
 
 
 class WarehouseFilter(Filter):
-    def __init__(self, exclude=False, in_list=False, field_name="",isnull=False):
+    def __init__(self, exclude=False, in_list=False, field_name="", isnull=False):
         super().__init__()
         self.exclude = exclude
         self.in_list = in_list
@@ -116,20 +119,35 @@ class WarehouseFilter(Filter):
 
         if self.in_list:
             new_list = []
-            warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list("path", flat=True)
+            warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list(
+                "path",
+                flat=True,
+            )
             if warehouse_paths:
-                path_conditions = reduce(or_, (Q(path__startswith=item) for item in warehouse_paths))
-                list_warehouses = Warehouse.objects.filter(path_conditions).values_list("id")
+                path_conditions = reduce(
+                    or_,
+                    (Q(path__startswith=item) for item in warehouse_paths),
+                )
+                list_warehouses = Warehouse.objects.filter(path_conditions).values_list(
+                    "id",
+                )
                 new_list = [x[0] for x in list_warehouses]
             qs = qs.filter(**{f"{self.field_name}__id__in": new_list}).distinct()
         else:
             for obj_id in object_ids:
                 if self.exclude:
                     new_list = []
-                    warehouse_paths = Warehouse.objects.filter(id__in=object_ids).values_list("path", flat=True)
+                    warehouse_paths = Warehouse.objects.filter(
+                        id__in=object_ids,
+                    ).values_list("path", flat=True)
                     if warehouse_paths:
-                        path_conditions = reduce(or_, (Q(path__startswith=item) for item in warehouse_paths))
-                        list_warehouses = Warehouse.objects.filter(path_conditions).values_list("id")
+                        path_conditions = reduce(
+                            or_,
+                            (Q(path__startswith=item) for item in warehouse_paths),
+                        )
+                        list_warehouses = Warehouse.objects.filter(
+                            path_conditions,
+                        ).values_list("id")
                         new_list = [x[0] for x in list_warehouses]
                     qs = qs.exclude(**{f"{self.field_name}__id__in": new_list})
                 elif self.isnull:
@@ -157,7 +175,9 @@ class FolderFilter(Filter):
 
         if self.in_list:
             folder_paths = Folder.objects.filter(id__in=object_ids).values_list("path")
-            list_folders = Folder.objects.filter(path__startswith = folder_paths).values_list("id")
+            list_folders = Folder.objects.filter(
+                path__startswith=folder_paths,
+            ).values_list("id")
             new_list = [x[0] for x in list_folders]
             qs = qs.filter(**{f"{self.field_name}__id__in": new_list}).distinct()
         else:
@@ -168,7 +188,8 @@ class FolderFilter(Filter):
                     qs = qs.filter(**{f"{self.field_name}__id": obj_id})
 
         return qs
-    
+
+
 class DossierFilter(Filter):
     def __init__(self, exclude=False, in_list=False, field_name=""):
         super().__init__()
@@ -186,8 +207,12 @@ class DossierFilter(Filter):
             return qs
 
         if self.in_list:
-            warehouse_paths = Dossier.objects.filter(id__in=object_ids).values_list("path")
-            list_warehouses = Dossier.objects.filter(path__startswith = warehouse_paths).values_list("id")
+            warehouse_paths = Dossier.objects.filter(id__in=object_ids).values_list(
+                "path",
+            )
+            list_warehouses = Dossier.objects.filter(
+                path__startswith=warehouse_paths,
+            ).values_list("id")
             new_list = [x[0] for x in list_warehouses]
             qs = qs.filter(**{f"{self.field_name}__id__in": new_list}).distinct()
         else:
@@ -198,6 +223,7 @@ class DossierFilter(Filter):
                     qs = qs.filter(**{f"{self.field_name}__id": obj_id})
 
         return qs
+
 
 class InboxFilter(Filter):
     def filter(self, qs, value):
@@ -298,29 +324,29 @@ class DocumentFilterSet(FilterSet):
     document_type__id__none = ObjectFilter(field_name="document_type", exclude=True)
 
     storage_path__id__none = ObjectFilter(field_name="storage_path", exclude=True)
-    
+
     warehouse__id__none = WarehouseFilter(field_name="warehouse", exclude=True)
-    
+
     warehouse__id__in = WarehouseFilter(field_name="warehouse", in_list=True)
-    
+
     warehouse_s__isnull = WarehouseFilter(field_name="warehouse", isnull=True)
 
     warehouse_s__id__none = WarehouseFilter(field_name="warehouse", exclude=True)
-    
+
     warehouse_s__id__in = WarehouseFilter(field_name="warehouse", in_list=True)
-    
+
     warehouse_w__isnull = WarehouseFilter(field_name="warehouse", isnull=True)
 
     warehouse_w__id__none = WarehouseFilter(field_name="warehouse", exclude=True)
-    
+
     warehouse_w__id__in = WarehouseFilter(field_name="warehouse", in_list=True)
-    
+
     folder__id__none = FolderFilter(field_name="folder", exclude=True)
-    
+
     folder__id__in = FolderFilter(field_name="folder", in_list=True)
 
     dossier__id__none = DossierFilter(field_name="dossier", exclude=True)
-    
+
     dossier__id__in = DossierFilter(field_name="dossier", in_list=True)
 
     is_in_inbox = InboxFilter()
@@ -332,7 +358,6 @@ class DocumentFilterSet(FilterSet):
     custom_fields__icontains = CustomFieldsFilter()
 
     shared_by__id = SharedByUser()
- 
 
     class Meta:
         model = Document
@@ -398,8 +423,6 @@ class ObjectOwnedOrGrantedPermissionsFilter(ObjectPermissionsFilter):
         return objects_with_perms | objects_owned | objects_unowned
 
 
-
-
 class WarehouseFilterSet(FilterSet):
     class Meta:
         model = Warehouse
@@ -410,6 +433,7 @@ class WarehouseFilterSet(FilterSet):
             "parent_warehouse": ID_KWARGS,
         }
 
+
 # class ApprovalFilterSet(FilterSet):
 #     class Meta:
 #         model = Approval
@@ -418,9 +442,11 @@ class WarehouseFilterSet(FilterSet):
 #             "ctype": CHAR_KWARGS,
 #             "path": CHAR_KWARGS,
 #         }
-        
+
+
 class FolderFilterSet(FilterSet):
     parent_folder__id__none = ObjectFilter(field_name="parent_folder", exclude=True)
+
     class Meta:
         model = Folder
         fields = {
@@ -431,13 +457,15 @@ class FolderFilterSet(FilterSet):
             "parent_folder": ["isnull"],
         }
 
+
 class CustomParentDossierIDFilter(NumberFilter):
     def filter(self, qs, value):
         if value is None:
             return qs
-        d = qs.filter(id = value).first()
+        d = qs.filter(id=value).first()
         qs = qs.filter(path__startswith=str(d.path))
-        return qs.exclude(id = d.id)
+        return qs.exclude(id=d.id)
+
 
 class DossierFilterSet(FilterSet):
     # parent_dossier__id = CustomParentDossierIDFilter(field_name="parent_dossier__id")
@@ -451,6 +479,8 @@ class DossierFilterSet(FilterSet):
             "parent_dossier": ["isnull"],
             "type": ["exact", "isnull"],
         }
+
+
 class DossierFormFilterSet(FilterSet):
     # parent_dossier__id = CustomParentDossierIDFilter(field_name="parent_dossier__id")
     class Meta:
@@ -460,7 +490,7 @@ class DossierFormFilterSet(FilterSet):
             "name": ["exact", "icontains"],
             "type": ["exact", "isnull"],
         }
-    
+
 
 # class ApprovalFilterSet(FilterSet):
 #     class Meta:

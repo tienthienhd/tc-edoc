@@ -18,5 +18,4 @@ export class CustomShelfService extends AbstractNameFilterService<Shelf> {
   getWarehousePath(id: number): Observable<Shelf> {
     return this.http.get<Shelf>(this.getResourceUrl(id, 'warehouse_path'))
   }
-
 }

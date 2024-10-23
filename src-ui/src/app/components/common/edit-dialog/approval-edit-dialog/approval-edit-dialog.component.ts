@@ -45,7 +45,7 @@ export class ApprovalEditDialogComponent
     { label: $localize`30 days`, value: 30 },
     { label: $localize`Never`, value: null },
   ]
-  defaultAccessType = PaperlessApprovalAccessType.View;
+  defaultAccessType = PaperlessApprovalAccessType.View
   defaultExpiration: number = null
   expiration: number = 7
   groups: Group[]
@@ -94,16 +94,16 @@ export class ApprovalEditDialogComponent
     return this.dialogMode === EditDialogMode.EDIT
   }
   save(): void {
-    const expirationDays = this.objectForm.get('expiration')?.value;
-    if (expirationDays){
-      let expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + (expirationDays || 0));
+    const expirationDays = this.objectForm.get('expiration')?.value
+    if (expirationDays) {
+      let expirationDate = new Date()
+      expirationDate.setDate(expirationDate.getDate() + (expirationDays || 0))
       this.objectForm.patchValue({
         expiration: expirationDate,
-      });
+      })
     }
-  
+
     // Gọi phương thức save() của lớp cha
-    super.save();
+    super.save()
   }
 }

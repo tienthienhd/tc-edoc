@@ -8,18 +8,16 @@ from documents.data_models import ConsumableDocument
 from documents.data_models import DocumentSource
 from documents.models import Approval
 from documents.models import Correspondent
-from documents.models import Warehouse
-from documents.models import Folder
-from documents.models import Approval, Correspondent
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Folder
 from documents.models import MatchingModel
 from documents.models import StoragePath
 from documents.models import Tag
+from documents.models import Warehouse
 from documents.models import Workflow
 from documents.models import WorkflowTrigger
 from documents.permissions import get_objects_for_user_owner_aware
-from guardian.models import GroupObjectPermission
 
 logger = logging.getLogger("paperless.matching")
 
@@ -60,7 +58,8 @@ def match_correspondents(document: Document, classifier: DocumentClassifier, use
             correspondents,
         ),
     )
-    
+
+
 def match_folders(document: Document, classifier: DocumentClassifier, user=None):
     pred_id = classifier.predict_folder(document.content) if classifier else None
 
@@ -84,6 +83,7 @@ def match_folders(document: Document, classifier: DocumentClassifier, user=None)
         ),
     )
 
+
 def match_warehouses(document: Document, classifier: DocumentClassifier, user=None):
     pred_id = classifier.predict_warehouse(document.content) if classifier else None
 
@@ -106,6 +106,7 @@ def match_warehouses(document: Document, classifier: DocumentClassifier, user=No
             warehouses,
         ),
     )
+
 
 def match_document_types(document: Document, classifier: DocumentClassifier, user=None):
     pred_id = classifier.predict_document_type(document.content) if classifier else None
@@ -405,13 +406,16 @@ def existing_document_matches_workflow(
         #         group_id__in=trigger.filter_has_groups.all().values_list("id"),
         # ).count()
         # == 0
-        and document.owner.groups.filter(id__in=trigger.filter_has_groups.all().values_list("id")).count()==0
+        and document.owner.groups.filter(
+            id__in=trigger.filter_has_groups.all().values_list("id"),
+        ).count()
+        == 0
     ):
         reason = (
             f"Document groups {document.owner.groups.filter(id__in=trigger.filter_has_groups.all().values_list('id'))} do not include"
             f" {trigger.filter_has_groups.all()}",
         )
-        logger.info('group trigger ko matched')
+        logger.info("group trigger ko matched")
         trigger_matched = False
 
     # Document correspondent vs trigger has_correspondent
@@ -423,8 +427,7 @@ def existing_document_matches_workflow(
             f"Document correspondent {document.correspondent} does not match {trigger.filter_has_correspondent}",
         )
         trigger_matched = False
-        
-    
+
     # Document document_type vs trigger has_document_type
     if (
         trigger.filter_has_document_type is not None
@@ -521,7 +524,7 @@ def approval_matches_workflow(
                 or trigger_type == WorkflowTrigger.WorkflowTriggerType.APPROVAL_UPDATED
             ):
                 trigger_matched, reason = existing_approval_matches_workflow(
-                    approval,   
+                    approval,
                     trigger,
                 )
             else:
@@ -547,12 +550,12 @@ def existing_approval_matches_workflow(
     Returns True if the Approval matches all filters from the workflow trigger,
     False otherwise. Includes a reason if doesn't match
     """
-# 
+    #
     trigger_matched = True
     reason = ""
 
-    # Approval ctype vs trigger has_content_type 
-    if(
+    # Approval ctype vs trigger has_content_type
+    if (
         trigger.filter_has_content_type is not None
         and approval.ctype != trigger.filter_has_content_type
     ):
@@ -561,7 +564,7 @@ def existing_approval_matches_workflow(
         )
         trigger_matched = False
 
-    if(
+    if (
         trigger.filter_has_status is not None
         and approval.status != trigger.filter_has_status
     ):
@@ -569,7 +572,7 @@ def existing_approval_matches_workflow(
             f"Approval status {approval.status} does not match {trigger.filter_has_status}",
         )
         trigger_matched = False
-    if(
+    if (
         trigger.filter_has_access_type is not None
         and approval.access_type != trigger.filter_has_access_type
     ):
@@ -577,6 +580,5 @@ def existing_approval_matches_workflow(
             f"Approval status {approval.access_type} does not match {trigger.filter_has_access_type}",
         )
         trigger_matched = False
-
 
     return (trigger_matched, reason)

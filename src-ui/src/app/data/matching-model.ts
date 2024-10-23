@@ -48,7 +48,6 @@ export const MATCHING_ALGORITHMS = [
 ]
 
 export interface MatchingModel extends ObjectWithId {
-
   name?: string
 
   slug?: string

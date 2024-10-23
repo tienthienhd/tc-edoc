@@ -1630,7 +1630,6 @@ describe('FilterEditorComponent', () => {
   // The rest
 
   it('should support setting selection data', () => {
-
     component.selectionData = null
     component.selectionData = {
       selected_storage_paths: [

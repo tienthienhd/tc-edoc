@@ -85,16 +85,15 @@ export class FileDropComponent {
   }
 
   public dropped(files: NgxFileDropEntry[]) {
-
     let getUrl = this.router.url.split('/')
-    let payload = { folder: '',dossiers: '' };
+    let payload = { folder: '', dossiers: '' }
     if (getUrl[1] === 'subfolders') {
-      payload.folder = getUrl[2];
+      payload.folder = getUrl[2]
     }
     if (getUrl[1] === 'dossiers') {
-      payload.dossiers = getUrl[2];
+      payload.dossiers = getUrl[2]
     }
-    this.uploadDocumentsService.onNgxFileDrop(files, payload);
+    this.uploadDocumentsService.onNgxFileDrop(files, payload)
     if (files.length > 0)
       this.toastService.showInfo($localize`Initiating upload...`, 3000)
   }

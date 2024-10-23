@@ -14,7 +14,8 @@ import { EditDialogComponent, EditDialogMode } from '../edit-dialog.component'
 })
 export class CustomFieldEditDialogComponent
   extends EditDialogComponent<CustomField>
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     service: CustomFieldsService,
     activeModal: NgbActiveModal,

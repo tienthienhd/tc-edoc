@@ -42,7 +42,7 @@ export class ApprovalsComponent
       ? $localize`Approve selected`
       : $localize`Approval all`
   }
-  
+
   get rejectButtonText(): string {
     return this.selectedApprovals.size > 0
       ? $localize`Reject selected`
@@ -78,19 +78,24 @@ export class ApprovalsComponent
     this.toggleAutoRefresh()
     // console.log(approvals)
   }
-  
+
   displayName(approval: PaperlessApproval): string {
-    if (!approval.submitted_by) return '';
-      if (!approval.submitted_by) return ''
-      const user_id = typeof approval.submitted_by === 'number' ? approval.submitted_by : approval.submitted_by
-      const user = this.users?.find((u) => u.id === user_id)
-      if (!user) return ''
-      return user.username
+    if (!approval.submitted_by) return ''
+    if (!approval.submitted_by) return ''
+    const user_id =
+      typeof approval.submitted_by === 'number'
+        ? approval.submitted_by
+        : approval.submitted_by
+    const user = this.users?.find((u) => u.id === user_id)
+    if (!user) return ''
+    return user.username
   }
-  
+
   displayGroup(approval: PaperlessApproval): string {
     if (!approval.submitted_by_group) return ''
-    const nameArray = this.groups?.filter(obj => approval.submitted_by_group.includes(obj.id)).map(obj => obj.name);
+    const nameArray = this.groups
+      ?.filter((obj) => approval.submitted_by_group.includes(obj.id))
+      .map((obj) => obj.name)
     return nameArray?.toString()
   }
   ngOnDestroy() {
@@ -99,19 +104,24 @@ export class ApprovalsComponent
   }
 
   updateApproval(approval: PaperlessApproval, status: String) {
-    this.updateApprovals(approval,status)
+    this.updateApprovals(approval, status)
   }
 
-  updateApprovals(approval: PaperlessApproval = undefined, status: String = '') {
-    let approvals = approval ? new Set([approval.id]) : new Set(this.selectedApprovals.values())
+  updateApprovals(
+    approval: PaperlessApproval = undefined,
+    status: String = ''
+  ) {
+    let approvals = approval
+      ? new Set([approval.id])
+      : new Set(this.selectedApprovals.values())
     if (!approval && approvals.size == 0)
       approvals = new Set(this.approvalsService.allApprovals.map((t) => t.id))
     if (approvals.size > 1) {
       let modal = this.modalService.open(ConfirmDialogComponent, {
         backdrop: 'static',
       })
-      switch (status){
-        case "SUCCESS":
+      switch (status) {
+        case 'SUCCESS':
           modal.componentInstance.title = $localize`Confirm Approve All`
           modal.componentInstance.messageBold = $localize`Approve all ${approvals.size} approvals?`
           modal.componentInstance.btnClass = 'btn-warning'
@@ -119,10 +129,10 @@ export class ApprovalsComponent
           modal.componentInstance.confirmClicked.pipe(first()).subscribe(() => {
             modal.componentInstance.buttonsEnabled = false
             modal.close()
-            this.approvalsService.updateApprovals(approvals,status)
+            this.approvalsService.updateApprovals(approvals, status)
             this.selectedApprovals.clear()
           })
-        case "FAILURE":
+        case 'FAILURE':
           modal.componentInstance.title = $localize`Confirm Reject All`
           modal.componentInstance.messageBold = $localize`Reject all ${approvals.size} approvals?`
           modal.componentInstance.btnClass = 'btn-warning'
@@ -130,10 +140,10 @@ export class ApprovalsComponent
           modal.componentInstance.confirmClicked.pipe(first()).subscribe(() => {
             modal.componentInstance.buttonsEnabled = false
             modal.close()
-            this.approvalsService.updateApprovals(approvals,status)
+            this.approvalsService.updateApprovals(approvals, status)
             this.selectedApprovals.clear()
           })
-        case "REVOKE":
+        case 'REVOKE':
           modal.componentInstance.title = $localize`Confirm Revoke All`
           modal.componentInstance.messageBold = $localize`Revoke all ${approvals.size} approvals?`
           modal.componentInstance.btnClass = 'btn-warning'
@@ -141,13 +151,12 @@ export class ApprovalsComponent
           modal.componentInstance.confirmClicked.pipe(first()).subscribe(() => {
             modal.componentInstance.buttonsEnabled = false
             modal.close()
-            this.approvalsService.updateApprovals(approvals,status)
+            this.approvalsService.updateApprovals(approvals, status)
             this.selectedApprovals.clear()
           })
-
       }
     } else {
-      this.approvalsService.updateApprovals(approvals,status)
+      this.approvalsService.updateApprovals(approvals, status)
       this.selectedApprovals.clear()
     }
   }
@@ -158,7 +167,8 @@ export class ApprovalsComponent
   }
 
   expandApproval(approval: PaperlessApproval) {
-    this.expandedApproval = this.expandedApproval == approval.id ? undefined : approval.id
+    this.expandedApproval =
+      this.expandedApproval == approval.id ? undefined : approval.id
   }
 
   toggleSelected(approval: PaperlessApproval) {

@@ -74,7 +74,7 @@ export interface Document extends ObjectWithPermissions {
   archive_serial_number?: number
 
   notes?: DocumentNote[]
-  
+
   approvals?: DocumentApproval[]
 
   __search_hit__?: SearchHit

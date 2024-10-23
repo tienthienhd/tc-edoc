@@ -1,4 +1,3 @@
-
 import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FormGroup } from '@angular/forms'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
@@ -27,14 +26,15 @@ export enum EditCustomShelfdMode {
 @Directive()
 export abstract class EditCustomShelfComponent<
   T extends ObjectWithPermissions | ObjectWithId,
-> implements OnInit {
+> implements OnInit
+{
   [x: string]: any
   constructor(
     protected service: AbstractPaperlessService<T>,
     private activeModal: NgbActiveModal,
     private userService: UserService,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   users: User[]
 
@@ -62,8 +62,11 @@ export abstract class EditCustomShelfComponent<
 
   ngOnInit(): void {
     // console.log(this.object)
-    this.loadWarehouses();
-    if (this.object != null && this.dialogMode !== EditCustomShelfdMode.CREATE) {
+    this.loadWarehouses()
+    if (
+      this.object != null &&
+      this.dialogMode !== EditCustomShelfdMode.CREATE
+    ) {
       if ((this.object as ObjectWithPermissions).permissions) {
         this.object['set_permissions'] = this.object['permissions']
       }
@@ -102,7 +105,6 @@ export abstract class EditCustomShelfComponent<
       })
     }
 
-
     // wait to enable close button so it doesn't steal focus from input since its the first clickable element in the DOM
     setTimeout(() => {
       this.closeEnabled = true
@@ -113,13 +115,11 @@ export abstract class EditCustomShelfComponent<
     })
   }
 
-
   getCheckCreate() {
     if (this.dialogMode == EditCustomShelfdMode.CREATE) {
-      return false;
-    }
-    else {
-      return true;
+      return false
+    } else {
+      return true
     }
   }
 
@@ -141,8 +141,6 @@ export abstract class EditCustomShelfComponent<
         break
     }
   }
-
-
 
   getMatchingAlgorithms() {
     return MATCHING_ALGORITHMS
@@ -170,7 +168,7 @@ export abstract class EditCustomShelfComponent<
     var serverResponse: Observable<T>
     switch (this.dialogMode) {
       case EditCustomShelfdMode.CREATE:
-        newObject.parent_warehouse = this.object['parent_warehouse'];
+        newObject.parent_warehouse = this.object['parent_warehouse']
         // console.log(newObject);
         serverResponse = this.service.create(newObject)
         break

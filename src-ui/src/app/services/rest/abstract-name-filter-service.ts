@@ -7,10 +7,12 @@ export enum BulkEditObjectOperation {
   SetPermissions = 'set_permissions',
   Delete = 'delete',
   Update = 'update',
-  Share = "Share",
+  Share = 'Share',
 }
 
-export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends AbstractPaperlessService<T> {
+export abstract class AbstractNameFilterService<
+  T extends ObjectWithId,
+> extends AbstractPaperlessService<T> {
   listFiltered(
     page?: number,
     pageSize?: number,
@@ -35,7 +37,7 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
     page?: number,
     pageSize?: number,
     sortField?: string,
-    params?:{},
+    params?: {},
     sortReverse?: boolean,
     nameFilter?: string,
     fullPerms?: boolean
@@ -50,18 +52,19 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
     return this.list(page, pageSize, sortField, sortReverse, params)
   }
 
-  listFolderFiltered(page?: number,
+  listFolderFiltered(
+    page?: number,
     pageSize?: number,
     sortField?: string,
     sortReverse?: boolean,
     id?: number,
     nameFilter?: string,
-    fullPerms?: boolean) {
+    fullPerms?: boolean
+  ) {
     let params = {}
     if (id) {
       params['parent_folder__id'] = id
-    }
-    else{
+    } else {
       params['parent_folder__isnull'] = true
     }
     if (nameFilter) {
@@ -74,19 +77,20 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
     return this.list(page, pageSize, sortField, sortReverse, params)
   }
 
-  listDossierFiltered(page?: number,
+  listDossierFiltered(
+    page?: number,
     pageSize?: number,
     sortField?: string,
     sortReverse?: boolean,
     id?: number,
     nameFilter?: string,
     fullPerms?: boolean,
-    type?: string) {
+    type?: string
+  ) {
     let params = {}
     if (id) {
       params['parent_dossier__id'] = id
-    }
-    else{
+    } else {
       params['parent_dossier__isnull'] = true
     }
     if (nameFilter) {
@@ -95,21 +99,23 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
     if (fullPerms) {
       params['full_perms'] = true
     }
-    if (type.length){
+    if (type.length) {
       params['type'] = type
     }
 
     return this.list(page, pageSize, sortField, sortReverse, params)
   }
 
-  listDossierFormFiltered(page?: number,
+  listDossierFormFiltered(
+    page?: number,
     pageSize?: number,
     sortField?: string,
     sortReverse?: boolean,
     id?: number,
     nameFilter?: string,
     fullPerms?: boolean,
-    type?: string) {
+    type?: string
+  ) {
     let params = {}
     if (id) {
       params['parent_dossier__id'] = id
@@ -120,14 +126,12 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
     if (fullPerms) {
       params['full_perms'] = true
     }
-    if (type.length){
+    if (type.length) {
       params['type'] = type
     }
 
     return this.list(page, pageSize, sortField, sortReverse, params)
   }
-
-
 
   bulk_edit_objects(
     objects: Array<number>,
@@ -173,8 +177,4 @@ export abstract class AbstractNameFilterService<T extends ObjectWithId,> extends
 
   //   return this.http.get<any>(`${this.baseUrl}warehouses/?parent_warehouse=${id}`, {});
   // }
-
-
-
-
 }

@@ -54,7 +54,8 @@ import { ProfileEditDialogComponent } from '../common/profile-edit-dialog/profil
 })
 export class AppFrameComponent
   extends ComponentWithPermissions
-  implements OnInit, ComponentCanDeactivate {
+  implements OnInit, ComponentCanDeactivate
+{
   versionString = `${environment.appTitle} ${environment.version}`
   appRemoteVersion: AppRemoteVersion
 
@@ -63,9 +64,9 @@ export class AppFrameComponent
   slimSidebarAnimating: boolean = false
 
   searchField = new FormControl('')
-  isKhoVatLyExpanded = false;
-  isKhoExpanded = false;
-  isGiaExpanded = false;
+  isKhoVatLyExpanded = false
+  isKhoExpanded = false
+  isGiaExpanded = false
 
   constructor(
     public router: Router,
@@ -195,10 +196,10 @@ export class AppFrameComponent
         term.length < 2
           ? from([[]])
           : this.searchService.autocomplete(term).pipe(
-            catchError(() => {
-              return from([[]])
-            })
-          )
+              catchError(() => {
+                return from([[]])
+              })
+            )
       )
     )
 
@@ -319,19 +320,17 @@ export class AppFrameComponent
     this.openDocumentsService.closeAll()
   }
 
-
-
   toggleKhoVatLy() {
-    this.isKhoVatLyExpanded = !this.isKhoVatLyExpanded;
+    this.isKhoVatLyExpanded = !this.isKhoVatLyExpanded
     if (!this.isKhoVatLyExpanded) {
-      this.isKhoExpanded = false; // Đóng mục Kho khi Kho vật lý bị thu gọn
-      this.isGiaExpanded = false;
+      this.isKhoExpanded = false // Đóng mục Kho khi Kho vật lý bị thu gọn
+      this.isGiaExpanded = false
     }
   }
 
   closeMenus() {
-    this.isKhoVatLyExpanded = false;
-    this.isKhoExpanded = false;
-    this.isGiaExpanded = false;
+    this.isKhoVatLyExpanded = false
+    this.isKhoExpanded = false
+    this.isGiaExpanded = false
   }
 }

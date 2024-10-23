@@ -1,4 +1,12 @@
-import { Component, EventEmitter, forwardRef, input, Input, OnInit, Output } from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  input,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core'
 import {
   ControlValueAccessor,
   FormArray,
@@ -32,32 +40,29 @@ export class DossierCustomFieldSelectComponent
   extends ComponentWithPermissions
   implements OnInit, ControlValueAccessor
 {
-
   @Input()
   title: string = ''
 
   @Input()
   error: string
 
-
-  private arrayCustomFields: CustomField[]=[]
+  private arrayCustomFields: CustomField[] = []
   private unsubscribeNotifier: Subject<any> = new Subject()
   public unusedFields: CustomField[]
   permissions: string[]
-  dataContainCustomFields: []=[]
+  dataContainCustomFields: [] = []
   loading: Boolean = false
-  dictCustomFields:{ [key: string]: any }={}
-  dictCustomFieldsEnable: {}={}
+  dictCustomFields: { [key: string]: any } = {}
+  dictCustomFieldsEnable: {} = {}
   // form = new FormGroup({})
   form: FormGroup
-  dossier: Dossier[]=[]
-
+  dossier: Dossier[] = []
 
   typesWithAllActions: Set<string> = new Set()
 
   _inheritedPermissions: string[] = []
   _inheritedCustomFields: CustomFieldInstance[] = []
-  dossierReference: any[]= []
+  dossierReference: any[] = []
 
   // @Input()
   // set inheritedPermissions(inherited: string[]) {
@@ -75,20 +80,18 @@ export class DossierCustomFieldSelectComponent
   // }
   @Input()
   set inheritedCustomFields(inherited: CustomFieldInstance[]) {
-    this.loading =false
+    this.loading = false
 
-    this.dictCustomFields={}
+    this.dictCustomFields = {}
 
-    this.dictCustomFieldsEnable={}
-    const newInheritedCustomFields = inherited?.length? inherited: []
-    this.getFields(newInheritedCustomFields);
-
-
+    this.dictCustomFieldsEnable = {}
+    const newInheritedCustomFields = inherited?.length ? inherited : []
+    this.getFields(newInheritedCustomFields)
   }
 
   @Input() inputDossier: Dossier
   @Input() inputDossierForm: DossierForm
-  @Output() dataChange = new EventEmitter<any[]>();
+  @Output() dataChange = new EventEmitter<any[]>()
 
   inheritedWarning: string = $localize`Inherited from dossier`
 
@@ -96,12 +99,12 @@ export class DossierCustomFieldSelectComponent
     private readonly customFieldsService: CustomFieldsService,
     private fb: FormBuilder,
     private readonly dossierService: DossierService,
-    private readonly dossierFormService: DossierFormService,
+    private readonly dossierFormService: DossierFormService
   ) {
-    super();
+    super()
     this.form = this.fb.group({
-      customFields: this.fb.array([])
-    });
+      customFields: this.fb.array([]),
+    })
     // console.log("dossier",this.inputDossier);
     // if(this.inputDossier!=undefined){
     //   this.dataDossier()
@@ -110,45 +113,40 @@ export class DossierCustomFieldSelectComponent
 
     // }
 
-    this.customFields.valueChanges.subscribe(data => {
-      const filteredData = data.filter(item => this.dictCustomFieldsEnable[item.field]);
-        this.dataChange.emit(filteredData);
-    });
-
+    this.customFields.valueChanges.subscribe((data) => {
+      const filteredData = data.filter(
+        (item) => this.dictCustomFieldsEnable[item.field]
+      )
+      this.dataChange.emit(filteredData)
+    })
   }
-
 
   get customFields(): FormArray {
-    return this.form.get('customFields') as FormArray;
+    return this.form.get('customFields') as FormArray
   }
-
 
   private getFields(newInheritedCustomFields) {
-
-
-    this.customFieldsService.clearCache();
+    this.customFieldsService.clearCache()
     this.customFieldsService
-    .listAll()
-    .pipe(takeUntil(this.unsubscribeNotifier))
-    .subscribe((result) => {
-      this.arrayCustomFields = result.results
-      this.loading=true
-      this.writeValue(newInheritedCustomFields)
-      // console.log('gia tri',this.arrayCustomFields)
-    })
-
-
+      .listAll()
+      .pipe(takeUntil(this.unsubscribeNotifier))
+      .subscribe((result) => {
+        this.arrayCustomFields = result.results
+        this.loading = true
+        this.writeValue(newInheritedCustomFields)
+        // console.log('gia tri',this.arrayCustomFields)
+      })
   }
 
-  dataDossier(id){
-    let type = ""
-    if (this.inputDossier?.type=='DOSSIER'){
-      type = "DOCUMENT"
+  dataDossier(id) {
+    let type = ''
+    if (this.inputDossier?.type == 'DOSSIER') {
+      type = 'DOCUMENT'
+    } else if (this.inputDossier?.type == 'DOCUMENT') {
+      type = 'FILE'
     }
-    else if (this.inputDossier?.type=="DOCUMENT"){
-      type="FILE"
-    }
-    this.dossierService.listDossierFiltered(1,null,null,null,id,null,null,type)
+    this.dossierService
+      .listDossierFiltered(1, null, null, null, id, null, null, type)
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((c) => {
         this.dossier = c.results
@@ -156,67 +154,63 @@ export class DossierCustomFieldSelectComponent
   }
 
   writeValue(newInheritedCustomFields): void {
-    console.log("call",newInheritedCustomFields,)
-    this.dictCustomFields = {};
-    this.customFields.clear();
+    console.log('call', newInheritedCustomFields)
+    this.dictCustomFields = {}
+    this.customFields.clear()
     newInheritedCustomFields.forEach((obj, index, array) => {
-      this.dictCustomFields[obj.field] = obj;
-      this.dictCustomFieldsEnable[obj.field] = true;
-    });
-
+      this.dictCustomFields[obj.field] = obj
+      this.dictCustomFieldsEnable[obj.field] = true
+    })
 
     for (let c of this.arrayCustomFields) {
       if (!(c.id in this.dictCustomFields)) {
         this.dictCustomFields[c.id] = {
-          "value": null,
-          "field": c.id,
-          "match_value": "",
-          "dossier_document": null,
-          "field_name": c.name,
-          "reference": null,
-          "value_reference": null,
-          "value_origin": null,
-          "apply": false,
-
-        };
+          value: null,
+          field: c.id,
+          match_value: '',
+          dossier_document: null,
+          field_name: c.name,
+          reference: null,
+          value_reference: null,
+          value_origin: null,
+          apply: false,
+        }
         this.dictCustomFieldsEnable[c.id] = false
-      }else{
+      } else {
         this.dictCustomFields[c.id] = {
-          "value": this.dictCustomFields[c.id].value,
-          "field": c.id,
-          "match_value": "",
-          "dossier_document": null,
-          "field_name": c.name,
-          "reference": null,
-          "value_reference": null,
-          "value_origin": this.dictCustomFields[c.id].value,
-          "apply": false,
-
-        };
+          value: this.dictCustomFields[c.id].value,
+          field: c.id,
+          match_value: '',
+          dossier_document: null,
+          field_name: c.name,
+          reference: null,
+          value_reference: null,
+          value_origin: this.dictCustomFields[c.id].value,
+          apply: false,
+        }
 
         this.dictCustomFieldsEnable[c.id] = true
       }
     }
     for (const [key, value] of Object.entries(this.dictCustomFields)) {
       {
-        this.customFields.push(this.fb.group({
-          value: new FormControl(value?.value),
-          field: new FormControl(value?.field),
-          match_value: new FormControl(value?.match_value),
-          field_name: new FormControl(value?.field_name),
-          reference: new FormControl(value?.reference),
-          dossier_document: new FormControl(value?.dossier_document),
-          value_reference: new FormControl(value?.value_reference),
-          value_origin: new FormControl(value?.value_origin),
-          apply: new FormControl(value?.apply),
-        }));
-
+        this.customFields.push(
+          this.fb.group({
+            value: new FormControl(value?.value),
+            field: new FormControl(value?.field),
+            match_value: new FormControl(value?.match_value),
+            field_name: new FormControl(value?.field_name),
+            reference: new FormControl(value?.reference),
+            dossier_document: new FormControl(value?.dossier_document),
+            value_reference: new FormControl(value?.value_reference),
+            value_origin: new FormControl(value?.value_origin),
+            apply: new FormControl(value?.apply),
+          })
+        )
       }
       this.dossierReference.push([])
     }
-
   }
-
 
   onChange = (newValue: string[]) => {}
 
@@ -232,70 +226,71 @@ export class DossierCustomFieldSelectComponent
     this.onTouched = fn
   }
 
-
-
   ngOnInit(): void {
-    if(this.inputDossier!=undefined){
+    if (this.inputDossier != undefined) {
       this.dataDossier(this.inputDossier.id)
     }
   }
 
   enableClick(event, field) {
-    if (this.dictCustomFieldsEnable[field.value]){
-      this.dictCustomFieldsEnable[field.value]=false
+    if (this.dictCustomFieldsEnable[field.value]) {
+      this.dictCustomFieldsEnable[field.value] = false
+    } else {
+      this.dictCustomFieldsEnable[field.value] = true
     }
-    else{
-      this.dictCustomFieldsEnable[field.value]=true
-    }
-    const result = [];
+    const result = []
 
     for (const key in this.dictCustomFields) {
       if (this.dictCustomFieldsEnable[key]) {
-        result.push(this.dictCustomFields[key]);
+        result.push(this.dictCustomFields[key])
       }
     }
-    this.dataChange.emit(result);
+    this.dataChange.emit(result)
   }
 
-  applyClick(event,field,index) {
-    if (this.customFields.at(index).get('apply').value==false){
+  applyClick(event, field, index) {
+    if (this.customFields.at(index).get('apply').value == false) {
       let fieldId = this.customFields.at(index).get('field').value
-      this.dictCustomFields[fieldId]?.apply==true
-      this.customFields.at(index).patchValue({value: this.customFields.at(index).get('value_reference').value})
-      this.customFields.at(index).patchValue({apply: true})
-
-    }else if(this.customFields.at(index).get('apply').value==true){
+      this.dictCustomFields[fieldId]?.apply == true
+      this.customFields
+        .at(index)
+        .patchValue({
+          value: this.customFields.at(index).get('value_reference').value,
+        })
+      this.customFields.at(index).patchValue({ apply: true })
+    } else if (this.customFields.at(index).get('apply').value == true) {
       let fieldId = this.customFields.at(index).get('field').value
-      this.dictCustomFields[fieldId]?.apply==false
-      this.customFields.at(index).patchValue({value: this.customFields.at(index).get('value_origin').value})
+      this.dictCustomFields[fieldId]?.apply == false
+      this.customFields
+        .at(index)
+        .patchValue({
+          value: this.customFields.at(index).get('value_origin').value,
+        })
       // this.customFields.at(index).patchValue({value: this.customFields.at(index).get('value_reference').value})
-      this.customFields.at(index).patchValue({apply: false})
-
+      this.customFields.at(index).patchValue({ apply: false })
     }
   }
 
   onMatchValueChange(event, field: any) {
-    field.value.match_value=event.target.value
-
+    field.value.match_value = event.target.value
   }
 
-  modelChangeDossier(event,i) {
-    if (event!=null){
-      const d = this.dossier.find(obj => obj.id === event);
+  modelChangeDossier(event, i) {
+    if (event != null) {
+      const d = this.dossier.find((obj) => obj.id === event)
       // console.log(this.dossier)
-      this.dossierReference[i]=d?.custom_fields
+      this.dossierReference[i] = d?.custom_fields
     }
   }
 
-  modelChangeField(event,index) {
-    if (event!=null){
-      const d = this.dossierReference[index].find(obj => obj.id === event);
-      this.customFields.at(index).patchValue({value_reference: d?.value})
+  modelChangeField(event, index) {
+    if (event != null) {
+      const d = this.dossierReference[index].find((obj) => obj.id === event)
+      this.customFields.at(index).patchValue({ value_reference: d?.value })
 
-      this.dictCustomFields[this.customFields.at(index).get('field').value].value_reference = d?.value
+      this.dictCustomFields[
+        this.customFields.at(index).get('field').value
+      ].value_reference = d?.value
     }
   }
-
-
-
 }

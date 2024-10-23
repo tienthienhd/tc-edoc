@@ -32,7 +32,10 @@ import {
 } from 'src/app/services/rest/abstract-name-filter-service'
 import { ToastService } from 'src/app/services/toast.service'
 import { ConfirmDialogComponent } from '../../common/confirm-dialog/confirm-dialog.component'
-import { EditDialogComponent, EditDialogMode } from '../../common/edit-dialog/edit-dialog.component'
+import {
+  EditDialogComponent,
+  EditDialogMode,
+} from '../../common/edit-dialog/edit-dialog.component'
 import { ComponentWithPermissions } from '../../with-permissions/with-permissions.component'
 import { PermissionsDialogComponent } from '../../common/permissions-dialog/permissions-dialog.component'
 import { ShareLink } from 'src/app/data/share-link'
@@ -52,7 +55,8 @@ export interface ManagementListColumn {
 @Directive()
 export abstract class ManagementListComponent<T extends ObjectWithId>
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   [x: string]: any
 
   constructor(
@@ -66,7 +70,7 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
     public typeName: string,
     public typeNamePlural: string,
     public permissionType: PermissionType,
-    public extraColumns: ManagementListColumn[],
+    public extraColumns: ManagementListColumn[]
   ) {
     super()
   }
@@ -92,7 +96,6 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
   public togggleAll: boolean = false
   public shareLinks: ShareLink[]
 
-
   ngOnInit(): void {
     this.reloadData()
 
@@ -102,7 +105,7 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
       .pipe(
         takeUntil(this.unsubscribeNotifier),
         debounceTime(400),
-        distinctUntilChanged(),
+        distinctUntilChanged()
       )
       .subscribe((title) => {
         console.log(title)
@@ -123,7 +126,8 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
     } else if (o.matching_algorithm == MATCH_NONE) {
       return $localize`None`
     } else if (o.match && o.match.length > 0) {
-      return `${MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
+      return `${
+        MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
       }: ${o.match}`
     } else {
       return '-'
@@ -145,7 +149,7 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
         this.sortField,
         this.sortReverse,
         this._nameFilter,
-        true,
+        true
       )
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((c) => {
@@ -163,13 +167,13 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
     activeModal.componentInstance.succeeded.subscribe(() => {
       this.reloadData()
       this.toastService.showInfo(
-        $localize`Successfully created ${this.typeName}.`,
+        $localize`Successfully created ${this.typeName}.`
       )
     })
     activeModal.componentInstance.failed.subscribe((e) => {
       this.toastService.showError(
         $localize`Error occurred while creating ${this.typeName}.`,
-        e,
+        e
       )
     })
   }
@@ -183,13 +187,13 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
     activeModal.componentInstance.succeeded.subscribe(() => {
       this.reloadData()
       this.toastService.showInfo(
-        $localize`Successfully updated ${this.typeName}.`,
+        $localize`Successfully updated ${this.typeName}.`
       )
     })
     activeModal.componentInstance.failed.subscribe((e) => {
       this.toastService.showError(
         $localize`Error occurred while saving ${this.typeName}.`,
-        e,
+        e
       )
     })
   }
@@ -225,7 +229,7 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
             activeModal.componentInstance.buttonsEnabled = true
             this.toastService.showError(
               $localize`Error while deleting element`,
-              error,
+              error
             )
           },
         })
@@ -251,7 +255,7 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
   userCanEdit(object: ObjectWithPermissions): boolean {
     return this.permissionsService.currentUserHasObjectPermissions(
       this.PermissionAction.Change,
-      object,
+      object
     )
   }
 
@@ -259,22 +263,21 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
     return this.modalService
   }
 
-  getEditDialogComponent(): EditDialogComponent<any>{
+  getEditDialogComponent(): EditDialogComponent<any> {
     return this.editDialogComponent
   }
 
-  getToastService(): ToastService{
+  getToastService(): ToastService {
     return this.toastService
   }
 
-  getService(){
+  getService() {
     return this.service
   }
 
-  getUnsubscribeNotifier(){
+  getUnsubscribeNotifier() {
     return this.unsubscribeNotifier
   }
-
 
   userCanBulkEdit(action: PermissionAction): boolean {
     if (!this.permissionsService.currentUserCan(action, this.permissionType))
@@ -282,7 +285,7 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
     let ownsAll: boolean = true
     const objects = this.data.filter((o) => this.selectedObjects.has(o.id))
     ownsAll = objects.every((o) =>
-      this.permissionsService.currentUserOwnsObject(o),
+      this.permissionsService.currentUserOwnsObject(o)
     )
     return ownsAll
   }
@@ -318,13 +321,13 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
             Array.from(this.selectedObjects),
             BulkEditObjectOperation.SetPermissions,
             permissions,
-            merge,
+            merge
           )
           .subscribe({
             next: () => {
               modal.close()
               this.toastService.showInfo(
-                $localize`Permissions updated successfully`,
+                $localize`Permissions updated successfully`
               )
               this.reloadData()
             },
@@ -332,11 +335,11 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
               modal.componentInstance.buttonsEnabled = true
               this.toastService.showError(
                 $localize`Error updating permissions`,
-                error,
+                error
               )
             },
           })
-      },
+      }
     )
   }
 
@@ -354,7 +357,7 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
       this.service
         .bulk_edit_objects(
           Array.from(this.selectedObjects),
-          BulkEditObjectOperation.Delete,
+          BulkEditObjectOperation.Delete
         )
         .subscribe({
           next: () => {
@@ -366,11 +369,10 @@ export abstract class ManagementListComponent<T extends ObjectWithId>
             modal.componentInstance.buttonsEnabled = true
             this.toastService.showError(
               $localize`Error deleting objects`,
-              error,
+              error
             )
           },
         })
     })
   }
-
 }

@@ -31,15 +31,12 @@ import { ApprovalsComponent } from './components/admin/approval/approvals.compon
 import { WarehouseComponent } from './components/manage/warehouse/warehouse.component'
 import { BoxCaseComponent } from './components/manage/boxcase/boxcase.component'
 
-
 //import { CustomFieldsComponent } from './components/manage/custom-fields/custom-fields.component'
 import { ShelfComponent } from './components/manage/shelf/shelf.component'
 import { CustomFieldsComponent } from './components/manage/custom-fields/custom-fields.component'
 import { FoldersComponent } from './components/manage/folder-list/folder-list.component'
 import { DossiersComponent } from './components/manage/dossier-list/dossier-list.component'
 import { DossiersFormComponent } from './components/manage/dossier-form-list/dossier-form-list.component'
-
-
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -391,4 +388,4 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

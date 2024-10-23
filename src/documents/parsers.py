@@ -14,7 +14,6 @@ from typing import Optional
 
 from django.conf import settings
 from django.utils import timezone
-import requests
 
 from documents.loggers import LoggingMixin
 from documents.signals import document_consumer_declaration
@@ -46,7 +45,7 @@ DATE_REGEX = re.compile(
     # r"(\b|(?!=([_-])))([^\W\d_]{3,9} [0-9]{4})(\b|(?=([_-])))|"
     # r"(\b|(?!=([_-])))([0-9]{1,2}[^ ]{2}[\. ]+[^ ]{3,9}[ \.\/-][0-9]{4})(\b|(?=([_-])))|"
     # r"(\b|(?!=([_-])))(\b[0-9]{1,2}[ \.\/-][a-zA-Z]{3}[ \.\/-][0-9]{4})(\b|(?=([_-])))",
-    r"(?:ngày\s+(\d{1,2})\s+tháng\s+(\d{1,2})\s+năm\s+(\d{4}))|(\d{1,2})[/\-](\d{1,2})[/\-](\d{4})"
+    r"(?:ngày\s+(\d{1,2})\s+tháng\s+(\d{1,2})\s+năm\s+(\d{4}))|(\d{1,2})[/\-](\d{1,2})[/\-](\d{4})",
 )
 
 
@@ -132,7 +131,10 @@ def get_parser_class_for_mime_type(mime_type: str) -> Optional[type["DocumentPar
     # Return the parser with the highest weight.
     return best_parser["parser"]
 
-def custom_get_parser_class_for_mime_type(mime_type: str) -> Optional[type["DocumentParser"]]:
+
+def custom_get_parser_class_for_mime_type(
+    mime_type: str,
+) -> Optional[type["DocumentParser"]]:
     """
     Returns the best parser (by weight) for the given mimetype or
     None if no parser exists
@@ -151,11 +153,16 @@ def custom_get_parser_class_for_mime_type(mime_type: str) -> Optional[type["Docu
         return None
     application_configuration = ApplicationConfiguration.objects.filter().first()
     best_parser = sorted(options, key=lambda _: _["weight"], reverse=True)[0]
-    if len(best_parser)>1:
-        if application_configuration.enable_ocr==False or application_configuration.user_args.get('username_ocr',None)==None or application_configuration.user_args.get('password_ocr',None)==None:
+    if len(best_parser) > 1:
+        if (
+            application_configuration.enable_ocr == False
+            or application_configuration.user_args.get("username_ocr", None) == None
+            or application_configuration.user_args.get("password_ocr", None) == None
+        ):
             best_parser = sorted(options, key=lambda _: _["weight"], reverse=True)[1]
     # Return the parser with the highest weight.
     return best_parser["parser"]
+
 
 def run_convert(
     input_file,
@@ -292,7 +299,8 @@ def parse_date_generator(filename, text) -> Iterator[datetime.datetime]:
         Call dateparser.parse with a particular date ordering
         """
         import dateparser
-        # logger.debug('giá trị paser:',ds)
+
+        # logger.debug('giá trị parser:',ds)
         return dateparser.parse(
             ds,
             settings={
@@ -395,7 +403,7 @@ class DocumentParser(LoggingMixin):
 
     def parse(self, document_path, mime_type, file_name=None):
         raise NotImplementedError
-    
+
     def parse_field(self, document_path, mime_type, file_name=None):
         raise NotImplementedError
 

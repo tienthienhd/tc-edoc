@@ -37,10 +37,9 @@ import { ShareLink } from 'src/app/data/share-link'
 import { environment } from 'src/environments/environment'
 import { Router } from '@angular/router'
 
-
 import { DocumentService } from 'src/app/services/rest/document.service'
 import { saveAs } from 'file-saver'
-import { NgxBootstrapIconsModule, ColorTheme } from 'ngx-bootstrap-icons';
+import { NgxBootstrapIconsModule, ColorTheme } from 'ngx-bootstrap-icons'
 import { DossierService } from 'src/app/services/rest/dossier.service'
 import { Dossier } from 'src/app/data/dossier'
 import { ConfirmDialogComponent } from 'src/app/components/common/confirm-dialog/confirm-dialog.component'
@@ -63,9 +62,9 @@ export interface ManagementListColumn {
 @Directive()
 export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
   extends ComponentWithPermissions
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   [x: string]: any
-  
 
   constructor(
     private service: AbstractNameFilterService<T>,
@@ -81,7 +80,6 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
     public extraColumns: ManagementListColumn[],
     public dossierFormService: DossierFormService,
     public isForm: boolean
-    
   ) {
     super()
   }
@@ -108,7 +106,7 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
   public shareLinks: ShareLink[]
   public dossierForm: DossierForm[] = []
   public documentService: DocumentService
-  public ColorTheme : ColorTheme
+  public ColorTheme: ColorTheme
 
   ngOnInit(): void {
     if (localStorage.getItem('dossier-list:displayMode') != null) {
@@ -116,7 +114,7 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
       this.displayMode = localStorage.getItem('dossier-list:displayMode')
     }
     this.reloadData()
-    
+
     this.nameFilterDebounce = new Subject<string>()
 
     this.nameFilterDebounce
@@ -143,13 +141,14 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
     } else if (o.matching_algorithm == MATCH_NONE) {
       return $localize`None`
     } else if (o.match && o.match.length > 0) {
-      return `${MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
-        }: ${o.match}`
+      return `${
+        MATCHING_ALGORITHMS.find((a) => a.id == o.matching_algorithm).shortName
+      }: ${o.match}`
     } else {
       return '-'
     }
   }
-  
+
   // exportToExcelSelected() {
   //   this.awaitingDownload = true
   //   this.dossierService
@@ -162,7 +161,7 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
   //       this.awaitingDownload = false
   //     })
   // }
-  
+
   userCanEditAll(): boolean {
     let canEdit: boolean = this.permissionService.currentUserCan(
       PermissionAction.Change,
@@ -188,7 +187,7 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
 
   reloadData() {
     this.selectedObjects.clear()
-    // let listFolderPath 
+    // let listFolderPath
     // if (this.id){
     //   this.dossierService.getFolderPath(this.id).subscribe(
     //     (dossier) => {
@@ -196,7 +195,7 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
     //       // console.log(listFolderPath)
     //       this.dossier = listFolderPath.results
     //     },)
-      
+
     // }
     // console.log(this.dossier)
     this.isLoading = true
@@ -219,7 +218,6 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
       })
   }
 
-
   openCreateDialog() {
     var activeModal = this.modalService.open(this.editDialogComponent, {
       size: 'xl',
@@ -240,12 +238,11 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
       )
     })
   }
-  
 
   openEditDialog(object: T) {
     var activeModal = this.modalService.open(this.editDialogComponent, {
-        backdrop: 'static',
-        size: 'xl',
+      backdrop: 'static',
+      size: 'xl',
     })
     activeModal.componentInstance.object = object
     activeModal.componentInstance.dialogMode = EditDialogMode.EDIT
@@ -262,12 +259,15 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
       )
     })
   }
-  
+
   openEditCustomFieldDialog(object: T) {
-    var modal = this.modalService.open(DossierCustomFieldFormEditDialogComponent, {
-      backdrop: 'static',
-      size: 'xl',
-    })
+    var modal = this.modalService.open(
+      DossierCustomFieldFormEditDialogComponent,
+      {
+        backdrop: 'static',
+        size: 'xl',
+      }
+    )
     modal.componentInstance.dialogMode = object
       ? EditDialogMode.EDIT
       : EditDialogMode.CREATE
@@ -275,14 +275,12 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((newDossierForm: DossierForm) => {
-       
-          this.toastService.showInfo(
-            $localize`Saved dossier form "${newDossierForm}".`
-          )
-          modal.close()
-          this.reloadData()
-        }
-      )
+        this.toastService.showInfo(
+          $localize`Saved dossier form "${newDossierForm}".`
+        )
+        modal.close()
+        this.reloadData()
+      })
     modal.componentInstance.failed
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((e) => {
@@ -297,7 +295,7 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
       { rule_type: this.filterRuleType, value: object.id.toString() },
     ])
   }
-  isSelected(object: T){
+  isSelected(object: T) {
     return this.selectedObjects.has(object.id)
   }
   saveDisplayMode() {
@@ -389,8 +387,7 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
       ? this.selectedObjects.delete(object.id)
       : this.selectedObjects.add(object.id)
   }
-  selectAll(){
-    
+  selectAll() {
     this.selectedObjects = new Set(this.data.map((o) => o.id))
   }
 
@@ -460,5 +457,4 @@ export abstract class CustomDossierFormListComponent<T extends ObjectWithId>
         })
     })
   }
-
 }

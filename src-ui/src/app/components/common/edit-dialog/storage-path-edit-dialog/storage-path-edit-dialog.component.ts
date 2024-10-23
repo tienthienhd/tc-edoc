@@ -51,5 +51,4 @@ export class StoragePathEditDialogComponent extends EditDialogComponent<StorageP
       permissions_form: new FormControl(null),
     })
   }
-
 }

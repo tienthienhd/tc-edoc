@@ -16,9 +16,9 @@ import { DossierFormService } from 'src/app/services/rest/dossier-forms.service'
 })
 export class DossierFormEditDialogComponent
   extends EditDialogComponent<DossierForm>
-  implements OnInit {
+  implements OnInit
+{
   DOSSIER_TYPES_OPTIONS = [
-
     {
       label: $localize`Document`,
       value: DossierType.Document,
@@ -50,7 +50,7 @@ export class DossierFormEditDialogComponent
   getEditTitle() {
     return $localize`Edit dossier form`
   }
-  dataCustomFields:any[] =[]
+  dataCustomFields: any[] = []
   getForm(): FormGroup {
     return new FormGroup({
       name: new FormControl(null),
@@ -58,29 +58,24 @@ export class DossierFormEditDialogComponent
       type: new FormControl(DossierType.Dossier),
       permissions_form: new FormControl(null),
       custom_fields: new FormControl([]),
-      
     })
   }
 
   onDataChange(data: any[]) {
-    this.dataCustomFields=data
+    this.dataCustomFields = data
     // this.getForm().patchValue({ custom_fields1: data });
     // Xử lý dữ liệu ở đây
   }
 
-
-  save(){
+  save() {
     let getFormOrgin = super.getFormOrigin()
     // getFormOrgin.get('custom_fields').setValue(this.dataCustomFields)
-    getFormOrgin.patchValue({ custom_fields: this.dataCustomFields });
-  
-    super.save()
+    getFormOrgin.patchValue({ custom_fields: this.dataCustomFields })
 
+    super.save()
   }
 
   get typeFieldDisabled(): boolean {
     return this.dialogMode === EditDialogMode.EDIT
   }
-
-  
 }

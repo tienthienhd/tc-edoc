@@ -1,4 +1,9 @@
-import { Component, Renderer2, ViewChild, ViewContainerRef } from '@angular/core'
+import {
+  Component,
+  Renderer2,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { Router } from '@angular/router'
 import { FILTER_HAS_WAREHOUSE_ANY } from 'src/app/data/filter-rule-type'
@@ -23,10 +28,11 @@ import { BoxCaseComponent } from '../boxcase/boxcase.component'
 @Component({
   selector: 'pngx-warehouse',
   templateUrl: './warehouse.component.html',
-  styleUrls: ['./warehouse.component.scss']
+  styleUrls: ['./warehouse.component.scss'],
 })
 export class WarehouseComponent extends ManagementListComponent<Warehouse> {
-  @ViewChild('warehouseTree', { read: ViewContainerRef }) container!: ViewContainerRef
+  @ViewChild('warehouseTree', { read: ViewContainerRef })
+  container!: ViewContainerRef
   public warehousePath: Warehouse[] = []
   constructor(
     warehouseService: WarehouseService,
@@ -37,7 +43,7 @@ export class WarehouseComponent extends ManagementListComponent<Warehouse> {
     private route: ActivatedRoute,
     private router: Router,
     private viewContainer: ViewContainerRef,
-    private renderer: Renderer2,
+    private renderer: Renderer2
   ) {
     super(
       warehouseService,
@@ -64,10 +70,16 @@ export class WarehouseComponent extends ManagementListComponent<Warehouse> {
   }
 
   openCreateDialog() {
-    var activeModal = this.getModalService().open(this.getEditDialogComponent(), {
-      backdrop: 'static',
-    })
-    activeModal.componentInstance.object = { parent_warehouse: this.id,type: 'Warehouse' }
+    var activeModal = this.getModalService().open(
+      this.getEditDialogComponent(),
+      {
+        backdrop: 'static',
+      }
+    )
+    activeModal.componentInstance.object = {
+      parent_warehouse: this.id,
+      type: 'Warehouse',
+    }
     activeModal.componentInstance.dialogMode = EditDialogMode.CREATE
 
     activeModal.componentInstance.succeeded.subscribe(() => {
@@ -86,29 +98,32 @@ export class WarehouseComponent extends ManagementListComponent<Warehouse> {
   }
   reloadData() {
     let type = ''
-    this.route.params.subscribe(params => {
-      this.id = +params['id'];
-    });
-    this.route.queryParams.subscribe(params => {
-      type = params['type'];
-    });
-    if (this.id! && type =='Shelf'){
-       this.router.navigate(['/warehouses',this.id], { queryParams: {type:'Shelf'} });
-       this.renderShelf()
-        return;
-    }else if (this.id! && type =='Boxcase'){
-       this.router.navigate(['/warehouses',this.id], { queryParams: {type:'Boxcase'} });
-       this.renderBoxcase()
-       return;
+    this.route.params.subscribe((params) => {
+      this.id = +params['id']
+    })
+    this.route.queryParams.subscribe((params) => {
+      type = params['type']
+    })
+    if (this.id! && type == 'Shelf') {
+      this.router.navigate(['/warehouses', this.id], {
+        queryParams: { type: 'Shelf' },
+      })
+      this.renderShelf()
+      return
+    } else if (this.id! && type == 'Boxcase') {
+      this.router.navigate(['/warehouses', this.id], {
+        queryParams: { type: 'Boxcase' },
+      })
+      this.renderBoxcase()
+      return
     }
     let warehousePathList
-    if (this.id){
-        this.warehouseService.getWarehousePath(this.id).subscribe(
-        (warehouse) => {
-          warehousePathList = warehouse;
-          // console.log(listFolderPath)
-          this.warehousePath = warehousePathList.results
-        },)
+    if (this.id) {
+      this.warehouseService.getWarehousePath(this.id).subscribe((warehouse) => {
+        warehousePathList = warehouse
+        // console.log(listFolderPath)
+        this.warehousePath = warehousePathList.results
+      })
     }
 
     let params = {}
@@ -122,7 +137,7 @@ export class WarehouseComponent extends ManagementListComponent<Warehouse> {
         params,
         this.sortReverse,
         this.nameFilter,
-        true,
+        true
       )
       .pipe(takeUntil(this.getUnsubscribeNotifier()))
       .subscribe((c) => {
@@ -136,66 +151,62 @@ export class WarehouseComponent extends ManagementListComponent<Warehouse> {
     return $localize`Do you really want to delete the warehouse "${object.name}"?`
   }
 
-  renderWarehouse(){
-
-    const tableFilterContent = document.querySelector('.warehouse-tree');
-    const warehouseElement = document.querySelector('.warehouse');
+  renderWarehouse() {
+    const tableFilterContent = document.querySelector('.warehouse-tree')
+    const warehouseElement = document.querySelector('.warehouse')
     warehouseElement.innerHTML = ''
-    const shelfElement = this.viewContainer.createComponent(WarehouseComponent);
+    const shelfElement = this.viewContainer.createComponent(WarehouseComponent)
 
     const componentElement = shelfElement.location.nativeElement
-    const tabelShelf= componentElement.querySelector('.warehouse-tree');
+    const tabelShelf = componentElement.querySelector('.warehouse-tree')
 
     this.renderer.appendChild(tabelShelf, tableFilterContent)
     this.renderer.appendChild(warehouseElement, componentElement)
-
   }
-  renderBoxcase(){
-
-    const tableFilterContent = document.querySelector('.warehouse-tree');
-    const warehouseElement = document.querySelector('.warehouse');
+  renderBoxcase() {
+    const tableFilterContent = document.querySelector('.warehouse-tree')
+    const warehouseElement = document.querySelector('.warehouse')
     warehouseElement.innerHTML = ''
-    const shelfElement = this.viewContainer.createComponent(BoxCaseComponent);
+    const shelfElement = this.viewContainer.createComponent(BoxCaseComponent)
 
     const componentElement = shelfElement.location.nativeElement
-    const tabelShelf= componentElement.querySelector('.warehouse-tree');
+    const tabelShelf = componentElement.querySelector('.warehouse-tree')
 
     this.renderer.appendChild(tabelShelf, tableFilterContent)
     this.renderer.appendChild(warehouseElement, componentElement)
-
   }
 
-  renderShelf(){
-
-    const tableFilterContent = document.querySelector('.warehouse-tree');
-    const warehouseElement = document.querySelector('.warehouse');
+  renderShelf() {
+    const tableFilterContent = document.querySelector('.warehouse-tree')
+    const warehouseElement = document.querySelector('.warehouse')
     warehouseElement.innerHTML = ''
-    const shelfElement = this.viewContainer.createComponent(ShelfComponent);
+    const shelfElement = this.viewContainer.createComponent(ShelfComponent)
 
     const componentElement = shelfElement.location.nativeElement
-    const tabelShelf= componentElement.querySelector('.warehouse-tree');
+    const tabelShelf = componentElement.querySelector('.warehouse-tree')
 
     this.renderer.appendChild(tabelShelf, tableFilterContent)
     this.renderer.appendChild(warehouseElement, componentElement)
-
   }
-  goToShelfBoxcase(object){
-    if (object.type === 'Warehouse'){
+  goToShelfBoxcase(object) {
+    if (object.type === 'Warehouse') {
       this.goToShelf(object)
-    }if (object.type === 'Shelf'){
+    }
+    if (object.type === 'Shelf') {
       this.goToBoxcase(object)
     }
-
   }
 
-  goToShelf(object){
-    this.router.navigate(['/warehouses',object.id], { queryParams: {type:'Shelf'} });
+  goToShelf(object) {
+    this.router.navigate(['/warehouses', object.id], {
+      queryParams: { type: 'Shelf' },
+    })
     this.renderShelf()
   }
-  goToBoxcase(object){
-    this.router.navigate(['/warehouses',object.id], { queryParams: {type:'Boxcase'} });
+  goToBoxcase(object) {
+    this.router.navigate(['/warehouses', object.id], {
+      queryParams: { type: 'Boxcase' },
+    })
     this.renderBoxcase()
   }
-
-
 }

@@ -1,13 +1,21 @@
-import { Component, Renderer2, ViewChild, ViewContainerRef } from '@angular/core'
-import { Shelf } from 'src/app/data/custom-shelf';
-import { CustomShelfService } from 'src/app/services/rest/custom-shelf.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from 'src/app/services/toast.service';
-import { DocumentListViewService } from 'src/app/services/document-list-view.service';
-import { PermissionType, PermissionsService } from 'src/app/services/permissions.service';
+import {
+  Component,
+  Renderer2,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core'
+import { Shelf } from 'src/app/data/custom-shelf'
+import { CustomShelfService } from 'src/app/services/rest/custom-shelf.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { ToastService } from 'src/app/services/toast.service'
+import { DocumentListViewService } from 'src/app/services/document-list-view.service'
+import {
+  PermissionType,
+  PermissionsService,
+} from 'src/app/services/permissions.service'
 import { ActivatedRoute, Router } from '@angular/router'
-import { FILTER_HAS_CUSTOM_SHELF_ANY } from 'src/app/data/filter-rule-type';
-import { CustomShelfEditDialogComponent } from '../../common/edit-dialog/custom-shelf-edit-dialog/custom-shelf-edit-dialog.component';
+import { FILTER_HAS_CUSTOM_SHELF_ANY } from 'src/app/data/filter-rule-type'
+import { CustomShelfEditDialogComponent } from '../../common/edit-dialog/custom-shelf-edit-dialog/custom-shelf-edit-dialog.component'
 import { ManagementListComponent } from '../management-list/management-list.component'
 import { takeUntil } from 'rxjs/operators'
 import { BoxCaseComponent } from '../boxcase/boxcase.component'
@@ -16,14 +24,14 @@ import { Warehouse } from '../../../data/warehouse'
 import { WarehouseService } from '../../../services/rest/warehouse.service'
 import { WarehouseComponent } from '../warehouse/warehouse.component'
 
-
 @Component({
   selector: 'pngx-shelf',
   templateUrl: './shelf.component.html',
   styleUrls: ['./shelf.component.scss'],
 })
 export class ShelfComponent extends ManagementListComponent<Shelf> {
-  @ViewChild('warehouseTree', { read: ViewContainerRef }) container!: ViewContainerRef
+  @ViewChild('warehouseTree', { read: ViewContainerRef })
+  container!: ViewContainerRef
   warehousePath: Warehouse[] = []
   constructor(
     private customshelfService: CustomShelfService,
@@ -34,7 +42,7 @@ export class ShelfComponent extends ManagementListComponent<Shelf> {
     private route: ActivatedRoute,
     private router: Router,
     private viewContainer: ViewContainerRef,
-    private renderer: Renderer2,
+    private renderer: Renderer2
   ) {
     super(
       customshelfService,
@@ -56,13 +64,16 @@ export class ShelfComponent extends ManagementListComponent<Shelf> {
             return c.type
           },
         },
-      ],
+      ]
     )
   }
   openCreateDialog() {
-    var activeModal = this.getModalService().open(this.getEditDialogComponent(), {
-      backdrop: 'static',
-    })
+    var activeModal = this.getModalService().open(
+      this.getEditDialogComponent(),
+      {
+        backdrop: 'static',
+      }
+    )
     activeModal.componentInstance.object = { parent_warehouse: this.id }
     activeModal.componentInstance.dialogMode = EditDialogMode.CREATE
     activeModal.componentInstance.succeeded.subscribe(() => {
@@ -79,43 +90,41 @@ export class ShelfComponent extends ManagementListComponent<Shelf> {
       )
     })
   }
-  renderBoxcase(){
-
-    const tableFilterContent = document.querySelector('.warehouse-tree');
-    const warehouseElement = document.querySelector('.warehouse');
+  renderBoxcase() {
+    const tableFilterContent = document.querySelector('.warehouse-tree')
+    const warehouseElement = document.querySelector('.warehouse')
     warehouseElement.innerHTML = ''
-    const shelfElement = this.viewContainer.createComponent(BoxCaseComponent);
+    const shelfElement = this.viewContainer.createComponent(BoxCaseComponent)
 
     const componentElement = shelfElement.location.nativeElement
-    const tabelShelf= componentElement.querySelector('.warehouse-tree');
+    const tabelShelf = componentElement.querySelector('.warehouse-tree')
 
     this.renderer.appendChild(tabelShelf, tableFilterContent)
     this.renderer.appendChild(warehouseElement, componentElement)
-
   }
-
 
   reloadData() {
     let type = ''
     let params = {}
-    this.route.params.subscribe(param => {
-      this.id = +param['id'];
-    });
-    this.route.queryParams.subscribe(query_param => {
-      type = query_param['type'];
-    });
+    this.route.params.subscribe((param) => {
+      this.id = +param['id']
+    })
+    this.route.queryParams.subscribe((query_param) => {
+      type = query_param['type']
+    })
     let warehousePathList
-    if (this.id){
-      this.customshelfService.getWarehousePath(this.id).subscribe(
-        (warehouse) => {
-          warehousePathList = warehouse;
+    if (this.id) {
+      this.customshelfService
+        .getWarehousePath(this.id)
+        .subscribe((warehouse) => {
+          warehousePathList = warehouse
           // console.log(listFolderPath)
           this.warehousePath = warehousePathList.results
-        },)
+        })
     }
 
     params['type__iexact'] = 'Shelf'
-    params['parent_warehouse'] = this.id;
+    params['parent_warehouse'] = this.id
     // params['parent_warehouse']
     this.isLoading = true
     this.getService()
@@ -126,7 +135,7 @@ export class ShelfComponent extends ManagementListComponent<Shelf> {
         params,
         this.sortReverse,
         this.nameFilter,
-        true,
+        true
       )
       .pipe(takeUntil(this.getUnsubscribeNotifier()))
       .subscribe((c) => {
@@ -136,39 +145,39 @@ export class ShelfComponent extends ManagementListComponent<Shelf> {
       })
   }
 
-  goToBoxcase(object,$event){
-  //   redict to shelf
-    this.router.navigate(['/warehouses',object.id], { queryParams: {type:'Boxcase'} });
+  goToBoxcase(object, $event) {
+    //   redirect to shelf
+    this.router.navigate(['/warehouses', object.id], {
+      queryParams: { type: 'Boxcase' },
+    })
     this.renderBoxcase()
-
   }
 
   getDeleteMessage(object: Shelf) {
     return $localize`Do you really want to delete the Shelf "${object.name}"?`
   }
-  renderWarehouse(){
-
-    const treeWarehouse = document.querySelector('.warehouse-tree');
-    const warehouseElement = document.querySelector('.warehouse');
+  renderWarehouse() {
+    const treeWarehouse = document.querySelector('.warehouse-tree')
+    const warehouseElement = document.querySelector('.warehouse')
     warehouseElement.innerHTML = ''
-    const warehouseRootElement = this.viewContainer.createComponent(WarehouseComponent);
+    const warehouseRootElement =
+      this.viewContainer.createComponent(WarehouseComponent)
 
     const componentElement = warehouseRootElement.location.nativeElement
-    const treeWarehouseRoot= componentElement.querySelector('.warehouse-tree');
+    const treeWarehouseRoot = componentElement.querySelector('.warehouse-tree')
     treeWarehouseRoot.innerHTML = ''
     this.renderer.appendChild(treeWarehouseRoot, treeWarehouse)
     this.renderer.appendChild(warehouseElement, componentElement)
-
   }
   goToWarehouseRoot(param) {
-    this.router.navigate(['/warehouses','root']);
+    this.router.navigate(['/warehouses', 'root'])
     this.renderWarehouse()
-
   }
 
-
   goToWarehouse(w: Warehouse) {
-    this.router.navigate(['/warehouses',w.id], { queryParams: {type:'Warehouse'} });
+    this.router.navigate(['/warehouses', w.id], {
+      queryParams: { type: 'Warehouse' },
+    })
     this.renderShelf()
   }
 }

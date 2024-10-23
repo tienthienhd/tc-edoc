@@ -29,7 +29,10 @@ import { TagService } from 'src/app/services/rest/tag.service'
 import { UserService } from 'src/app/services/rest/user.service'
 import { SettingsService } from 'src/app/services/settings.service'
 import { environment } from 'src/environments/environment'
-import { EditCustomShelfComponent, EditCustomfieldMode } from './edit-customshelf.component'
+import {
+  EditCustomShelfComponent,
+  EditCustomfieldMode,
+} from './edit-customshelf.component'
 
 @Component({
   template: `
