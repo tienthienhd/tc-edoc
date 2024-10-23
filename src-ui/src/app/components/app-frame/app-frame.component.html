@@ -44,6 +44,20 @@
   </div>
   <ul ngbNav class="order-sm-3">
     <li ngbDropdown class="nav-item dropdown">
+      <button class="btn border-0" id="announcementDropdown" ngbDropdownToggle>
+        <span class="small me-2 d-none d-sm-inline">
+        </span>
+        <i-bs width="1.3em" height="1.3em" name="bell-fill"></i-bs>
+      </button>
+      <div ngbDropdownMenu class="dropdown-menu-end shadow me-2" aria-labelledby="userDropdown">
+        <pngx-announcement-widget></pngx-announcement-widget>
+
+
+      </div>
+    </li>
+  </ul>
+  <ul ngbNav class="order-sm-3">
+    <li ngbDropdown class="nav-item dropdown">
       <button class="btn border-0" id="userDropdown" ngbDropdownToggle>
         <span class="small me-2 d-none d-sm-inline">
           {{this.settingsService.displayName}}

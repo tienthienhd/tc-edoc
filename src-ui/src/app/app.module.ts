@@ -49,6 +49,7 @@ import { CookieService } from 'ngx-cookie-service'
 import { CsrfInterceptor } from './interceptors/csrf.interceptor'
 import { SavedViewWidgetComponent } from './components/dashboard/widgets/saved-view-widget/saved-view-widget.component'
 import { StatisticsWidgetComponent } from './components/dashboard/widgets/statistics-widget/statistics-widget.component'
+import { AnnouncementWidgetComponent } from './components/dashboard/widgets/announcement-widget/announcement-widget.component'
 import { UploadFileWidgetComponent } from './components/dashboard/widgets/upload-file-widget/upload-file-widget.component'
 import { WidgetFrameComponent } from './components/dashboard/widgets/widget-frame/widget-frame.component'
 import { FileTreeWidgetComponent } from './components/common/folder-tree-widget/file-tree-widget.component'
@@ -157,6 +158,7 @@ import {
   boxArrowUp,
   boxArrowUpRight,
   boxes,
+  bellFill,
   calendar,
   calendarEvent,
   cardChecklist,
@@ -261,6 +263,7 @@ const icons = {
   boxArrowUp,
   boxArrowUpRight,
   boxes,
+  bellFill,
   calendar,
   calendarEvent,
   cardChecklist,
@@ -484,6 +487,7 @@ function initializeApp(settings: SettingsService) {
     SortableDirective,
     SavedViewWidgetComponent,
     StatisticsWidgetComponent,
+    AnnouncementWidgetComponent,
     UploadFileWidgetComponent,
     WidgetFrameComponent,
     FileTreeWidgetComponent,

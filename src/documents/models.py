@@ -160,7 +160,7 @@ class Approval(models.Model):
     )
 
 
-class Announcement(models.Model):
+class Announcement(ModelWithOwner):
     ALL_STATES = sorted(states.ALL_STATES)
     STATE_CHOICES = sorted(zip(ALL_STATES, ALL_STATES))
 
@@ -208,14 +208,6 @@ class Announcement(models.Model):
         on_delete=models.SET_NULL,
         verbose_name=_("submitted_by"),
         related_name=_("submitted_by"),
-    )
-
-    received_by = models.ForeignKey(
-        User,
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("received_by"),
     )
 
     received_by_group = models.ForeignKey(
