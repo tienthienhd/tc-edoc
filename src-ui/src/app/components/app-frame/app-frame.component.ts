@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core'
+import { Component, HostListener, OnInit, } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { from, Observable } from 'rxjs'
@@ -11,6 +11,9 @@ import {
   catchError,
 } from 'rxjs/operators'
 import { Document } from 'src/app/data/document'
+import { Announcement } from 'src/app/data/announcement'
+import { AnnouncementsService } from '../../services/rest/announcement.service'
+
 import { OpenDocumentsService } from 'src/app/services/open-documents.service'
 import {
   DjangoMessageLevel,
@@ -54,8 +57,10 @@ import { ProfileEditDialogComponent } from '../common/profile-edit-dialog/profil
 })
 export class AppFrameComponent
   extends ComponentWithPermissions
-  implements OnInit, ComponentCanDeactivate
-{
+  implements OnInit, ComponentCanDeactivate {
+  
+  public announcements: Announcement[] = [];
+
   versionString = `${environment.appTitle} ${environment.version}`
   appRemoteVersion: AppRemoteVersion
 
@@ -68,7 +73,13 @@ export class AppFrameComponent
   isKhoExpanded = false
   isGiaExpanded = false
 
+
+  get unreadAnnouncements(): Announcement[] {
+    return this.announcements.filter(announcement => !announcement.is_read);
+  }
+
   constructor(
+    public announcementsService: AnnouncementsService,
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private openDocumentsService: OpenDocumentsService,
@@ -95,6 +106,9 @@ export class AppFrameComponent
     }
   }
 
+  
+  
+
   ngOnInit(): void {
     if (this.settingsService.get(SETTINGS_KEYS.UPDATE_CHECKING_ENABLED)) {
       this.checkForUpdates()
@@ -114,7 +128,23 @@ export class AppFrameComponent
           break
       }
     })
+
+    this.loadAnnouncements();
   }
+
+  loadAnnouncements() {
+    this.announcementsService.listAll().subscribe(
+      (data) => {
+        this.announcements = data.results; // Lưu dữ liệu vào biến announcements
+        // this.updateDisplayedAnnouncements();
+      },
+      (error) => {
+        console.error('Error fetching announcements', error);
+      }
+    );
+  }
+
+
 
   toggleSlimSidebar(): void {
     this.slimSidebarAnimating = true
@@ -196,10 +226,10 @@ export class AppFrameComponent
         term.length < 2
           ? from([[]])
           : this.searchService.autocomplete(term).pipe(
-              catchError(() => {
-                return from([[]])
-              })
-            )
+            catchError(() => {
+              return from([[]])
+            })
+          )
       )
     )
 
