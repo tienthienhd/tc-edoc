@@ -1,5 +1,10 @@
 import { MatchingModel } from './matching-model'
 
+export enum ChooseFolder {
+  FOLDER = "folder",
+  FILE = "file"
+}
+
 export interface Folder extends MatchingModel {
   documentCount?: number
   childFolderCount?: number

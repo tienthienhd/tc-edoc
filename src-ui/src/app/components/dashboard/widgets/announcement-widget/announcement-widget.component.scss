@@ -1,71 +1,89 @@
-//form {
-//  position: relative;
-//}
-//
-//.alert-heading {
-//  font-size: 80%;
-//  font-weight: bold;
-//}
-//
-//.alerts-hidden {
-//  .btn {
-//    line-height: 1;
-//  }
-//}
-//
-//.btn-open {
-//  line-height: 1;
-//
-//  i-bs {
-//    margin-top: -1px;
-//  }
-//}
-//
-//.progress {
-//  position: absolute;
-//  top: 0;
-//  right: 0;
-//  bottom: 0;
-//  left: 0;
-//  height: auto;
-//  mix-blend-mode: soft-light;
-//  pointer-events: none;
-//}
-//
-//::ng-deep .ngx-file-drop__drop-zone--over {
-//  background-color: var(--pngx-primary-faded) !important;
-//}
-//
-//.consumer-status-card {
-//  background-color: rgba(var(--bs-body-bg-rgb), .95) !important;
-//}
-//
-//.max-vh100-40 {
-//  max-height: calc(100vh - 40px);
-//}
+::ng-deep .popover {
+  max-width: 350px;
 
-table {
-    width: 100%;
-    //border-collapse: collapse;
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
 }
 
-th,
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.result {
+  cursor: pointer;
+}
+
+.btn .spinner-border-sm {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+@media (max-width: 575.98px) {
+  .name-col {
+    max-width: 150px;
+  }
+}
+
+.announcement-title {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 0px 0px 10px;
+}
+
+.btn-toolbar {
+  padding: 5px 0px 10px;
+}
+
+.name-announcement {}
+
+.content-announcement {
+  cursor: pointer;
+}
+
+
+.box-content-detail-announcement {}
+
+.content-detail-announcement {
+  cursor: pointer;
+  font-size: 13px;
+  margin: 0px;
+  transition: all 0.2s linear;
+}
+
+.content-detail-announcement:hover {
+
+  color: rgb(81, 81, 81) !important;
+  text-decoration: underline !important;
+
+}
+
 td {
-    border: 1px solid black;
-
+  text-align: center;
 }
 
-.custom-space {
-    border-top: none;
-    border-right: none;
-    border-bottom: none;
-    width: 20px;
+.form-check {
+
+  min-height: 0;
+  margin-bottom: 0;
 }
 
-.custom-width-content {
-    //width: 80%;
-    border-top: none;
-    border-right: none;
-    border-bottom: none;
-    border-left: none;
+
+
+.box-content-announcemnet {
+  padding: 0px 7px;
+  min-width: 350px;
+  max-height: 500px; 
+  overflow-y: auto; 
+}
+
+.overflow-auto {
+  overflow-y: auto; 
+}
+
+
+.btn-show-more{
+  
 }

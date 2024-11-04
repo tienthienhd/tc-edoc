@@ -1,7 +1,5 @@
 import { ObjectWithId } from './object-with-id'
-export enum ReadStatus {
-   Read = 1,
-}
+
 export interface Announcement extends ObjectWithId{
     label: string;
     text: string;
@@ -14,7 +12,8 @@ export interface Announcement extends ObjectWithId{
     created: Date;
     modified: Date;
     is_read: boolean;
-    received_by: number;
+    owner: number;
     received_by_group: number;
-    ctype: number;
+    // ctype: number;
+    ctype: string; // Đảm bảo ctype là kiểu string
 }

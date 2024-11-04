@@ -196,7 +196,7 @@ class AnnouncementViewSet(ModelViewSet):
         user = self.request.user
         # document_ids = Document.objects.filter(owner=user).values_list("id")
         # document_ids = [x[0] for x in document_ids]
-        queryset = queryset.filter(received_by=user)
+        queryset = queryset.filter(owner=user)
         return queryset
 
     model = Announcement
