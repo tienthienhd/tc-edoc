@@ -13,6 +13,7 @@ $color-mode-type: data;
   --pngx-primary-text-contrast: var(--bs-light);
 
   --bs-primary: hsl(var(--pngx-primary), var(--pngx-primary-lightness));
+  --bs-primary-light: hsl(var(--pngx-primary), calc(var(--pngx-primary-lightness) + 10%));  
   --bs-border-color: var(--bs-gray-400);
   --pngx-primary-faded: hsl(var(--pngx-primary), calc(var(--pngx-primary-lightness) + 76%));
   --pngx-primary-lighten-10: hsl(var(--pngx-primary), calc(var(--pngx-primary-lightness) + 10%));

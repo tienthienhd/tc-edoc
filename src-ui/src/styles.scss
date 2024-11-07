@@ -88,6 +88,14 @@ table .btn-link {
 }
 
 .navbar .dropdown .btn {
+  // color: var(--pngx-primary-text-contrast) !important;
+}
+
+#announcementDropdown{
+  color: var(--pngx-primary-text-contrast) !important;
+}
+
+#userDropdown{
   color: var(--pngx-primary-text-contrast) !important;
 }
 

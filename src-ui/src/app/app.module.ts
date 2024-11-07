@@ -244,6 +244,10 @@ import {
   inboxes,
   inboxesFill,
   fileEarmarkPdf,
+  chatRightDots,
+  chatRightText,
+  cardText,
+  chatSquareText,
 } from 'ngx-bootstrap-icons'
 
 const icons = {
@@ -349,6 +353,10 @@ const icons = {
   inboxesFill,
   x,
   xLg,
+  chatRightDots,
+  chatRightText,
+  cardText,
+  chatSquareText,
 }
 
 import localeAf from '@angular/common/locales/af'
