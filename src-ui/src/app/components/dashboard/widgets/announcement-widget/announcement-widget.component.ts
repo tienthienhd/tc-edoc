@@ -55,8 +55,8 @@ export class AnnouncementWidgetComponent
   public autoRefreshInterval: any
   public announcements: Announcement[] = [];
 
-  public visibleCounts: { all: number; unread: number; read: number } = { all: 5, unread: 5, read: 5 };
-
+  // public visibleCounts: { all: number; unread: number; read: number } = { all: 5, unread: 5, read: 5 };
+  public visibleCounts: { all: number } = { all: 5 };
 
 
   get dismissButtonText(): string {
@@ -75,6 +75,10 @@ export class AnnouncementWidgetComponent
     return this.announcements.filter(announcement => !announcement.is_read);
   }
 
+  get showMore(): boolean {
+    return this.announcements.length > this.visibleCounts.all;
+  }
+
   constructor(
     public announcementsService: AnnouncementsService,
 
@@ -84,16 +88,21 @@ export class AnnouncementWidgetComponent
     super()
   }
 
+  loadMore() {
+    this.visibleCounts.all += 5; // Tăng số lượng hiển thị thông báo mỗi lần nhấn nút
+  }
+
 
   // Phương thức để tải thêm thông báo cho từng danh sách
-  loadMore(type: 'all' | 'unread' | 'read') {
-    this.visibleCounts[type] += 5; // Tăng số lượng hiển thị lên 2 cho loại tương ứng
-  }
+  // loadMore(type: 'all' | 'unread' | 'read') {
+  //   this.visibleCounts.all += 5; // Tăng số lượng hiển thị thông báo
+  // }
+
 
   // Phương thức kiểm tra xem có nên hiển thị nút "Show More" hay không
-  showMoreAnnouncements(announcements: Announcement[], type: 'all' | 'unread' | 'read'): boolean {
-    return announcements.length > this.visibleCounts[type]; // So sánh với số lượng hiện tại
-  }
+  // showMoreAnnouncements(announcements: Announcement[], type: 'all' | 'unread' | 'read'): boolean {
+  //   return announcements.length > this.visibleCounts[type]; // So sánh với số lượng hiện tại
+  // }
 
   ngOnInit() {
 
@@ -107,23 +116,14 @@ export class AnnouncementWidgetComponent
     clearInterval(this.autoRefreshInterval)
   }
 
-  // loadAnnouncements() {
-  //   this.announcementsService.listAll().pipe(first()).subscribe(
-  //     (data: Results<Announcement>) => {
-  //       console.log(data.results);
-  //       this.announcements = data.results; // Lưu dữ liệu vào biến announcements
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching announcements', error);
-  //     }
-  //   );
-  // }
+
 
   loadAnnouncements() {
     this.announcementsService.listAll().subscribe(
       (data) => {
         this.announcements = data.results; // Lưu dữ liệu vào biến announcements
-        // this.updateDisplayedAnnouncements();
+        console.log('announcements', this.announcements);
+
       },
       (error) => {
         console.error('Error fetching announcements', error);
@@ -188,16 +188,31 @@ export class AnnouncementWidgetComponent
 
   dismissAnnouncement(announcement: Announcement) {
     if (announcement) {
-      this.announcementsService.deleteAnnouncement(announcement).pipe(first()).subscribe(
-        () => {
-          this.announcements = this.announcements.filter(a => a.id !== announcement.id);
-          this.selectedAnnouncements.delete(announcement.id); // Xóa ID khỏi danh sách đã chọn
-          this.checkClearSelectionVisibility(); // Gọi hàm kiểm tra
-        },
-        (error) => {
-          console.error('Error dismissing announcement', error);
-        }
-      );
+      const modal = this.modalService.open(ConfirmDialogComponent, {
+        backdrop: 'static',
+      });
+      modal.componentInstance.title = $localize`Confirm Dismiss`;
+      modal.componentInstance.messageBold = $localize`Do you really want to delete the announcement "${announcement.name}"?`;
+      modal.componentInstance.btnClass = 'btn-danger';
+      modal.componentInstance.btnCaption = $localize`Dismiss`;
+
+      modal.componentInstance.confirmClicked.pipe(first()).subscribe(() => {
+        modal.componentInstance.buttonsEnabled = false;
+        modal.close();
+
+        this.announcementsService.deleteAnnouncement(announcement).pipe(first()).subscribe(
+          () => {
+            this.announcements = this.announcements.filter(a => a.id !== announcement.id);
+            this.selectedAnnouncements.delete(announcement.id); // Xóa ID khỏi danh sách đã chọn
+
+            this.checkClearSelectionVisibility(); // Gọi hàm kiểm tra
+          },
+          (error) => {
+            console.error('Error dismissing announcement', error);
+          }
+        );
+      });
+
     } else {
       console.warn('Announcement is not selected');
     }
@@ -214,32 +229,41 @@ export class AnnouncementWidgetComponent
 
 
   dismissAnnouncements() {
-    if (this.selectedAnnouncements.size > 0) {
-      // Nếu có thông báo đã chọn, chỉ xóa các thông báo đó
-      const announcementsToDismiss = Array.from(this.selectedAnnouncements);
-      announcementsToDismiss.forEach(id => {
-        this.announcementsService.deleteAnnouncement({ id } as Announcement).pipe(first()).subscribe(
-          () => {
-            this.announcements = this.announcements.filter(a => a.id !== id);
-            this.selectedAnnouncements.delete(id); // Xóa ID khỏi danh sách đã chọn
-          },
-          (error) => {
-            console.error('Error dismissing announcement', error);
-          }
-        );
+    const tasks = this.selectedAnnouncements.size > 0
+      ? Array.from(this.selectedAnnouncements)
+      : this.announcements.map(a => a.id); // Lấy tất cả ID nếu không có thông báo đã chọn
+
+    if (tasks.length > 1) {
+      const modal = this.modalService.open(ConfirmDialogComponent, {
+        backdrop: 'static',
+      });
+      modal.componentInstance.title = $localize`Confirm Dismiss All`;
+      modal.componentInstance.messageBold = $localize`Dismiss all ${tasks.length} announcements?`;
+      modal.componentInstance.btnClass = 'btn-warning';
+      modal.componentInstance.btnCaption = $localize`Dismiss`;
+
+      modal.componentInstance.confirmClicked.pipe(first()).subscribe(() => {
+        modal.componentInstance.buttonsEnabled = false;
+        modal.close();
+
+        tasks.forEach(id => {
+          this.announcementsService.deleteAnnouncement({ id } as Announcement).pipe(first()).subscribe(
+            () => {
+              this.announcements = this.announcements.filter(a => a.id !== id);
+              this.selectedAnnouncements.delete(id); // Xóa ID khỏi danh sách đã chọn
+            },
+            (error) => {
+              console.error('Error dismissing announcement', error);
+            }
+          );
+        });
       });
     } else {
-      // Nếu không có thông báo đã chọn, xóa tất cả các thông báo
-      this.announcements.forEach(announcement => {
-        this.announcementsService.deleteAnnouncement(announcement).pipe(first()).subscribe(
-          () => {
-            this.announcements = this.announcements.filter(a => a.id !== announcement.id);
-          },
-          (error) => {
-            console.error('Error dismissing announcement', error);
-          }
-        );
-      });
+      // Nếu chỉ có một thông báo được chọn, gọi dismissAnnouncement
+      const announcement = this.announcements.find(a => a.id === tasks[0]);
+      if (announcement) {
+        this.dismissAnnouncement(announcement);
+      }
     }
   }
 

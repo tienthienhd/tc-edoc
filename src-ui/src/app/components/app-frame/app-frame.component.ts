@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit, } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { from, Observable } from 'rxjs'
+import { from, Observable, BehaviorSubject } from 'rxjs'
 import {
   debounceTime,
   distinctUntilChanged,
@@ -49,7 +49,7 @@ import {
 } from '@angular/cdk/drag-drop'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { ProfileEditDialogComponent } from '../common/profile-edit-dialog/profile-edit-dialog.component'
-
+import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component'
 @Component({
   selector: 'pngx-app-frame',
   templateUrl: './app-frame.component.html',
@@ -59,8 +59,9 @@ export class AppFrameComponent
   extends ComponentWithPermissions
   implements OnInit, ComponentCanDeactivate {
   
+  public autoRefreshInterval: any
   public announcements: Announcement[] = [];
-
+  
   versionString = `${environment.appTitle} ${environment.version}`
   appRemoteVersion: AppRemoteVersion
 
@@ -130,13 +131,19 @@ export class AppFrameComponent
     })
 
     this.loadAnnouncements();
+    this.toggleAutoRefresh();
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.autoRefreshInterval)
   }
 
   loadAnnouncements() {
     this.announcementsService.listAll().subscribe(
       (data) => {
         this.announcements = data.results; // Lưu dữ liệu vào biến announcements
-        // this.updateDisplayedAnnouncements();
+        console.log('announcements', this.announcements);
+        
       },
       (error) => {
         console.error('Error fetching announcements', error);
@@ -362,5 +369,16 @@ export class AppFrameComponent
     this.isKhoVatLyExpanded = false
     this.isKhoExpanded = false
     this.isGiaExpanded = false
+  }
+
+  toggleAutoRefresh(): void {
+    if (this.autoRefreshInterval) {
+      clearInterval(this.autoRefreshInterval)
+      this.autoRefreshInterval = null
+    } else {
+      this.autoRefreshInterval = setInterval(() => {
+        this.loadAnnouncements();
+      }, 1000)
+    }
   }
 }

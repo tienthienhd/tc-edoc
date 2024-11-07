@@ -1,6 +1,7 @@
 import { ObjectWithId } from './object-with-id'
 
 export interface Announcement extends ObjectWithId{
+    name: string;
     label: string;
     text: string;
     enabled: boolean;

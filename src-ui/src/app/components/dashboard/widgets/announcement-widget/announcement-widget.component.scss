@@ -1,3 +1,7 @@
+
+
+
+
 ::ng-deep .popover {
   max-width: 350px;
 
@@ -30,11 +34,14 @@ pre {
 .announcement-title {
   font-size: 20px;
   font-weight: 600;
-  padding: 10px 0px 0px 10px;
+  padding: 7px 0px 10px 10px;
 }
 
+table{
+  margin: 10px 0px ;
+}
 .btn-toolbar {
-  padding: 5px 0px 10px;
+  
 }
 
 .name-announcement {}
@@ -75,7 +82,7 @@ td {
 .box-content-announcemnet {
   padding: 0px 7px;
   min-width: 350px;
-  max-height: 500px; 
+  max-height: 540px; 
   overflow-y: auto; 
 }
 
@@ -85,5 +92,87 @@ td {
 
 
 .btn-show-more{
+ 
+}
+
+.item-announcement{
+  border-color: #ced4da !important;
+  height: 76px !important;
   
 }
+
+.box-title-annoucement-permission{
+  // color: var(--bs-primary);
+}
+
+
+.item-announcement:hover{
+  background-color: var(--pngx-primary-darken-5) !important;
+}
+.item-announcement:hover .box-title-annoucement-permission{
+  color: var(--bs-light) !important;
+}
+.box-title-annoucement-permission{
+  text-align: start;
+  position: relative;
+  
+}
+.title-announcemnt-permission{
+   margin: 0px;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: start;
+   align-items: center;
+   font-size: 13px;
+   cursor: pointer;
+   max-width: 260px;
+   
+}
+
+.icon-unread-announcement{
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 13px !important;
+}
+.text-info-announcement{
+  margin-right: 5px;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.box-btn-dismiss-annoucement{
+  text-align: end;
+}
+
+// .info-mobile-announcement{
+//   display: none;
+// }
+
+
+@media (max-width: 700px) {
+  // .info-mobile-announcement{
+  //   display:table-cell;
+  // }
+
+  // .box-title-annoucement-permission{
+  //   display: none;
+  // }
+
+}
+
+.btn-outline-primary{
+  font-size: 13px;
+  padding: 3px 5px;
+}
+
+.btn-outline-secondary{
+  font-size: 13px;
+  padding: 3px 5px;
+}
+
+
+
+
