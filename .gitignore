@@ -91,6 +91,7 @@ scripts/nuke
 
 # this is where the compiled frontend is moved to.
 /src/documents/static/frontend/
+src/data_dump.json
 
 # mac os
 .DS_Store
