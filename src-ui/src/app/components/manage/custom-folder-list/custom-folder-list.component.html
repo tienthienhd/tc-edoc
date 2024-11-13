@@ -17,7 +17,7 @@
 
   <button class="btn btn-sm btn-outline-secondary" (click)="cutFolder()"
           [disabled]="selectedObjects.size === 0 || isFolderCutClicked === true">
-    <i-bs name="arrow-90deg-right"></i-bs>&nbsp;<ng-container i18n>Cut</ng-container>
+          <ng-container i18n>Cut</ng-container>
   </button>
 
   <button class="btn btn-sm btn-outline-secondary" (click)="clearSelection()" [hidden]="selectedObjects.size === 0">
@@ -25,7 +25,7 @@
   </button>
   <button class="btn btn-sm btn-outline-secondary" [hidden]="selectedObjects.size > 5"
           (click)="selectAll();  $event.stopPropagation();">
-    <ng-container i18n>Select all</ng-container>
+    <i-bs name="check"></i-bs>&nbsp;<ng-container i18n>Select all</ng-container>
   </button>
   <div ngbDropdown>
 
@@ -49,10 +49,10 @@
       </button>
     </div>
   </div>
-<!--  <button type="button" class="btn btn-sm btn-outline-primary" (click)="setPermissions()"-->
-<!--          [disabled]="!userCanBulkEdit(PermissionAction.Change) || selectedObjects.size === 0">-->
-<!--    <i-bs name="person-fill-lock"></i-bs>&nbsp;<ng-container i18n>Permissions</ng-container>-->
-<!--  </button>-->
+  <button type="button" class="btn btn-sm btn-outline-primary" (click)="setPermissions()"
+          [disabled]="!userCanBulkEdit(PermissionAction.Change) || selectedObjects.size === 0">
+    <i-bs name="person-fill-lock"></i-bs>&nbsp;<ng-container i18n>Permissions</ng-container>
+  </button>
   <button type="button" class="btn btn-sm btn-outline-danger" (click)="delete()"
           [disabled]="!userCanBulkEdit(PermissionAction.Delete) || selectedObjects.size === 0">
     <i-bs name="trash"></i-bs>&nbsp;<ng-container i18n>Delete</ng-container>
@@ -316,3 +316,5 @@
 
   <!--  </div>-->
 </div>
+
+
