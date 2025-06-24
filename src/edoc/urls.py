@@ -14,9 +14,12 @@ from django.views.generic import RedirectView
 from django.views.static import serve
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
-
-from documents.views import AcknowledgeTasksView, DocumentElasticSearch, \
-    WebhookViewSet, SelectQueryViewSet, PostFolderView
+from documents.views import WarehouseMoveRequestViewSet
+from documents.views import CreatedDepartmentViewSet
+from documents.views import ManageDepartmentViewSet
+from documents.views import AcknowledgeTasksView, DocumentElasticSearch
+from documents.views import (WebhookViewSet, SelectQueryViewSet, PostFolderView, MovedHistoryViewSet)
+from documents.views import ContainerMoveHistoryViewSet
 from documents.views import ApprovalUpdateMutipleView
 from documents.views import ApprovalViewSet
 from documents.views import ArchiveFontViewSet
@@ -105,8 +108,12 @@ api_router.register(r"dossier_forms", DossierFormViewSet)
 api_router.register(r"backup_records", BackupRecordViewSet)
 api_router.register(r'process_ocr', WebhookViewSet, basename='webhook')
 # api_router.register(r"approvals", ApprovalViewSet)
-api_router.register(r"content_types", ContentTypeViewSet,
-                    basename="content_types")
+api_router.register(r"content_types", ContentTypeViewSet, basename="content_types")
+api_router.register(r"document_move_history", MovedHistoryViewSet, basename='history')
+api_router.register(r"container_move_history",ContainerMoveHistoryViewSet)
+api_router.register(r"created_department", CreatedDepartmentViewSet)
+api_router.register(r"manage_department", ManageDepartmentViewSet)
+api_router.register(r"move_request", WarehouseMoveRequestViewSet, basename="moverequest")
 
 urlpatterns = [
     re_path(
