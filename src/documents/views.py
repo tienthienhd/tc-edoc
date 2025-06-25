@@ -111,7 +111,7 @@ from documents.documents import DocumentDocument
 from documents.filters import ArchiveFontFilterSet, EdocTaskFilterSet, \
     ApprovalFilterSet, FolderOwnedOrAccessibleFilter, \
     DocumentOwnedOrAccessibleFilter, WarehouseMoveRequestFilterSet, \
-    ContainerMoveHistoryFilterSet
+    ContainerMoveHistoryFilterSet, BoxOpeningReportFilterSet
 from documents.filters import BackupRecordFilterSet
 from documents.filters import CorrespondentFilterSet
 from documents.filters import CustomFieldFilterSet
@@ -4874,6 +4874,13 @@ class BoxOpeningReportViewSet(ModelViewSet):
     queryset = BoxOpeningReport.objects.prefetch_related("verifications__document", "move_request_box__boxcase_object").all()
     serializer_class = BoxOpeningReportSerializer
     permission_classes = [IsAuthenticated]
+
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = BoxOpeningReportFilterSet
+    ordering_fields = ('created_at', 'status')
+
+
+
     http_method_names = ['get', 'patch', 'post', 'head', 'options']
 
     @action(detail=True, methods=["patch"], url_path="verify_document")

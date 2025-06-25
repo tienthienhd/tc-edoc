@@ -20,7 +20,7 @@ from rest_framework_guardian.filters import ObjectPermissionsFilter
 
 from documents.models import Approval, Correspondent, Dossier, DossierForm, \
     ArchiveFont, FontLanguage, BackupRecord, EdocTask, WarehouseMoveRequest, \
-    ContainerMoveHistory
+    ContainerMoveHistory, BoxOpeningReport, DocumentVerification
 from documents.models import CustomField
 from documents.models import Document
 from documents.models import DocumentType
@@ -630,4 +630,49 @@ class ContainerMoveHistoryFilterSet(FilterSet):
             'moved_by': ['exact'],  # Lọc theo ID của người thực hiện
             'move_reason': ['icontains'],
             # Tìm kiếm (không phân biệt hoa thường) trong lý do di chuyển
+        }
+
+
+class BoxOpeningReportFilterSet(django_filters.FilterSet):
+    """Bộ lọc cho model Báo cáo Mở thùng."""
+
+    # Cho phép lọc theo khoảng ngày mở thùng
+    opened_after = django_filters.DateTimeFilter(
+        field_name="opened_at",
+        lookup_expr='gte'
+    )
+    opened_before = django_filters.DateTimeFilter(
+        field_name="opened_at",
+        lookup_expr='lte'
+    )
+
+    # Lọc theo tên của thùng hàng liên quan
+    boxcase_name = django_filters.CharFilter(
+        field_name='boxcase__name',
+        lookup_expr='icontains'
+    )
+
+    class Meta:
+        model = BoxOpeningReport
+        fields = {
+            'status': ['exact', 'in'],
+            # Lọc theo trạng thái báo cáo (draft, completed)
+            'verifier': ['exact'],  # Lọc theo ID người kiểm kê
+            'boxcase': ['exact'],  # Lọc theo ID của thùng hàng được báo cáo
+            'report_code': ['icontains'],  # Tìm theo mã báo cáo
+        }
+
+
+class DocumentVerificationFilterSet(django_filters.FilterSet):
+    """Bộ lọc cho model Chi tiết Kiểm kê Tài liệu."""
+
+    class Meta:
+        model = DocumentVerification
+        fields = {
+            'status': ['exact', 'in'],
+            # Lọc theo trạng thái kiểm kê (present, missing, damaged)
+            'report': ['exact'],  # Lọc theo ID của báo cáo cha
+            'document': ['exact'],  # Lọc theo ID của tài liệu được kiểm kê
+            'report__boxcase': ['exact'],
+            # Lọc tất cả các dòng kiểm kê của một thùng hàng cụ thể
         }
