@@ -3677,7 +3677,7 @@ class WarehouseViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
         Nếu có và người dùng đang cố di chuyển trực tiếp, trả về một Response lỗi.
         Nếu không, trả về None.
         """
-        if "parent-warehouse" in request_data:
+        if "parent_warehouse" in request_data:
             active_statuses = [
                 WarehouseMoveRequest.Status.APPROVED,
                 WarehouseMoveRequest.Status.IN_TRANSIT
@@ -4871,7 +4871,13 @@ class WarehouseMoveRequestViewSet(ModelViewSet):
     #     return Response(self.get_serializer(move_request).data)
     #----------------------------------------------------------------#
 class BoxOpeningReportViewSet(ModelViewSet):
-    queryset = BoxOpeningReport.objects.prefetch_related("verifications__document", "move_request_box__boxcase_object").all()
+    queryset = BoxOpeningReport.objects.select_related(
+        'boxcase', # Tải trước thông tin của thùng hàng liên quan (OneToOneField)
+        'verifier', # Tải trước thông tin của người kiểm kê (ForeignKey)
+        'move_request' # Tải trước thông tin của yêu cầu di chuyển gốc (ForeignKey)
+    ).prefetch_related(
+        'verifications__document' # Tải trước danh sách các mục kiểm kê và tài liệu của chúng
+    ).order_by('-opened_at')
     serializer_class = BoxOpeningReportSerializer
     permission_classes = [IsAuthenticated]
 

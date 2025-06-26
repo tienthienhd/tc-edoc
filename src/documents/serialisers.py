@@ -3325,7 +3325,15 @@ class ContainerMoveHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContainerMoveHistory
-        fields = '__all__'
+        fields = [
+            'id',
+            'moved_by_username',
+            'move_timestamp',
+            'move_reason',
+            'container_id',
+            'old_parent_id',
+            'new_parent_id',
+        ]
 
 class WarehouseMoveRequestSerializer(serializers.ModelSerializer):
     requester = serializers.StringRelatedField(read_only=True)
