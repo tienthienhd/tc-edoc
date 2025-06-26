@@ -1818,3 +1818,272 @@ class BackupRecord(ModelWithOwner):
 
     def __str__(self):
         return f"{self.filename} - {self.created_at}"
+
+
+class WareHouseManageUnit(ModelWithOwner):
+
+    email = models.EmailField(blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class BoxCreatedUnit(ModelWithOwner):
+
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    main_pos = models.CharField(max_length=256, blank=True, null=True)
+    type = models.CharField(max_length=256, blank=True, null=True)
+    unit_id = models.CharField(max_length=256, blank=True, null=True)
+    def _str__(self):
+        return self.unit_id
+
+class StoreHouse(MatchingModel):
+    class StoreHouseType(models.TextChoices):
+        DEDICATED = ("Deicated", _("Deicated"))
+        NONDEDICATED = ("Non-Deicated", _("Non-Deicated"))
+        INTERNAL = ("Internal", _("Internal"))
+        EXTERNAL = ("External", _("External"))
+
+
+    main_pos = models.CharField(max_length=256, blank=True, null=True)
+    location = models.CharField(max_length=256, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=256, blank=True, null=True)
+    structure = models.CharField(max_length=256, blank=True, null=True)
+    type_storehouse = models.CharField(max_length=30,choices=StoreHouseType.choices, default=StoreHouseType.DEDICATED)
+    def __str__(self):
+        return self.main_pos
+class Location(models.Model):
+    name = models.CharField(max_length=256)
+    name_building = models.CharField(_("Tên tòa"),max_length=256, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    storage_status = models.CharField(max_length=256, blank=True, null=True)
+    number_in_use = models.IntegerField(blank=True, null=True)
+    capacity = models.IntegerField(blank=True, null=True)
+    store_house = models.ForeignKey(
+        StoreHouse,
+        on_delete=models.CASCADE,
+        related_name="locations",
+        blank=True,
+        null=True,
+    )
+    def __str__(self):
+        return self.name
+
+class Box(models.Model):
+    class BoxStatus(models.TextChoices):
+        WAIT_TO_DELIVERY = ("Wait_to_delivery", _("Wait to delivery"))
+        IN_TRANSIT = ("In_transit", _("In transit"))
+        RECEIVED = ("Received", _("Received"))
+        STORED = ("Stored", _("Stored"))
+        OPENED = ("Opened", _("Opened"))
+        DESTROYED = ("Destroyed", _("Destroyed"))
+        LOST = ("Lost", _("Lost"))
+    box_created_unit = models.ForeignKey(
+        BoxCreatedUnit,
+        on_delete=models.CASCADE,
+        related_name="containers",
+        blank=True,
+        null=True,
+    )
+    handover_date = models.DateTimeField(blank=True, null=True)
+    receive_date = models.DateTimeField(blank=True, null=True)
+    code_on_box = models.CharField(blank=True, null=True, max_length=256)
+    location = models.ForeignKey(
+        Location,
+        on_delete=models.CASCADE,
+        related_name="containers",
+        blank=True,
+    )
+    name = models.CharField(max_length=256)
+    # TODO: Người tạo nhưng chưa biết làm do liên quan đến bảng khác
+    who_create = models.CharField(max_length=256, blank=True, null=True)
+    # TODO: Chưa làm được phần upload ảnh
+    image_of_box = models.ImageField(upload_to="images/box", blank=True, null=True)
+    box_status = models.CharField(max_length=256, choices=BoxStatus.choices, default=BoxStatus.WAIT_TO_DELIVERY, blank=True, null=True)
+
+
+class DocumentStoreHouse(Document):
+     last_update = models.DateTimeField(blank=True, null=True)
+     note = models.TextField(blank=True, null=True)
+     date_to_destroy = models.DateTimeField(blank=True, null=True)
+     store_house = models.ForeignKey(
+         StoreHouse,
+         on_delete=models.SET_NULL,
+         related_name="documents",
+         blank=True,
+         null=True,
+     )
+     import_date = models.DateTimeField(blank=True, null=True)
+     current_status = models.TextField(blank=True, null=True)
+     # TODO: Tạm thời để trường ảnh là char fiels do chư làm được cập nhật ảnh
+     current_status_image = models.CharField(blank=True, null=True)
+     location = models.ForeignKey(
+         Location,
+         on_delete=models.SET_NULL,
+         related_name="documents",
+         blank=True,
+         null=True,
+     )
+     status = models.CharField(blank=True, null=True, max_length=256)
+     time_storage = models.DateTimeField(blank=True, null=True)
+
+class MoveHistory(models.Model):
+    document = models.ForeignKey(
+        DocumentStoreHouse,
+        on_delete=models.CASCADE,
+        related_name="move_history",
+        blank=True,
+        null=True,
+        verbose_name=_("Document move history"),
+    )
+    old_location = models.ForeignKey(
+        Location,
+        on_delete=models.CASCADE,
+        related_name="old_location",
+        blank=True,
+        null=True,
+        verbose_name=_("Old location"),
+    )
+    new_location = models.ForeignKey(
+        Location,
+        on_delete=models.SET_NULL,
+        related_name="new_location",
+        blank=True,
+    )
+    move_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="move_by",
+        blank=True,
+        null=True,
+        verbose_name=_("Move by")
+    )
+    move_timestamp = models.DateTimeField(blank=True, null=True, default=timezone.now, db_index=True, verbose_name=_("Move timestamp"))
+    move_reason = models.TextField(_("Reason for Move"), blank=True, null=True)
+    class Meta:
+        verbose_name = _("Move History")
+        verbose_name_plural = _("Move History")
+        ordering = ["-move_timestamp"]
+    def __str__(self):
+        return f"{self.document} - {self.old_location} - {self.new_location}"
+
+class BoxMoveHistory(models.Model):
+    box = models.ForeignKey(
+        Box,
+        on_delete=models.CASCADE,
+        related_name="box_move_history",
+        blank=True,
+        null=True,
+        verbose_name=_("Box move history"),
+    )
+    old_location = models.ForeignKey(
+        Location,
+        on_delete=models.CASCADE,
+        related_name="old_location",
+        blank=True,
+    )
+    new_location = models.ForeignKey(
+        Location,
+        on_delete=models.SET_NULL,
+        related_name="new_location",
+    )
+    move_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="box_move_by",
+        blank=True,
+        null=True,
+        verbose_name=_("Move by")
+    )
+    move_timestamp = models.DateTimeField(blank=True, null=True, default=timezone.now, db_index=True, verbose_name=_("Move timestamp"))
+    move_reason = models.TextField(_("Reason for Move"), blank=True, null=True)
+    class Meta:
+        verbose_name = _("Box Move History")
+        verbose_name_plural = _("Box Move History")
+        ordering = ["-move_timestamp"]
+    def __str__(self):
+        return f"{self.box} - {self.old_location} - {self.new_location}"
+class BoxMoveReport(models.Model):
+    class BoxMoveReportStatus(models.TextChoices):
+        PENDING = ("Pending", _("Pending"))
+        APPROVED = ("Approved", _("Approved"))
+        REJECTED = ("Rejected", _("Rejected"))
+        CANCELLED = ("Cancelled", _("Cancelled"))
+        IN_TRANSIT = ("In_transit", _("In transit"))
+        RECEIVED = ("Received", _("Received"))
+
+    reason = models.TextField(_("Reason for Box Move"), blank=True, null=True)
+    request_code = models.CharField(_("Request code"), max_length=256, blank=True, null=True)
+    box_move_status = models.CharField(max_length=20, choices=BoxMoveReportStatus.choices, default=BoxMoveReportStatus.PENDING, db_index=True)
+    notes = models.TextField(_("Note"), blank=True, null=True)
+    create_at = models.DateTimeField(default=timezone.now)
+    requester = models.ForeignKey(User, on_delete=models.PROTECT, related_name="move_requests_made", verbose_name= _("Người tạo yêu cầu"))
+    box_to_move = models.ForeignKey(Box, on_delete=models.CASCADE, related_name="box_to_move", blank=True, null=True)
+    source_location = models.ForeignKey(Location, on_delete=models.SET_NULL, related_name="source_location", blank=True, null=True)
+    destination_location = models.ForeignKey(Location, on_delete=models.SET_NULL, related_name="destination_location", blank=True, null=True)
+    external_shipper = models.CharField(_("External shipper"), max_length=256, blank=True, null=True)
+    tracking_number = models.CharField(_("Tracking number"), max_length=256, blank=True, null=True)
+    expected_receive_date = models.DateTimeField(_("Expected receive date"), blank=True, null=True)
+    actual_shipping_date = models.DateTimeField(_("Actual shipping date"), blank=True, null=True)
+    confirm_by_sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="move_requests_sent", verbose_name=_("Người xác nhận gửi"))
+    actual_receive_date = models.DateTimeField(_("Actual receive date"), blank=True, null=True)
+    confirm_by_receiver = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    approver = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="move_requests_approved", verbose_name=_("Approver"))
+    approved_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    class Meta:
+        ordering = ["-create_at"]
+        verbose_name = _("Box Move Report")
+        verbose_name_plural = _("Box Move Report")
+    def save(self, *args, **kwargs):
+        if not self.request_code:
+            self.request_code = f"Yêu cầu chuyển kho-{int(timezone.now().timestamp())}"
+        super().save(*args, **kwargs)
+    def __str__(self):
+        return f"{self.requester} - {self.box_to_move} - {self.source_location} - {self.destination_location}"
+
+class BoxMoveRequestDetail(models.Model):
+    request = models.ForeignKey(BoxMoveReport, on_delete=models.CASCADE, related_name="details")
+    box = models.ForeignKey(Box, on_delete=models.PROTECT)
+    destination_location = models.ForeignKey(Location, on_delete=models.PROTECT)
+    condition_on_receipt = models.TextField(_("Condition on receipt"), blank=True, null=True)
+    notes = models.TextField(_("Notes"), blank=True, null=True)
+    # TODO: Chưa tải lên được ảnh, tạm thời để trống
+    photo_on_ship = models.ImageField(_("Photo on ship"), null=True, blank=True)
+    photo_on_receive = models.ImageField(_("Photo on receive"), null=True, blank=True)
+    class Meta:
+        unique_together = ("request", "box")
+    def __str__(self):
+        return f"{self.request} - {self.box} - {self.destination_location}"
+class BoxOpeningReport(models.Model):
+    class Status(models.TextChoices):
+        DRAFT = ("Draft", _("Draft"))
+        COMPLETED = ("completed", _("Completed"))
+    box = models.OneToOneField(Box, on_delete=models.PROTECT, related_name="opening_report")
+    report_code = models.CharField(_("Report code"), max_length=256, blank=True, null=True)
+    status = models.CharField(_("Status"), max_length=20, choices=Status.choices, default=Status.DRAFT)
+    verifier = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name = _("Verifier"))
+    notes = models.TextField(_("Note"), blank=True, null=True)
+    opened_at = models.DateTimeField(_("Opened at"), default=timezone.now)
+    def save(self, *args, **kwargs):
+        if not self.report_code:
+            self.report_code = f"BCMT-{int(timezone.now().timestamp())}"
+        super().save(*args, **kwargs)
+
+class DocumentVerification(models.Model):
+    class Status(models.TextChoices):
+        NOT_CHECKED = ("Not checked", _("Not checked"))
+        PRESENT = ("Present", _("Present"))
+        MISSING = ("Missing", _("Missing"))
+        DAMAGED = ("Damaged", _("Damaged"))
+    report = models.ForeignKey(BoxOpeningReport, on_delete=models.CASCADE, related_name="verifications")
+    document = models.ForeignKey(DocumentStoreHouse, on_delete=models.PROTECT)
+    status = models.CharField(_("Trạng thái kiểm kê"), max_length=20, choices=Status.choices, default=Status.NOT_CHECKED)
+    is_quantity_confirmed = models.BooleanField(_("Quantity confirmed"), default=False)
+    condition_notes = models.TextField(_("Condition notes"), blank=True, null=True)
+    # TODO: Để trống, chưa tải được ảnh
+    condition_photo = models.ImageField(_("Condition photo"), null=True, blank=True)
+
