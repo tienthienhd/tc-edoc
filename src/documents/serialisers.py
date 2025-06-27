@@ -3399,8 +3399,7 @@ class BoxOpeningReportSerializer(serializers.ModelSerializer):
     """Serializer cho Báo cáo Mở thùng."""
     verifications = DocumentVerificationSerializer(many=True, read_only=True)
     boxcase_name = serializers.CharField(source='boxcase.name', read_only=True)
-    verifier_name = serializers.CharField(source='verifier.username',
-                                          read_only=True)
+    verifier_name = serializers.CharField(source='verifier.username',read_only=True)
 
     class Meta:
         model = BoxOpeningReport

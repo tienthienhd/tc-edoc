@@ -2308,6 +2308,12 @@ class BoxOpeningReport(models.Model):
         _("Ngày mở thùng"),
         default=timezone.now
     )
+    move_request = models.ForeignKey(
+        WarehouseMoveRequest,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
 
     def save(self, *args, **kwargs):
         if not self.report_code:
