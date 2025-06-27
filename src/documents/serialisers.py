@@ -3325,7 +3325,15 @@ class ContainerMoveHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContainerMoveHistory
-        fields = '__all__'
+        fields = [
+            'id',
+            'moved_by_username',
+            'move_timestamp',
+            'move_reason',
+            'container_id',
+            'old_parent_id',
+            'new_parent_id',
+        ]
 
 class WarehouseMoveRequestSerializer(serializers.ModelSerializer):
     requester = serializers.StringRelatedField(read_only=True)
@@ -3391,8 +3399,7 @@ class BoxOpeningReportSerializer(serializers.ModelSerializer):
     """Serializer cho Báo cáo Mở thùng."""
     verifications = DocumentVerificationSerializer(many=True, read_only=True)
     boxcase_name = serializers.CharField(source='boxcase.name', read_only=True)
-    verifier_name = serializers.CharField(source='verifier.username',
-                                          read_only=True)
+    verifier_name = serializers.CharField(source='verifier.username',read_only=True)
 
     class Meta:
         model = BoxOpeningReport
