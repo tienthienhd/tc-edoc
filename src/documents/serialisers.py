@@ -3158,3 +3158,5 @@ class TrashSerializer(SerializerWithPerms):
                 "Some documents in the list have not yet been deleted.",
             )
         return documents
+class WareHouseManageUnitSerializer(serializers.Serializer):
+    pass
