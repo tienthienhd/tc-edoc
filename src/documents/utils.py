@@ -1,4 +1,3 @@
-
 import logging
 import os
 import re
@@ -12,11 +11,11 @@ from subprocess import run
 from typing import Optional
 from typing import Union
 
-import PyPDF2
 import pathvalidate
-from PIL import Image
+import PyPDF2
 from django.conf import settings
 from guardian.shortcuts import assign_perm
+from PIL import Image
 
 from documents.data_models import DocumentMetadataOverrides
 
@@ -165,7 +164,7 @@ def check_storage(capacity=None, directory_to_check=None):
         return False
 
     except Exception as e:
-        logging.error("error check_storage():", e)
+        logging.error("error check_storage(): %s", e)
         return False
 
 
@@ -179,15 +178,15 @@ def get_directory_size(directory):
     return total_size
 
 
-
 def check_digital_signature(pdf_path):
-    if not str(pdf_path).lower().endswith('.pdf'):
+    if not str(pdf_path).lower().endswith(".pdf"):
         return False
-    with open(pdf_path, 'rb') as file:
-        reader = PyPDF2.PdfFileReader(file)
-        if '/Sig' in reader.trailer['/Root'].keys():
+    with open(pdf_path, "rb") as file:
+        reader = PyPDF2.PdfFileReader(file, strict=False)
+        if "/Sig" in reader.trailer["/Root"]:
             return True
         return False
+
 
 def pdf_has_text_pdftotext(pdf_path: Path) -> bool:
     try:
@@ -197,18 +196,20 @@ def pdf_has_text_pdftotext(pdf_path: Path) -> bool:
                     "pdftotext",
                     "-q",
                     "-layout",
-                    "-enc", "UTF-8",
+                    "-enc",
+                    "UTF-8",
                     str(pdf_path),
                     tmp.name,
                 ],
-                check=True
+                check=True,
             )
             tmp.seek(0)
             text = tmp.read()
             return bool(text.strip())  # Có text → True
-    except Exception as e:
+    except Exception:
 
         return False
+
 
 def get_temp_file_path(file_name_or_path):
     # Lấy tên file cuối cùng
@@ -218,8 +219,7 @@ def get_temp_file_path(file_name_or_path):
     safe_name = pathvalidate.sanitize_filename(original_name)
 
     # Tạo thư mục tạm
-    tmp_obj = tempfile.TemporaryDirectory(prefix="edoc-ngx",
-                                          dir=settings.SCRATCH_DIR)
+    tmp_obj = tempfile.TemporaryDirectory(prefix="edoc-ngx", dir=settings.SCRATCH_DIR)
     temp_dir = Path(tmp_obj.name)
 
     # Đảm bảo thư mục tồn tại (dù thường TemporaryDirectory đã tạo)
@@ -233,6 +233,7 @@ def get_temp_file_path(file_name_or_path):
 def get_unique_name(model, base_name, parent_folder=None):
     unique_name = base_name
     from documents.models import Folder
+
     # Nếu model là Folder, kiểm tra cả parent_folder
     query = model.objects.filter(name__startswith=unique_name.strip())
     if model == Folder and parent_folder:
@@ -249,21 +250,31 @@ def get_unique_name(model, base_name, parent_folder=None):
     return generate_unique_name(base_name, existing_names)
 
 
-def create_folder_by_path(parent_folder, path: str, overrides: Optional[
-    DocumentMetadataOverrides] = None, folder_dict=None):
+def create_folder_by_path(
+    parent_folder,
+    path: str,
+    overrides: Optional[DocumentMetadataOverrides] = None,
+    folder_dict=None,
+):
     from documents.models import Folder
-    from documents.permissions import get_permissions, \
-        update_view_folder_parent_permissions, set_permissions_for_object
-    destination_folder = Folder.objects.get(
-        pk=overrides.folder_id) if overrides and overrides.folder_id else None
-    permissions_destination_folder = get_permissions(
-        obj=destination_folder) if destination_folder else None
-    folder_names = path.split('/')[:-1]
+    from documents.permissions import get_permissions
+    from documents.permissions import set_permissions_for_object
+    from documents.permissions import update_view_folder_parent_permissions
+
+    destination_folder = (
+        Folder.objects.get(pk=overrides.folder_id)
+        if overrides and overrides.folder_id
+        else None
+    )
+    permissions_destination_folder = (
+        get_permissions(obj=destination_folder) if destination_folder else None
+    )
+    folder_names = path.split("/")[:-1]
     results = dict()
-    folders_path = ''
+    folders_path = ""
 
     for i, name in enumerate(folder_names):
-        if name == '':
+        if name == "":
             continue
 
         folders_parent_path = folders_path
@@ -276,29 +287,31 @@ def create_folder_by_path(parent_folder, path: str, overrides: Optional[
         folder = Folder.objects.create(
             name=name,
             type=Folder.FOLDER,
-
             owner_id=overrides.owner_id if overrides and overrides.owner_id else None,
         )
         if folder:
-            folder.path = f'{folder.id}/'
-            folder.parent_folder_id = destination_folder.id if destination_folder else None
+            folder.path = f"{folder.id}/"
+            folder.parent_folder_id = (
+                destination_folder.id if destination_folder else None
+            )
             if i == 0 and destination_folder is not None:
-                folder.path = f'{destination_folder.path}{folder.id}/'
+                folder.path = f"{destination_folder.path}{folder.id}/"
                 folder.parent_folder_id = destination_folder.id
             if folders_parent_path in folder_dict:
                 folder.parent_folder_id = folder_dict[folders_parent_path][0]
-                folder.path = f'{folder_dict[folders_parent_path][1]}{folder.id}/'
+                folder.path = f"{folder_dict[folders_parent_path][1]}{folder.id}/"
             elif folders_parent_path in results:
                 folder.parent_folder_id = results[folders_parent_path][0]
-                folder.path = f'{results[folders_parent_path][1]}{folder.id}/'
+                folder.path = f"{results[folders_parent_path][1]}{folder.id}/"
 
             folder.save()
             if parent_folder:
-                assign_perm('change_folder', parent_folder.owner, folder)
+                assign_perm("change_folder", parent_folder.owner, folder)
             if permissions_destination_folder is not None:
-                set_permissions_for_object(permissions_destination_folder,
-                                           folder)
-                update_view_folder_parent_permissions(folder,
-                                                      permissions_destination_folder)
+                set_permissions_for_object(permissions_destination_folder, folder)
+                update_view_folder_parent_permissions(
+                    folder,
+                    permissions_destination_folder,
+                )
         results[folders_path] = (folder.id, folder.path)
     return results
