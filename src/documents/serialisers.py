@@ -3387,8 +3387,7 @@ class WarehouseMoveRequestSerializer(serializers.ModelSerializer):
 
 class DocumentVerificationSerializer(serializers.ModelSerializer):
     """Serializer cho một dòng kiểm kê tài liệu."""
-    document_name = serializers.CharField(source='document.title',
-                                          read_only=True)
+    document_name = serializers.CharField(source='document.title', read_only=True)
 
     class Meta:
         model = DocumentVerification
