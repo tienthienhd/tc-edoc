@@ -33,7 +33,7 @@ from rest_framework.fields import SerializerMethodField
 
 from documents import bulk_edit
 from documents.data_models import DocumentSource
-from documents.models import ArchiveFont
+from documents.models import ArchiveFont, BoxCreatedUnit
 from documents.models import BackupRecord
 from documents.models import Correspondent
 from documents.models import CustomField
@@ -62,6 +62,18 @@ from documents.permissions import has_perms_owner_aware
 from documents.permissions import set_permissions_for_object
 from documents.validators import uri_validator
 from .documents import DocumentDocument
+from documents.models import WareHouseManageUnit
+from documents.models import BoxCreatedUnit
+from documents.models import StoreHouse
+from documents.models import Location
+from documents.models import Box
+from documents.models import BoxDocument
+from documents.models import MoveHistory
+from documents.models import BoxMoveHistory
+from documents.models import BoxMoveReport
+from documents.models import BoxMoveRequestDetail
+from documents.models import BoxOpeningReport
+from documents.models import DocumentVerification
 
 logger = logging.getLogger("edoc.api")
 
@@ -3159,4 +3171,50 @@ class TrashSerializer(SerializerWithPerms):
             )
         return documents
 class WareHouseManageUnitSerializer(serializers.Serializer):
-    pass
+    class Meta:
+        model = WareHouseManageUnit
+        fields = "__all__"
+class BoxCreatedUnitSerializer(serializers.Serializer):
+    class Meta:
+        model = BoxCreatedUnit
+        fields = "__all__"
+class StoreHouseSerializer(serializers.Serializer):
+    class Meta:
+        model = StoreHouse
+        fields = "__all__"
+class LocationSerializer(serializers.Serializer):
+    class Meta:
+        model = Location
+        fields = "__all__"
+class BoxSerializer(serializers.Serializer):
+    class Meta:
+        model = Box
+        fields = "__all__"
+class BoxDocumentSerializer(serializers.Serializer):
+    class Meta:
+        model = BoxDocument
+        fields = "__all__"
+class MoveHistorySerializer(serializers.Serializer):
+    class Meta:
+        model = MoveHistory
+        fields = "__all__"
+class BoxMoveHistorySerializer(serializers.Serializer):
+    class Meta:
+        model = BoxMoveHistory
+        fields = "__all__"
+class BoxMoveReportSerializer(serializers.Serializer):
+    class Meta:
+        model = BoxMoveReport
+        fields = "__all__"
+class BoxMoveRequestDetailSerializer(serializers.Serializer):
+    class Meta:
+        model = BoxMoveRequestDetail
+        fields = "__all__"
+class BoxOpeningReportSerializer(serializers.Serializer):
+    class Meta:
+        model = BoxOpeningReport
+        fields = "__all__"
+class DocumentVerificationSerializer(serializers.Serializer):
+    class Meta:
+        model = DocumentVerification
+        fields = "__all__"

@@ -129,7 +129,8 @@ from documents.matching import match_folders
 from documents.matching import match_storage_paths
 from documents.matching import match_tags
 from documents.matching import match_warehouses
-from documents.models import Approval
+from documents.models import Approval, WareHouseManageUnit, BoxCreatedUnit, \
+    StoreHouse, Box, BoxDocument, MoveHistory, BoxMoveHistory, BoxMoveReport
 from documents.models import ArchiveFont
 from documents.models import BackupRecord
 from documents.models import Correspondent
@@ -152,6 +153,7 @@ from documents.models import Warehouse
 from documents.models import Workflow
 from documents.models import WorkflowAction
 from documents.models import WorkflowTrigger
+from documents.models import Location
 from documents.parsers import custom_get_parser_class_for_mime_type
 from documents.parsers import parse_date_generator
 from documents.permissions import EdocAdminPermissions, get_permissions, \
@@ -165,7 +167,10 @@ from documents.permissions import update_view_folder_parent_permissions
 from documents.permissions import \
     update_view_warehouse_shelf_boxcase_permissions
 from documents.serialisers import AcknowledgeTasksViewSerializer, \
-    DocumentDocumentSerializer, DocumentDetailSerializer, PostFolderSerializer
+    DocumentDocumentSerializer, DocumentDetailSerializer, PostFolderSerializer, \
+    WareHouseManageUnitSerializer, BoxCreatedUnitSerializer, \
+    StoreHouseSerializer, LocationSerializer, BoxSerializer, \
+    BoxDocumentSerializer, MoveHistorySerializer, BoxMoveHistorySerializer
 from documents.serialisers import ApprovalSerializer
 from documents.serialisers import ApprovalViewSerializer
 from documents.serialisers import ArchiveFontSerializer
@@ -4394,3 +4399,92 @@ class BackupRecordViewSet(ModelViewSet):
             return Response(async_task_restore.id)
         except (FileNotFoundError, Document.DoesNotExist):
             raise Http404
+
+class WareHouseManageUnitViewSet(ModelViewSet):
+    queryset = WareHouseManageUnit.objects.all()
+    serializer_class = WareHouseManageUnitSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ["name", "email", "phone_number", "location"]
+
+class BoxCreatedUnit(ModelViewSet):
+    queryset = BoxCreatedUnit.objects.all()
+    serializer_class = BoxCreatedUnitSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ["name", "email", "phone_number", "location", "main_pos", "type", "unit_id"]
+
+class StoreHouseViewSet(ModelViewSet):
+    queryset = StoreHouse.objects.all()
+    serializer_class = StoreHouseSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ["name", "main_pos", "location", "description", "status", "structure", "type_storehouse"]
+
+class LocationViewSet(ModelViewSet):
+    queryset = Location.objects.select_related("store_house").all()
+    serializer_class = LocationSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = {
+        "name": ["exact", "icontains"],
+        "store_house": ["exact"],
+        "name_building": ["exact", "icontains"]
+    }
+class BoxViewSet(ModelViewSet):
+    queryset = Box.objects.select_related("location", "who_create").all()
+    serializer_class = BoxSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = {
+        "handover_date": ["exact"],
+        "receive_date": ["exact"],
+        "code_on_box": ["exact", "icontains"],
+        "location": ["exact"],
+        "box_status": ["exact", "icontains"],
+    }
+
+class BoxDocumentViewSet(ModelViewSet):
+    queryset = BoxDocument.objects.select_related("document", "location", "accountant", "box")
+    serializer_class = BoxDocumentSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = {
+        "level": ["exact"],
+
+    }
+class MoveHistoryViewSet(ModelViewSet):
+
+    serializer_class = MoveHistorySerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ("document", "old_location", "new_location", "move_by", "move_timestamp", "move_reason")
+    ordering_fields = "move_timestamp"
+
+    def get_queryset(self):
+        """
+        This view returns a list of all movement history records for documents
+        that the current user has permission to see.
+        """
+        viewable_docs = get_objects_for_user_owner_aware(self.request.user, "document.view_document", Document)
+        return MoveHistory.objects.filter(document__in=viewable_docs).select_related("document", "old_location", "new_location", "move_by").order_by("-move_timestamp")
+class BoxMoveHistoryViewSet(ModelViewSet):
+    queryset = BoxMoveHistory.objects.select_related("box", "old_location", "new_location", "move_by")
+    serializer_class = BoxMoveHistorySerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ("box", "old_location", "new_location", "move_by", "move_timestamp", "move_reason")
+    ordering_fields = "move_timestamp"
+
+class BoxMoveReport(ModelViewSet):
+    queryset = BoxMoveReport.objects.select_related("requester", "box_to_move", "source_location", "destination_location", "confirm_by_sender", "confirm_by_receiver", "approver")
+
+
