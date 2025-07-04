@@ -170,7 +170,8 @@ from documents.serialisers import AcknowledgeTasksViewSerializer, \
     DocumentDocumentSerializer, DocumentDetailSerializer, PostFolderSerializer, \
     WareHouseManageUnitSerializer, BoxCreatedUnitSerializer, \
     StoreHouseSerializer, LocationSerializer, BoxSerializer, \
-    BoxDocumentSerializer, MoveHistorySerializer, BoxMoveHistorySerializer
+    BoxDocumentSerializer, MoveHistorySerializer, BoxMoveHistorySerializer, \
+    BoxMoveReportSerializer
 from documents.serialisers import ApprovalSerializer
 from documents.serialisers import ApprovalViewSerializer
 from documents.serialisers import ArchiveFontSerializer
@@ -4486,5 +4487,9 @@ class BoxMoveHistoryViewSet(ModelViewSet):
 
 class BoxMoveReport(ModelViewSet):
     queryset = BoxMoveReport.objects.select_related("requester", "box_to_move", "source_location", "destination_location", "confirm_by_sender", "confirm_by_receiver", "approver")
-
+    serializer_class = BoxMoveReportSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ("requester", "box_to_move", "source_location", "destination_location", "confirm_by_sender", "confirm_by_receiver", "approver")
 
