@@ -1072,6 +1072,8 @@ def update_ocr_document(document, task_instance: EdocTask, data_ocr):
                 font_path=os.path.join(BASE_DIR,
                                        "edoc_ocr_custom/fonts/arial-font/arial.ttf")
             )
+        document.archive_checksum = hashlib.md5(
+            output_file.read_bytes()).hexdigest()
         document.content = data_ocr.get('content_formated', '')
         document.save()
         task_instance.status = states.SUCCESS
