@@ -36,7 +36,8 @@ from documents import bulk_edit
 from documents.data_models import DocumentSource
 from documents.models import ArchiveFont, MovedHistory, ManageDepartment, \
     CreatedDepartment, ContainerMoveHistory, WarehouseMoveRequest, \
-    DocumentVerification, BoxOpeningReport
+    DocumentVerification, BoxOpeningReport, TransactionDocumentDetail, \
+    TransactionDocument
 from documents.models import ArchiveFont, FolderPermission
 from documents.models import BackupRecord
 from documents.models import Correspondent
@@ -3403,3 +3404,16 @@ class BoxOpeningReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = BoxOpeningReport
         fields = '__all__'
+
+class TransactionDocumentDetailSerializer(serializers.Serializer):
+    class Meta:
+        model = TransactionDocumentDetail
+        fields = '__all__'
+
+class TransactionDocumentSerializer(serializers.Serializer):
+    transaction_detail = TransactionDocumentDetailSerializer(many=True)
+    transaction_detail_name = serializers.CharField(source="name.name", read_only=True)
+
+    class Meta:
+        model = TransactionDocument
+        fields = "__all__"

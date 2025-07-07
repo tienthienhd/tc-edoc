@@ -4902,5 +4902,4 @@ class BoxOpeningReportViewSet(ModelViewSet):
         report.status = BoxOpeningReport.Status.COMPLETED
         report.notes = request.data.get("notes", report.notes)
         report.save()
-
         return Response(self.get_serializer(report).data)

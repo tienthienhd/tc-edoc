@@ -2373,3 +2373,13 @@ class TransactionDocument(models.Model):
     # TODO chưa rõ kiểu dữ liệu
     type_transaction = models.CharField(blank=True, null=True)
 
+class TransactionDocumentDetail(models.Model):
+    class Status(models.TextChoices):
+        EXPORTED = "Exported", _("Exported")
+        IMPORTED = "Imported", _("Imported")
+        GENERAL = "General", _("General")
+
+    description = models.TextField(blank=True, null=True)
+    type_transaction = models.CharField(blank=True, null=True, choices=Status.choices, default=Status.GENERAL)
+    name = models.CharField(blank=True, null=True, max_length=255)
+
