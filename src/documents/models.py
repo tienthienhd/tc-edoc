@@ -1856,6 +1856,7 @@ class  StoreHouse(MatchingModel):
     type_storehouse = models.CharField(max_length=30,choices=StoreHouseType.choices, default=StoreHouseType.DEDICATED)
     def __str__(self):
         return self.main_pos
+
 class Location(models.Model):
     name = models.CharField(max_length=256)
     name_building = models.CharField(_("Tên tòa"),max_length=256, blank=True, null=True)
@@ -1901,7 +1902,7 @@ class Box(models.Model):
     name = models.CharField(max_length=256)
     who_create = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     # TODO: Chưa làm được phần upload ảnh
-    image_of_box = models.ImageField(upload_to="images/box", blank=True, null=True)
+    image_of_box = models.ImageField(blank=True, null=True)
     box_status = models.CharField(max_length=256, choices=BoxStatus.choices, default=BoxStatus.WAIT_TO_DELIVERY, blank=True, null=True)
 
 # Tài liệu trong thùng
