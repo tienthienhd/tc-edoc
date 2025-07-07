@@ -298,7 +298,7 @@ urlpatterns = [
     path(
         "assets/<path:path>",
         RedirectView.as_view(
-            url=settings.STATIC_URL + "frontend/en-US/assets/%(path)s",
+            url=settings.STATIC_URL + "frontend/vi-VN/assets/%(path)s",
         ),
         # TODO: with localization, this is even worse! :/
     ),
