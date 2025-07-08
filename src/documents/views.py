@@ -3592,12 +3592,12 @@ class WarehouseViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
 
     def _handle_handover_date(self, instance, validated_data):
         """
-        Tự động thêm ngày nhận hàng nếu một phòng ban nguồn được gán
+        Tự động cập nhật ngày bàn giao nếu một phòng ban nguồn được gán
         """
         if "source_department" in validated_data:
             new_department = validated_data.get("source_department")
             if new_department is not None and new_department != instance.source_department:
-                validated_data["recived_date"] = timezone.now()
+                validated_data["handover_date"] = timezone.now()
     def _created_move_history(self, instance, old_parent, new_parent, reason, user):
         """
         Tạo các bản ghi lịch sử cho cả container và các tài liệu bên trong.
@@ -3651,7 +3651,7 @@ class WarehouseViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
             for child in children:
                 self._update_paths_after_move(child)
     def _try_to_complete_move_request(self, instance, new_status, user):
-        if new_status == Warehouse.DELIVERED and instance.boxcase_status != new_status:
+        if new_status == Warehouse.RECEIVED and instance.boxcase_status != new_status:
             move_request = WarehouseMoveRequest.objects.filter(
                 container_to_move=instance,
                 status=WarehouseMoveRequest.Status.IN_TRANSIT
@@ -4884,8 +4884,6 @@ class BoxOpeningReportViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = BoxOpeningReportFilterSet
     ordering_fields = ('created_at', 'status')
-
-
 
     http_method_names = ['get', 'patch', 'post', 'head', 'options']
 

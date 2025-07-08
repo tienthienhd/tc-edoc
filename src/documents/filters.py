@@ -614,12 +614,10 @@ class ContainerMoveHistoryFilterSet(FilterSet):
     """
     # Cho phép lọc theo khoảng thời gian di chuyển
     # Ví dụ: ?moved_after=2025-06-25T00:00:00Z
-    moved_after = django_filters.DateTimeFilter(field_name="move_timestamp",
-                                                lookup_expr='gte')
+    moved_after = django_filters.DateTimeFilter(field_name="move_timestamp", lookup_expr='gte')
 
     # Ví dụ: ?moved_before=2025-06-26T00:00:00Z
-    moved_before = django_filters.DateTimeFilter(field_name="move_timestamp",
-                                                 lookup_expr='lte')
+    moved_before = django_filters.DateTimeFilter(field_name="move_timestamp", lookup_expr='lte')
 
     class Meta:
         model = ContainerMoveHistory

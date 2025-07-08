@@ -293,17 +293,17 @@ class Warehouse(MatchingModel):
         (SHELF, _("Shelf")),
         (BOXCASE, _("Boxcase")),
     )
-    # --- Trạn thái vận của hộp --- #
+    # --- Trạn thái vận chuyển của hộp --- #
     WAIT_FOR_DELIVERY = "wait_for_delivery"
     DELIVERING = "delivering"
-    DELIVERED = "delivered"
+    RECEIVED = "received"
     STORED = "stored"
     OPENED = "opened"
     DESTROYED = "destroyed"
     TYPE_DELIVERY = (
         (WAIT_FOR_DELIVERY, _("Wait for Delivery")),
         (DELIVERING, _("Delivering")),
-        (DELIVERED, _("Delivered")),
+        (RECEIVED, _("Received")),
         (STORED, _("Stored")),
         (OPENED, _("Opened")),
         (DESTROYED, _("Destroyed"))
@@ -2149,6 +2149,7 @@ class WarehouseMoveRequest(models.Model):
         related_name='move_requests_made',
         verbose_name=_("Người tạo yêu cầu")
     )
+    # ID của thùng hàng hoặc shelf
     container_to_move = models.ForeignKey(
         Warehouse,
         on_delete=models.CASCADE,
@@ -2233,7 +2234,7 @@ class WarehouseMoveRequest(models.Model):
 
     def __str__(self):
         return f"Yêu cầu {self.request_code}: Di chuyển '{self.container_to_move.name}'"
-class WarehouseMoveRequesDetail(models.Model):
+class WarehouseMoveRequestDetail(models.Model):
     request = models.ForeignKey(
         WarehouseMoveRequest,
         on_delete=models.CASCADE,
@@ -2243,11 +2244,6 @@ class WarehouseMoveRequesDetail(models.Model):
         Warehouse,
         on_delete=models.PROTECT,
         limit_choices_to={"type": "Boxcase"},
-    )
-    destination_location = models.ForeignKey(
-        Warehouse,
-        on_delete=models.PROTECT,
-        related_name="+",
     )
     condition_on_receipt = models.TextField(
         _("Mô tả tình trạng lúc nhận"),
@@ -2334,7 +2330,7 @@ class DocumentVerification(models.Model):
         related_name='verifications'
     )
     document = models.ForeignKey(
-        'Document',
+        Document,
         on_delete=models.PROTECT
     )
     status = models.CharField(
@@ -2357,4 +2353,19 @@ class DocumentVerification(models.Model):
         null=True,
         blank=True
     )
+
+class TransactionDocument(models.Model):
+    class Status(models.TextChoices):
+        CREATED = "Created", _("Created")
+        PROCESSING = "Processing", _("Processing")
+        COMPLETED = "Completed", _("Completed")
+        REFUSE = "Refuse", _("Refuse")
+
+    notes = models.TextField(_("Ghi chú"), max_length=1024, blank=True, null=True)
+    complete_time = models.DateTimeField(_("Thời gian hoàn thành"), null=True, blank=True)
+    create_request_date = models.DateTimeField(_("Ngày tạo yêu cầu"), null=True, blank=True)
+    transaction_document_status = models.CharField(_("Trạng thái"), blank=True, null=True, choices=Status.choices, default=Status.CREATED)
+    transaction_code = models.CharField(_("Mã giao dịch"), blank=True, null=True)
+    # TODO chưa rõ kiểu dữ liệu
+    type_transaction = models.CharField(blank=True, null=True)
 
