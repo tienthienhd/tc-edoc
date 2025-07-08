@@ -3651,7 +3651,7 @@ class WarehouseViewSet(ModelViewSet, PermissionsAwareDocumentCountMixin):
             for child in children:
                 self._update_paths_after_move(child)
     def _try_to_complete_move_request(self, instance, new_status, user):
-        if new_status == Warehouse.DELIVERED and instance.boxcase_status != new_status:
+        if new_status == Warehouse.RECEIVED and instance.boxcase_status != new_status:
             move_request = WarehouseMoveRequest.objects.filter(
                 container_to_move=instance,
                 status=WarehouseMoveRequest.Status.IN_TRANSIT

@@ -296,14 +296,14 @@ class Warehouse(MatchingModel):
     # --- Trạn thái vận chuyển của hộp --- #
     WAIT_FOR_DELIVERY = "wait_for_delivery"
     DELIVERING = "delivering"
-    DELIVERED = "delivered"
+    RECEIVED = "received"
     STORED = "stored"
     OPENED = "opened"
     DESTROYED = "destroyed"
     TYPE_DELIVERY = (
         (WAIT_FOR_DELIVERY, _("Wait for Delivery")),
         (DELIVERING, _("Delivering")),
-        (DELIVERED, _("Delivered")),
+        (RECEIVED, _("Received")),
         (STORED, _("Stored")),
         (OPENED, _("Opened")),
         (DESTROYED, _("Destroyed"))
@@ -2149,6 +2149,7 @@ class WarehouseMoveRequest(models.Model):
         related_name='move_requests_made',
         verbose_name=_("Người tạo yêu cầu")
     )
+    # ID của thùng hàng hoặc shelf
     container_to_move = models.ForeignKey(
         Warehouse,
         on_delete=models.CASCADE,
@@ -2233,7 +2234,7 @@ class WarehouseMoveRequest(models.Model):
 
     def __str__(self):
         return f"Yêu cầu {self.request_code}: Di chuyển '{self.container_to_move.name}'"
-class WarehouseMoveRequesDetail(models.Model):
+class WarehouseMoveRequestDetail(models.Model):
     request = models.ForeignKey(
         WarehouseMoveRequest,
         on_delete=models.CASCADE,
@@ -2243,11 +2244,6 @@ class WarehouseMoveRequesDetail(models.Model):
         Warehouse,
         on_delete=models.PROTECT,
         limit_choices_to={"type": "Boxcase"},
-    )
-    destination_location = models.ForeignKey(
-        Warehouse,
-        on_delete=models.PROTECT,
-        related_name="+",
     )
     condition_on_receipt = models.TextField(
         _("Mô tả tình trạng lúc nhận"),

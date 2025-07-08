@@ -3384,6 +3384,27 @@ class WarehouseMoveRequestSerializer(serializers.ModelSerializer):
             'confirmed_by_receiver'
         )
 
+    def update(self, instance, validated_data):
+        """
+        Ghi đè phương thức update để kiểm soát chặt chẽ việc chỉnh sửa.
+        """
+        # 1. Chỉ cho phép sửa khi trạng thái là "pending"
+        if instance.status != WarehouseMoveRequest.Status.PENDING:
+            raise serializers.ValidationError(
+                {
+                    "error": f"Không thể cập nhật yêu cầu đã ở trạng thái '{instance.get_status_display()}'."}
+            )
+
+        # 2. Ngăn không cho cập nhật trực tiếp trạng thái qua PATCH/PUT
+        # (Mặc dù đã có read_only_fields, bước này tăng cường bảo mật)
+        if 'status' in validated_data:
+            raise serializers.ValidationError(
+                {
+                    "error": "Không thể thay đổi trạng thái trực tiếp. Vui lòng sử dụng các action (approve, reject, ...)."}
+            )
+
+        # Nếu qua được các bước kiểm tra, cho phép cập nhật các trường còn lại
+        return super().update(instance, validated_data)
 
 class DocumentVerificationSerializer(serializers.ModelSerializer):
     """Serializer cho một dòng kiểm kê tài liệu."""
