@@ -611,16 +611,7 @@ class DocumentViewSet(
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
 
-        document_type = serializer.validated_data.get("document_type")
-        update_document_field = True
-        if document_type and  instance.document_type:
-            if document_type.id == instance.document_type.id:
-                update_document_field = False
-        elif document_type is None:
-            update_document_field = False
-        if update_document_field:
-            bulk_update_custom_field_form_document_type_to_document.delay(
-                [instance.id], document_type.id, EDOC_PEEL_FIELD)
+
         # logger.debug(response)
         self.update_time_archive_font(self.get_object())
         self.update_name_folder(self.get_object(), serializer)
@@ -641,6 +632,16 @@ class DocumentViewSet(
         #                                     merge=merge,
         #                                     set_permissions_exist=set_permissions_exist)
         response = super().update(request, *args, **kwargs)
+        document_type = serializer.validated_data.get("document_type")
+        update_document_field = True
+        if document_type and instance.document_type:
+            if document_type.id == instance.document_type.id:
+                update_document_field = False
+        elif document_type is None:
+            update_document_field = False
+        if update_document_field:
+            bulk_update_custom_field_form_document_type_to_document.delay(
+                [instance.id], document_type.id, EDOC_PEEL_FIELD)
         # serializer.save()
         doc_updated = Document.objects.get(id=serializer.data["id"])
         from documents import index
