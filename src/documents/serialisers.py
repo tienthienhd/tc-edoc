@@ -60,6 +60,8 @@ from documents.models import Warehouse
 from documents.models import Workflow
 from documents.models import WorkflowAction
 from documents.models import WorkflowTrigger
+from documents.models import Container
+from documents.models import WarehouseMoveRequestDetail
 from documents.parsers import is_mime_type_supported
 from documents.permissions import get_groups_with_only_permission, \
     set_permissions_for_object_folder, get_permission_folder, \
@@ -3344,10 +3346,11 @@ class WarehouseMoveRequestSerializer(serializers.ModelSerializer):
     confirmed_by_sender = serializers.StringRelatedField(read_only=True)
     confirmed_by_receiver = serializers.StringRelatedField(read_only=True)
     container_to_move_id = serializers.PrimaryKeyRelatedField(
-        queryset=Warehouse.objects.all(),
+        queryset=Container.objects.all(),
         source='container_to_move',
         write_only=True,
-        many=True
+        many=True,
+        label="list of containers to move",
     )
     destination_location_id = serializers.PrimaryKeyRelatedField(
         queryset=Warehouse.objects.all(),
@@ -3419,9 +3422,31 @@ class DocumentVerificationSerializer(serializers.ModelSerializer):
 class BoxOpeningReportSerializer(serializers.ModelSerializer):
     """Serializer cho Báo cáo Mở thùng."""
     verifications = DocumentVerificationSerializer(many=True, read_only=True)
-    boxcase_name = serializers.CharField(source='boxcase.name', read_only=True)
+    container_name = serializers.CharField(source='container.name', read_only=True)
     verifier_name = serializers.CharField(source='verifier.username',read_only=True)
 
     class Meta:
         model = BoxOpeningReport
         fields = '__all__'
+
+class WarehouseMoveRequestDetailSerializer(serializers.ModelSerializer):
+    container_code = serializers.CharField(source='container.code', read_only=True)
+    container_id = serializers.PrimaryKeyRelatedField(
+        queryset=Container.objects.all(),
+        source='container',
+        write_only=True
+    )
+
+    class Meta:
+        model = WarehouseMoveRequestDetail
+        fields = [
+            'id',
+            'request',
+            'container_code',
+            'condition_on_receipt',
+            'notes',
+            'photo_on_ship',
+            'photo_on_receive',
+            'container_id'
+        ]
+        unique_together = ("request", "container")

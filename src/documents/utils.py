@@ -15,8 +15,13 @@ import pathvalidate
 import PyPDF2
 from django.conf import settings
 from PIL import Image
-
+from django.contrib.auth.models import User
 from documents.data_models import DocumentMetadataOverrides
+from documents.models import Container
+from documents.models import MovedHistory
+from documents.models import PhysicalDocument
+from documents.models import Warehouse
+from documents.models import ContainerMoveHistory
 
 
 def _coerce_to_path(
@@ -300,3 +305,27 @@ def create_folder_by_path(
             folder.save()
         results[folders_path] = (folder.id, folder.path)
     return results
+def create_move_history(container: Container, old_location: Warehouse, new_location: Warehouse, reason: str, user: User):
+    """
+    Tạo bản ghi lịch sử cho việc di chuyển một container và các tài liệu vật lý bên trong.
+    Hàm này được gọi sau khi một quy trình di chuyển đã được xác nhận hoàn tất.
+    """
+    ContainerMoveHistory.objects.create(
+        container=container,
+        old_location=old_location,
+        new_location=new_location,
+        move_reason=reason,
+        moved_by=user
+    )
+    physical_docs_to_log = PhysicalDocument.objects.filter(container=container)
+    history_records = [
+    MovedHistory(
+        physical_document=p_doc,
+        old_location=old_location,
+        new_location=new_location,
+        moved_by=user,
+        move_reason=f"Di chuyển cùng thùng '{container.bar_code}'")
+        for p_doc in physical_docs_to_log
+    ]
+    if history_records:
+        MovedHistory.objects.bulk_create(history_records)

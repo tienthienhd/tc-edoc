@@ -293,22 +293,6 @@ class Warehouse(MatchingModel):
         (SHELF, _("Shelf")),
         (BOXCASE, _("Boxcase")),
     )
-    # --- Trạn thái vận chuyển của hộp --- #
-    WAIT_FOR_DELIVERY = "wait_for_delivery"
-    DELIVERING = "delivering"
-    RECEIVED = "received"
-    STORED = "stored"
-    OPENED = "opened"
-    DESTROYED = "destroyed"
-    TYPE_DELIVERY = (
-        (WAIT_FOR_DELIVERY, _("Wait for Delivery")),
-        (DELIVERING, _("Delivering")),
-        (RECEIVED, _("Received")),
-        (STORED, _("Stored")),
-        (OPENED, _("Opened")),
-        (DESTROYED, _("Destroyed"))
-    )
-
 
     type = models.CharField(
         max_length=20, null=True, blank=True, choices=TYPE_WAREHOUSE, default=WAREHOUSE
@@ -329,18 +313,11 @@ class Warehouse(MatchingModel):
         null=True,
         blank=True
     )
-    map = models.ImageField(
+    structure = models.ImageField(
         _("map"),
         null=True,
-        blank=True
-    )
-    boxcase_status = models.CharField(
-        max_length=50,
-        null=True,
         blank=True,
-        choices=TYPE_DELIVERY,
-        default=WAIT_FOR_DELIVERY,
-        db_index=True
+        help_text=_("Map of the warehouse structure")
     )
     manage_by_department = models.ForeignKey(
         ManageDepartment,
@@ -354,29 +331,6 @@ class Warehouse(MatchingModel):
     is_manage_by_company = models.BooleanField(
         _("is_manage_by_company"),
         default=False, # mặc định là kho ngoài
-    )
-    code_in_box = models.CharField(
-        _("code_in_box"),
-        max_length=256,
-        null=True,
-    )
-    recived_date = models.DateTimeField(
-        _("recived_date"),
-        null=True,
-        db_index=True,
-    )
-    handover_date = models.DateTimeField(
-        _("handover_date"),
-        null=True,
-        db_index=True,
-    )
-    source_department = models.ForeignKey(
-        CreatedDepartment,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name="source_department",
-        verbose_name=_("source_department")
     )
 
 
@@ -1987,10 +1941,101 @@ class BackupRecord(ModelWithOwner):
 
     def __str__(self):
         return f"{self.filename} - {self.created_at}"
+class Container(ModelWithOwner):
+    class Status(models.TextChoices):
+        WAITING_FOR_TRANSPORT = 'WAITING_FOR_TRANSPORT', _('Chờ vận chuyển')
+        IN_TRANSIT = 'IN_TRANSIT', _('Đang vận chuyển')
+        STORING = 'STORING', _('Đang lưu trữ')
+        RECEIVED = 'RECEIVED', _('Đã nhận')
+        OPENED = 'OPENED', _('Đã mở để kiểm kê')
+        DESTROYED = 'DESTROYED', _('Đã tiêu hủy')
+    bar_code = models.CharField(_("Bar Code"), max_length=128, unique=True, help_text=_("Unique barcode for the container"))
+    packing_image = models.ImageField(
+        _("Packing Image"),
+        blank=True,
+        null=True,
+        help_text=_("Image of the container's packing"),
+    )
+    name = models.CharField(_("Container Name"), max_length=255, help_text=_("Name of the container"))
+    status = models.CharField(
+        _("Status"),
+        max_length=50,
+        choices=Status.choices,
+        default=Status.WAITING_FOR_TRANSPORT,
+        db_index=True
+    )
+    current_location = models.ForeignKey(
+        Warehouse,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='containers',
+        verbose_name=_("Current Location"),
+        help_text=_("The current location of the container in the warehouse")
+    )
+    created_at = models.DateTimeField(blank=True, null=True)
+    update_at = models.DateTimeField(blank=True, null=True)
+    handover_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        verbose_name = _("Container")
+        verbose_name_plural = _("Containers")
+        ordering = ['-created_at']
+    def __str__(self):
+        return f"{self.name} ({self.bar_code})"
+
+class PhysicalDocument(models.Model):
+    """
+    Model for a physical document that is stored in the warehouse.
+    """
+    level = models.CharField(_("Mức độ"), blank=True, null=True)
+    document = models.OneToOneField(Document, on_delete=models.SET_NULL, related_name="physical_instance", blank=True, null=True)
+    current_status = models.TextField(_("Tình trạng hiện tại"), blank=True, null=True)
+    image_current_status = models.ImageField(_("Ảnh tình trạng hiện tại"), blank=True, null=True)
+    import_date = models.DateTimeField(_("Ngày nhập kho"), blank=True, null=True)
+    # TODO đang để trống
+    status = models.CharField(blank=True, null=True)
+    @property
+    def storage_duration(self):
+        return (timezone.now() - self.import_date).days
+
+    documentation_date = models.DateTimeField(_("Ngày chứng từ"), blank=True, null=True)
+    last_time_update = models.DateTimeField(_("Thời gian cập nhật lần cuối"), blank=True, null=True)
+    due_date_destruction = models.DateTimeField(_("Ngày đến hạn tiêu hủy"), blank=True, null=True)
+    # User hạch toán
+    accountant = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="documents", blank=True, null=True)
+    document_code = models.CharField(_("Mã chứng từ/hồ sơ"), blank=True, null=True)
+    final_location = models.ForeignKey(
+        'Warehouse',  # Sử dụng trích dẫn
+        on_delete=models.SET_NULL,
+        related_name='stored_physical_documents',
+        blank=True,
+        null=True,
+        verbose_name=_("Vị trí lưu trữ cuối cùng"),
+        limit_choices_to={'type': 'Shelf'}
+    )
+    # Đường dẫn file nếu là file mềm
+    path = models.CharField(max_length=255, blank=True, null=True)
+
+    container = models.ForeignKey(
+        'Container',
+        on_delete=models.SET_NULL,
+        related_name="physical_documents",
+        blank=True,
+        null=True,
+        verbose_name=_("Thùng vận chuyển")
+    )
+
+    def __str__(self):
+        return self.document_code or f"Chứng từ vật lý #{self.pk}"
+
+    class Meta:
+        verbose_name = _("Chứng từ vật lý")
+        verbose_name_plural = _("Các chứng từ vật lý")
+        ordering = ['-import_date']
 
 class MovedHistory(models.Model):
     document = models.ForeignKey(
-        Document,
+        PhysicalDocument,
         on_delete=models.CASCADE,
         related_name='moved_history',
         verbose_name=_("Document moved history")
@@ -2044,7 +2089,7 @@ class MovedHistory(models.Model):
 
 class ContainerMoveHistory(models.Model):
     container = models.ForeignKey(
-        Warehouse,
+        Container,
         on_delete=models.CASCADE,
         related_name='container_moved_history',
         verbose_name=_("Container moved history")
@@ -2149,9 +2194,9 @@ class WarehouseMoveRequest(models.Model):
         related_name='move_requests_made',
         verbose_name=_("Người tạo yêu cầu")
     )
-    # ID của thùng hàng hoặc shelf
+    # ID của thùng hàng
     container_to_move = models.ManyToManyField(
-        Warehouse,
+        Container,
         related_name='move_requests',
         verbose_name=_("Kho nguồn")
     )
@@ -2160,13 +2205,15 @@ class WarehouseMoveRequest(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name='+',
-        verbose_name=_("Vị trí nguồn")
+        verbose_name=_("Vị trí nguồn"),
+        limit_choices_to={'type': "Warehouse"}
     )
     destination_location = models.ForeignKey(
         Warehouse,
         on_delete=models.PROTECT,
         related_name='+',
-        verbose_name=_("Kho đích")
+        verbose_name=_("Kho đích"),
+        limit_choices_to={'type': "Warehouse"},
     )
     external_shipper = models.CharField(
         _("Tên đơn vị vận chuyển ngoài"),
@@ -2239,10 +2286,9 @@ class WarehouseMoveRequestDetail(models.Model):
         on_delete=models.CASCADE,
         related_name="details"
     )
-    boxcase = models.ForeignKey(
-        Warehouse,
+    container = models.ForeignKey(
+        Container,
         on_delete=models.PROTECT,
-        limit_choices_to={"type": "Boxcase"},
         null=True
     )
     condition_on_receipt = models.TextField(
@@ -2266,17 +2312,16 @@ class WarehouseMoveRequestDetail(models.Model):
         blank=True
     )
     class Meta:
-        unique_together = ("request", "boxcase")
+        unique_together = ("request", "container")
 class BoxOpeningReport(models.Model):
     class Status(models.TextChoices):
         DRAFT = 'draft', _('Draft')
         COMPLETED = 'completed', _('Completed')
 
-    boxcase = models.OneToOneField(
-        Warehouse,
+    container = models.OneToOneField(
+        Container,
         on_delete=models.PROTECT,
         related_name='opening_report',
-        limit_choices_to={"type": "Boxcase"},
         null=True
     )
     report_code = models.CharField(
@@ -2331,7 +2376,7 @@ class DocumentVerification(models.Model):
         related_name='verifications'
     )
     document = models.ForeignKey(
-        Document,
+        PhysicalDocument,
         on_delete=models.PROTECT
     )
     status = models.CharField(
