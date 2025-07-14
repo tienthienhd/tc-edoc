@@ -23,6 +23,7 @@ from documents.tasks import bulk_update_documents, update_document_field, \
     bulk_update_custom_field_form_document_type_to_document
 from documents.tasks import consume_file
 from documents.tasks import update_document_archive_file
+from edoc.settings import EDOC_PEEL_FIELD
 
 logger = logging.getLogger("edoc.bulk_edit")
 
@@ -115,7 +116,9 @@ def set_document_type(doc_ids, document_type):
 
     bulk_update_documents.delay(document_ids=affected_docs)
     if document_type:
-        bulk_update_custom_field_form_document_type_to_document.delay(document_ids=affected_docs,document_type_id=document_type.pk, peel = True)
+        bulk_update_custom_field_form_document_type_to_document.delay(
+            document_ids=affected_docs, document_type_id=document_type.pk,
+            peel=EDOC_PEEL_FIELD)
 
     return "OK"
 

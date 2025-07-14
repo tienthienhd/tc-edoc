@@ -742,6 +742,11 @@ def run_workflow(
 
                     if action.assign_document_type is not None:
                         document.document_type = action.assign_document_type
+                        bulk_set_custom_fields_from_document_type_to_document(
+                            action.assign_document_type.pk,
+                            [
+                                document.id],
+                            EDOC_PEEL_FIELD)
 
                     if action.assign_storage_path is not None:
                         document.storage_path = action.assign_storage_path
