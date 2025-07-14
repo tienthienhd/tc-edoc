@@ -2150,9 +2150,8 @@ class WarehouseMoveRequest(models.Model):
         verbose_name=_("Người tạo yêu cầu")
     )
     # ID của thùng hàng hoặc shelf
-    container_to_move = models.ForeignKey(
+    container_to_move = models.ManyToManyField(
         Warehouse,
-        on_delete=models.CASCADE,
         related_name='move_requests',
         verbose_name=_("Kho nguồn")
     )
@@ -2244,6 +2243,7 @@ class WarehouseMoveRequestDetail(models.Model):
         Warehouse,
         on_delete=models.PROTECT,
         limit_choices_to={"type": "Boxcase"},
+        null=True
     )
     condition_on_receipt = models.TextField(
         _("Mô tả tình trạng lúc nhận"),
@@ -2277,6 +2277,7 @@ class BoxOpeningReport(models.Model):
         on_delete=models.PROTECT,
         related_name='opening_report',
         limit_choices_to={"type": "Boxcase"},
+        null=True
     )
     report_code = models.CharField(
         _("Mã báo cáo"),
@@ -2353,19 +2354,4 @@ class DocumentVerification(models.Model):
         null=True,
         blank=True
     )
-
-class TransactionDocument(models.Model):
-    class Status(models.TextChoices):
-        CREATED = "Created", _("Created")
-        PROCESSING = "Processing", _("Processing")
-        COMPLETED = "Completed", _("Completed")
-        REFUSE = "Refuse", _("Refuse")
-
-    notes = models.TextField(_("Ghi chú"), max_length=1024, blank=True, null=True)
-    complete_time = models.DateTimeField(_("Thời gian hoàn thành"), null=True, blank=True)
-    create_request_date = models.DateTimeField(_("Ngày tạo yêu cầu"), null=True, blank=True)
-    transaction_document_status = models.CharField(_("Trạng thái"), blank=True, null=True, choices=Status.choices, default=Status.CREATED)
-    transaction_code = models.CharField(_("Mã giao dịch"), blank=True, null=True)
-    # TODO chưa rõ kiểu dữ liệu
-    type_transaction = models.CharField(blank=True, null=True)
 

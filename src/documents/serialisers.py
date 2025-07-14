@@ -3346,7 +3346,8 @@ class WarehouseMoveRequestSerializer(serializers.ModelSerializer):
     container_to_move_id = serializers.PrimaryKeyRelatedField(
         queryset=Warehouse.objects.all(),
         source='container_to_move',
-        write_only=True
+        write_only=True,
+        many=True
     )
     destination_location_id = serializers.PrimaryKeyRelatedField(
         queryset=Warehouse.objects.all(),

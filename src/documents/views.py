@@ -4761,26 +4761,35 @@ class WarehouseMoveRequestViewSet(ModelViewSet):
     ordering_fields = ('created_at', 'status')
 
     def _execute_database_move(self, move_request: WarehouseMoveRequest):
-        instance_to_move = move_request.container_to_move
         new_parent = move_request.destination_location
-        instance_to_move.parent_warehouse = new_parent
-        instance_to_move.save(update_fields=['parent_warehouse'])
-        instance_to_move.refresh_from_db()
-        warehouse_view = WarehouseViewSet()
-        warehouse_view._update_paths_after_move(instance_to_move)
+        # Lặp qua tất cả các thùng trong yêu cầu
+        for instance_to_move in move_request.containers_to_move.all():
+            instance_to_move.parent_warehouse = new_parent
+            instance_to_move.save(update_fields=['parent_warehouse'])
+            instance_to_move.refresh_from_db()
+            warehouse_view = WarehouseViewSet()
+            warehouse_view._update_paths_after_move(instance_to_move)
 
     def _create_final_move_history(self, move_request: WarehouseMoveRequest):
-        instance_to_log = move_request.container_to_move
         old_parent = move_request.source_location
         new_parent = move_request.destination_location
         reason_from_request = move_request.reason
         user_who_approved = move_request.approver
         warehouse_view = WarehouseViewSet()
-        warehouse_view._created_move_history(instance_to_log, old_parent, new_parent, reason_from_request, user_who_approved)
+        # Lặp qua tất cả các thùng để ghi lịch sử
+        for instance_to_log in move_request.container_to_move.all():
+            warehouse_view._created_move_history(
+                instance_to_log, old_parent, new_parent,
+                reason_from_request, user_who_approved
+            )
 
     def perform_create(self, serializer):
         container = serializer.validated_data.get("container_to_move")
-        serializer.save(requester=self.request.user, source_location=container.parent_warehouse)
+        source_location = container[0].parent_warehouse if container else None
+        serializer.save(
+            requester=self.request.user,
+            source_location=source_location
+        )
 
     @action(detail=True, methods=["post"], url_path="approve")
     def approve(self, request, pk=None):
